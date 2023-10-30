@@ -19,18 +19,18 @@ public class AccountServiceImpl implements IAccountService {
         return accountRepository.findAccountByUserName(username);
     }
 
-//    @Override
-//    public Boolean existsByUsername(String username) {
-//        return accountRepository.existsByUsername(username);
-//    }
-
-//    @Override
-//    public Boolean existsByEmail(String email) {
-//        return accountRepository.existsByEmail(email);
-//    }
+    @Override
+    public Boolean existsByUsername(String username) {
+        return accountRepository.existsByUserName(username);
+    }
 
     @Override
-    public Account addAccount(Account account) {
+    public Boolean existsByEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Account save(Account account) {
         return accountRepository.save(account);
     }
 }

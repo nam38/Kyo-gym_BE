@@ -15,6 +15,7 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer adminId;
+    private String adminCode;
     private String adminName;
     private String adminEmail;
     private Boolean adminGender;

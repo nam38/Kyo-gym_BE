@@ -18,6 +18,8 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
             "where user_name = :username and is_enable = true", nativeQuery = true)
     Optional<Account> findAccountByUserName(@Param("username") String username);
 
-//    Boolean existsByUsername(String username);
-//    Boolean existsByEmail(String email);
+    Boolean existsByUserName(String username);
+
+    Boolean existsByEmail(String email);
+
 }
