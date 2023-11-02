@@ -15,6 +15,9 @@ public class NutritionalExerciseManagement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer nutritionalExerciseManagementId;
     private String nutritionalExerciseManagementName;
+    private String description;
+    private String duration;
+    private String nutritionalExerciseManagementImg;
     private String nutritionalExerciseManagementType;
 
     @ManyToOne(cascade = CascadeType.ALL)
