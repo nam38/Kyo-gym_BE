@@ -1,4 +1,4 @@
 package com.capstone.wellnessnavigatorgym.service;
 
-public interface IExerciseTypeService {
+public interface ICommentService {
 }

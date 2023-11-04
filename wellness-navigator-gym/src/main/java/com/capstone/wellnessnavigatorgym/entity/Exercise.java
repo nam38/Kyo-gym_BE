@@ -15,14 +15,20 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer exerciseId;
     private String exerciseName;
+    private String bodyPart;
+    private String equipment;
+    private String videoUrl;
+    private String target;
+    @Column(name = "exercise_description", length = 2000)
     private String exerciseDescription;
-    private Double calorieConsumption;
+    @Column(name = "instructions", length = 2000)
+    private String instructions;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "exercise_type_id")
-    private ExerciseType exerciseType;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutritional_exercise_management_id")
-    private NutritionalExerciseManagement nutritionalExerciseManagement;
+    @JoinColumn(name = "day_id")
+    private Day day;
 }

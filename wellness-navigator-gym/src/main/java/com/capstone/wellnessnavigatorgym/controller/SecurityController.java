@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/public")
+
 public class SecurityController {
 
 //    @Value("${google.clientId}")

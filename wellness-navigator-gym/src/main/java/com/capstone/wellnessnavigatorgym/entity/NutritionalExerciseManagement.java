@@ -15,9 +15,12 @@ public class NutritionalExerciseManagement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer nutritionalExerciseManagementId;
     private String nutritionalExerciseManagementName;
+    private String description;
+    private String duration;
+    private String image;
     private String nutritionalExerciseManagementType;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }
