@@ -34,7 +34,7 @@ public class CustomerController {
                                                           @RequestParam(value = "name", required = false) Optional<String> name,
                                                           @RequestParam(value = "address", required = false) Optional<String> address,
                                                           @RequestParam(value = "phone", required = false) Optional<String> phone,
-                                                          @RequestParam("page") Optional<Integer> page,
+                                                           @RequestParam("page") Optional<Integer> page,
                                                           @RequestParam("size") Optional<Integer> size,
                                                           @RequestParam("sort") Optional<String> sort) {
         String searchType = type.orElse("");
