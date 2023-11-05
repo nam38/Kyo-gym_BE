@@ -25,10 +25,6 @@ public class Exercise {
     private String instructions;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
-
-    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "day_id")
     private Day day;
 }

@@ -19,4 +19,8 @@ public class Comment {
     private Integer rating;
     private String commentText;
     private String avatar;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "exercise_id")
+    private Exercise exercise;
 }
