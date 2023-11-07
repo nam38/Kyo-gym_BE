@@ -19,6 +19,6 @@ public class ReviewAssignmentSuggestions {
     private String reviewAssignmentSuggestionsDescription;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutritional_exercise_management_id")
-    private NutritionalExerciseManagement nutritionalExerciseManagement;
+    @JoinColumn(name = "course_id")
+    private Course course;
 }

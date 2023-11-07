@@ -12,25 +12,23 @@ import java.util.Set;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class Nutritional {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer nutritionalId;
-    private String nutritionalName;
-    private String nutritionalDescription;
-    private Double calories;
-    private Double protein;
-    private Double fat;
-    private Double carbohydrates;
-    private Integer serving;
+    private Integer courseId;
+    private String courseName;
+    private String description;
+    private String duration;
+    private String image;
+    private String courseType;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutritional_type_id")
-    private NutritionalType nutritionalType;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @ManyToMany
-    @JoinTable(name = "nutritional_days",
-            joinColumns = @JoinColumn(name = "nutritional_id"),
+    @JoinTable(name = "course_days",
+            joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "day_id"))
     private Set<Day> days = new LinkedHashSet<>();
 }

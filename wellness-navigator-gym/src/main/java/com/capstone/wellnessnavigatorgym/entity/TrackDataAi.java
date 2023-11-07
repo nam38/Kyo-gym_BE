@@ -6,19 +6,22 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class NutritionalExerciseManagement {
+@Entity
+public class TrackDataAi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer nutritionalExerciseManagementId;
-    private String nutritionalExerciseManagementName;
-    private String description;
-    private String duration;
-    private String image;
-    private String nutritionalExerciseManagementType;
+    private Integer trackDataAiId;
+    private String trainingGoals;
+    private String activityLevel;
+    private String trainingHistory;
+    private Integer age;
+    private String gender;
+    private Double height;
+    private Double weight;
+    private String suggestedExercises;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
