@@ -1,11 +1,11 @@
 package com.capstone.wellnessnavigatorgym.repository;
 
-import com.capstone.wellnessnavigatorgym.entity.NutritionalExerciseManagement;
+import com.capstone.wellnessnavigatorgym.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface INutritionalExerciseManagementRepository extends JpaRepository<NutritionalExerciseManagement, Integer> {
+public interface ICourseRepository extends JpaRepository<Course, Integer> {
 }

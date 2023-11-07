@@ -18,7 +18,7 @@ public class TrackDataAi {
     private String activityLevel;
     private String trainingHistory;
     private Integer age;
-    private Boolean gender;
+    private String gender;
     private Double height;
     private Double weight;
     private String suggestedExercises;

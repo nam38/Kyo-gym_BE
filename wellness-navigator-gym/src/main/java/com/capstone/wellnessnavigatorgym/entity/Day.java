@@ -1,10 +1,13 @@
 package com.capstone.wellnessnavigatorgym.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -17,7 +20,15 @@ public class Day {
     private Integer dayId;
     private String dayName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutritional_exercise_management_id")
-    private NutritionalExerciseManagement nutritionalExerciseManagement;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "days")
+    private Set<Exercise> exercises = new LinkedHashSet<>();
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "days")
+    private Set<Nutritional> nutritionals = new LinkedHashSet<>();
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "days")
+    private Set<Course> courses = new LinkedHashSet<>();
 }

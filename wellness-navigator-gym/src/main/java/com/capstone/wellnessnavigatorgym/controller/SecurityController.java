@@ -4,7 +4,6 @@ import com.capstone.wellnessnavigatorgym.dto.request.LoginRequest;
 import com.capstone.wellnessnavigatorgym.dto.request.SignupRequest;
 import com.capstone.wellnessnavigatorgym.dto.response.JwtResponse;
 import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
-import com.capstone.wellnessnavigatorgym.dto.response.SocialResponse;
 import com.capstone.wellnessnavigatorgym.entity.Account;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.entity.Role;
@@ -12,12 +11,7 @@ import com.capstone.wellnessnavigatorgym.security.jwt.JwtUtility;
 import com.capstone.wellnessnavigatorgym.security.userprinciple.UserPrinciple;
 import com.capstone.wellnessnavigatorgym.service.IAccountService;
 import com.capstone.wellnessnavigatorgym.service.ICustomerService;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +29,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/public")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SecurityController {
 
 //    @Value("${google.clientId}")

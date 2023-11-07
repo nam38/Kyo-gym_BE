@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -26,7 +28,9 @@ public class Nutritional {
     @JoinColumn(name = "nutritional_type_id")
     private NutritionalType nutritionalType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "day_id")
-    private Day day;
+    @ManyToMany
+    @JoinTable(name = "nutritional_days",
+            joinColumns = @JoinColumn(name = "nutritional_id"),
+            inverseJoinColumns = @JoinColumn(name = "day_id"))
+    private Set<Day> days = new LinkedHashSet<>();
 }
