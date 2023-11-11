@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ICourseService {
     List<Course> findAll();
+
+    Course findCourseById(Integer id);
 }

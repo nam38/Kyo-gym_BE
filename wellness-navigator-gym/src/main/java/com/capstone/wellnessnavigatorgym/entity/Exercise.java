@@ -19,6 +19,7 @@ public class Exercise {
     private String exerciseName;
     private String bodyPart;
     private String equipment;
+    @Column(name = "video_url", length = 2000)
     private String videoUrl;
     private String target;
     @Column(name = "exercise_description", length = 2000)

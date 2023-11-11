@@ -3,14 +3,17 @@ package com.capstone.wellnessnavigatorgym.service.impl;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerInfo;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
+import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ICustomerRepository;
 import com.capstone.wellnessnavigatorgym.service.ICustomerService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements ICustomerService {
@@ -46,9 +49,14 @@ public class CustomerServiceImpl implements ICustomerService {
                 customerInfo.getCustomerImg(), true, customerInfo.getCustomerType());
     }
 
+    @SneakyThrows
     @Override
     public Customer findById(Integer id) {
-        return customerRepository.findById(id).orElse(null);
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isPresent()) {
+            return customer.get();
+        }
+        throw new NotFoundById("Could not find any customers with code: " + id);
     }
 
     @Override
