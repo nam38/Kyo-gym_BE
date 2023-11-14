@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Tuple;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +16,16 @@ import java.util.Optional;
 public interface ICourseRepository extends JpaRepository<Course, Integer> {
     @Query(value = "SELECT * FROM course WHERE course_id = :id", nativeQuery = true)
     Optional<Course> findCourseById(@Param("id") Integer id);
+
+    @Query(value = "select c.course_id, c.course_name, c.description, c.duration, c.image, d.day_id, d.day_name, " +
+            "e.exercise_id, e.body_part, e.equipment, e.exercise_description, e.exercise_name, e.instructions, " +
+            "e.target, e.video_url " +
+            "from course c " +
+            "join course_days cd on c.course_id = cd.course_id " +
+            "join days d on cd.day_id = d.day_id " +
+            "join exercise_days ed on d.day_id = ed.day_id " +
+            "join exercise e on ed.exercise_id = e.exercise_id " +
+            "where c.course_id = :courseId and d.day_id = :dayId", nativeQuery = true)
+    List<Tuple> getCourseDetailsByDayAndCourse(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
+
 }
