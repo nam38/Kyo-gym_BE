@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IExerciseService {
     List<Exercise> findAll();
+
+    Exercise findExerciseById(Integer id);
 }
