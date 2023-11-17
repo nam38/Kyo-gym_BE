@@ -22,6 +22,7 @@ public class TrackDataAi {
     private Double height;
     private Double weight;
     private String suggestedExercises;
+    private Boolean effective;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")

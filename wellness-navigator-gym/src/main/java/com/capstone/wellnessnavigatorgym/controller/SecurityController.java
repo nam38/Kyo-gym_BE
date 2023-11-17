@@ -125,7 +125,5 @@ public class SecurityController {
         ));
         return new ResponseEntity<>(new MessageResponse("Account registration successful!"), HttpStatus.OK);
     }
-
-
 }
 

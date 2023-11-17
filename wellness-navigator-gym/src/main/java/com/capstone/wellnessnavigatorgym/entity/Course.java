@@ -17,10 +17,15 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
     private String courseName;
+    @Column(name = "description", length = 2000)
     private String description;
     private String duration;
+    @Column(name = "image", length = 2000)
     private String image;
-    private String courseType;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_type_id")
+    private CourseType courseType;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
