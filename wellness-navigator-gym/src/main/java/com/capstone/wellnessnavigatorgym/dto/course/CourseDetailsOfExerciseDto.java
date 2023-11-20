@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseDetailsDto {
+public class CourseDetailsOfExerciseDto {
     private Integer courseId;
     private String courseName;
     private String description;
@@ -25,4 +25,10 @@ public class CourseDetailsDto {
     private String instructions;
     private String target;
     private String videoUrl;
+    private Integer commentId;
+    private String commentText;
+    private Integer rating;
+    private Integer customerId;
+    private String customerName;
+    private String customerImg;
 }
