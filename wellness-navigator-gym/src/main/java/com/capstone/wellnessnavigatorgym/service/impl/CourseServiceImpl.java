@@ -1,6 +1,6 @@
 package com.capstone.wellnessnavigatorgym.service.impl;
 
-import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsDto;
+import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfExerciseDto;
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
@@ -36,15 +36,15 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public List<CourseDetailsDto> getCourseDetailsByDayAndCourse(Integer courseId, Integer dayId) {
-        List<Tuple> tupleList = courseRepository.getCourseDetailsByDayAndCourse(courseId, dayId);
+    public List<CourseDetailsOfExerciseDto> getCourseDetailsByDayAndCourseOfExercise(Integer courseId, Integer dayId) {
+        List<Tuple> tupleList = courseRepository.getCourseDetailsByDayAndCourseOfExercise(courseId, dayId);
         return tupleList.stream()
                 .map(this::tupleToCourseDetailsDto)
                 .collect(Collectors.toList());
     }
 
-    public CourseDetailsDto tupleToCourseDetailsDto(Tuple tuple) {
-        return new CourseDetailsDto(
+    public CourseDetailsOfExerciseDto tupleToCourseDetailsDto(Tuple tuple) {
+        return new CourseDetailsOfExerciseDto(
                 convertToInteger(tuple.get("course_id")),
                 tuple.get("course_name", String.class),
                 tuple.get("description", String.class),
@@ -59,7 +59,13 @@ public class CourseServiceImpl implements ICourseService {
                 tuple.get("exercise_name", String.class),
                 tuple.get("instructions", String.class),
                 tuple.get("target", String.class),
-                tuple.get("video_url", String.class)
+                tuple.get("video_url", String.class),
+                convertToInteger(tuple.get("comment_id")),
+                tuple.get("comment_text", String.class),
+                convertToInteger(tuple.get("rating")),
+                convertToInteger(tuple.get("customer_id")),
+                tuple.get("customer_name", String.class),
+                tuple.get("customer_img", String.class)
         );
     }
 

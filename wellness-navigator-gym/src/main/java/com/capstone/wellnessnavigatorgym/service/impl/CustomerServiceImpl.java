@@ -18,8 +18,12 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements ICustomerService {
 
+    private final ICustomerRepository customerRepository;
+
     @Autowired
-    private ICustomerRepository customerRepository;
+    public CustomerServiceImpl(ICustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     @Override
     public void save(Customer customer) {
@@ -74,10 +78,12 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public CustomerUserDetailDto findUserDetailByUsername(String username) {
-        Tuple tuple = customerRepository.findUserDetail(username).orElse(null);
+        Tuple tuple = customerRepository.findUserDetailByUsername(username).orElse(null);
+
         if (tuple != null) {
             return CustomerUserDetailDto.TupleToCustomerDto(tuple);
         }
+
         return null;
     }
 }

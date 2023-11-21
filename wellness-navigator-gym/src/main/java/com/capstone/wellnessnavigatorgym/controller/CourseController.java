@@ -1,6 +1,6 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
-import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsDto;
+import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfExerciseDto;
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +33,11 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}/day/{dayId}")
-    public ResponseEntity<List<CourseDetailsDto>> getCourseDetailsByDayAndCourse(@PathVariable Integer courseId, @PathVariable Integer dayId) {
-        List<CourseDetailsDto> courseDetailsDtoList = this.courseService.getCourseDetailsByDayAndCourse(courseId, dayId);
-        if (courseDetailsDtoList.isEmpty()) {
+    public ResponseEntity<List<CourseDetailsOfExerciseDto>> getCourseDetailsByDayAndCourseOfExercise(@PathVariable Integer courseId, @PathVariable Integer dayId) {
+        List<CourseDetailsOfExerciseDto> courseDetailsOfExerciseDtoList = this.courseService.getCourseDetailsByDayAndCourseOfExercise(courseId, dayId);
+        if (courseDetailsOfExerciseDtoList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(courseDetailsDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(courseDetailsOfExerciseDtoList, HttpStatus.OK);
     }
 }
