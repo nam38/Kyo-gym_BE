@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class Account {
     private String encryptPassword;
     private String email;
     private Boolean isEnable;
+
     @ManyToMany
     @JoinTable(name = "account_roles",
             joinColumns = @JoinColumn(name = "account_id"),

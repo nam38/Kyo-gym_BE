@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ICommentService {
     List<Comment> findAll();
+
+    Comment findCommentById(Integer id);
 }

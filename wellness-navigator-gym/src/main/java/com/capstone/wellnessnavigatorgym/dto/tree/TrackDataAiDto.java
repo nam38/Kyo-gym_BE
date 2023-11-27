@@ -1,18 +1,17 @@
-package com.capstone.wellnessnavigatorgym.entity;
+/*
+package com.capstone.wellnessnavigatorgym.dto.tree;
 
+import com.capstone.wellnessnavigatorgym.entity.Customer;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
-@Setter
 @Getter
-@RequiredArgsConstructor
-@Entity
-public class TrackDataAi {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class TrackDataAiDto {
     private Integer trackDataAiId;
     private String trainingGoals;
     private String activityLevel;
@@ -20,11 +19,9 @@ public class TrackDataAi {
     private Integer age;
     private String gender;
     private Double bmi;
+    private String suggestedExercises;
     private Boolean effective;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    private Customer customer;
 
     public Object getAttributeValue(String attributeName) {
         switch (attributeName) {
@@ -38,12 +35,14 @@ public class TrackDataAi {
                 return getGender();
             case "bmi":
                 return getBmi();
+            case "suggested_exercises":
+                return getSuggestedExercises();
             case "training_goals":
                 return getTrainingGoals();
             case "training_history":
                 return getTrainingHistory();
-            case "course_id":
-                return getCourse();
+            case "customer_id":
+                return getCustomer();
             case "effective":
                 return getEffective();
             default:
@@ -52,3 +51,4 @@ public class TrackDataAi {
         }
     }
 }
+*/

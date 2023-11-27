@@ -44,6 +44,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(12);
     }
 
+/*    @Bean
+    public BuildDecisionTree buildDecisionTree() {
+        return new BuildDecisionTree();
+    }*/
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -52,11 +57,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/public/**")
                 .permitAll()
                 .antMatchers("/api/v1/customer/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/customer-type/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/course/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/course-type/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/day/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/comment/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/track-data-ai/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/decision-tree/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
