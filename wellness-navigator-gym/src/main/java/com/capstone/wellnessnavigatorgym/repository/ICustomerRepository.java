@@ -105,6 +105,6 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
             "from customer c " +
             "inner join customer_type ct on c.customer_type_id = ct.customer_type_id " +
             "inner join account a on c.account_id = a.account_id " +
-            "where (c.is_enable = true) and (a.is_enable = true) and (a.user_name = :username)", nativeQuery = true)
-    Optional<Tuple> findUserDetail(@Param("username") String username);
+            "where (c.is_enable = true) and (a.is_enable = true) and (a.user_name = :username) ", nativeQuery = true)
+    Optional<Tuple> findUserDetailByUsername(@Param("username") String username);
 }

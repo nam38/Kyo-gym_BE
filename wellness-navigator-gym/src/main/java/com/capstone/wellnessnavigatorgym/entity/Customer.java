@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -27,6 +28,7 @@ public class Customer {
     private String customerAddress;
     private String customerImg;
     private Boolean isEnable;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_type_id")

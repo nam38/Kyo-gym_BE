@@ -35,5 +35,6 @@ public class Course {
     @JoinTable(name = "course_days",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "day_id"))
+    @OrderBy("dayId")
     private Set<Day> days = new LinkedHashSet<>();
 }
