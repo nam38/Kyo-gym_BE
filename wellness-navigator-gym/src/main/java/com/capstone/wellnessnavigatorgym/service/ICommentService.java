@@ -8,4 +8,6 @@ public interface ICommentService {
     List<Comment> findAll();
 
     Comment findCommentById(Integer id);
+
+    Comment saveComment(Comment comment);
 }

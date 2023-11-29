@@ -28,8 +28,8 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
             "where c.course_id = :courseId and d.day_id = :dayId", nativeQuery = true)
     List<Tuple> getCourseDetailsByDayAndCourseOfExercise(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
 
-    @Query(value = "SELECT c.course_id, c.course_name, c.description, c.duration, c.image, d.day_id, d.day_name, " +
-            "cm.comment_id, cm.comment_text, cm.rating, cu.customer_id, cu.customer_name, cu.customer_img " +
+    @Query(value = "SELECT c.course_id, c.course_name, d.day_id, d.day_name, cm.comment_id, " +
+            "cm.comment_text, cm.rating, cu.customer_id, cu.customer_name, cu.customer_img " +
             "FROM course c " +
             "INNER JOIN course_days cd ON c.course_id = cd.course_id " +
             "INNER JOIN days d ON cd.day_id = d.day_id " +
