@@ -31,4 +31,9 @@ public class CommentServiceImpl implements ICommentService {
         }
         throw new NotFoundById("Could not find any comments with code: " + id);
     }
+
+    @Override
+    public Comment saveComment(Comment comment) {
+        return commentRepository.save(comment);
+    }
 }

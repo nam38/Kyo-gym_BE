@@ -31,4 +31,9 @@ public class ExerciseServiceImpl implements IExerciseService {
         }
         throw new NotFoundById("Could not find any exercises with code: " + id);
     }
+
+    @Override
+    public boolean existsById(Integer id) {
+        return exerciseRepository.existsById(id);
+    }
 }

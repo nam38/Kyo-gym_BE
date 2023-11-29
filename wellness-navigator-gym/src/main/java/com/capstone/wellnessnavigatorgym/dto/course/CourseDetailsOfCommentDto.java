@@ -12,9 +12,6 @@ import lombok.Setter;
 public class CourseDetailsOfCommentDto {
     private Integer courseId;
     private String courseName;
-    private String description;
-    private String duration;
-    private String image;
     private Integer dayId;
     private String dayName;
     private Integer commentId;

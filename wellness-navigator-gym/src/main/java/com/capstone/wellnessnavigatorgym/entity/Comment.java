@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-
 @Entity
 @Setter
 @Getter
@@ -25,4 +24,15 @@ public class Comment {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", commentText='" + commentText + '\'' +
+                ", rating=" + rating +
+                ", exercise=" + exercise +
+                ", customer=" + customer +
+                '}';
+    }
 }

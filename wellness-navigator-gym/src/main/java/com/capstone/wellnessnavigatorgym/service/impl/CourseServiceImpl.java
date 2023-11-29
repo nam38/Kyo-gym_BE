@@ -6,6 +6,7 @@ import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
 import com.capstone.wellnessnavigatorgym.service.ICourseService;
+import com.capstone.wellnessnavigatorgym.utils.ConvertToInteger;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,14 +55,14 @@ public class CourseServiceImpl implements ICourseService {
 
     public CourseDetailsOfExerciseDto tupleToCourseDetailsOfExerciseDto(Tuple tuple) {
         return new CourseDetailsOfExerciseDto(
-                convertToInteger(tuple.get("course_id")),
+                ConvertToInteger.convertToInteger(tuple.get("course_id")),
                 tuple.get("course_name", String.class),
                 tuple.get("description", String.class),
                 tuple.get("duration", String.class),
                 tuple.get("image", String.class),
-                convertToInteger(tuple.get("day_id")),
+                ConvertToInteger.convertToInteger(tuple.get("day_id")),
                 tuple.get("day_name", String.class),
-                convertToInteger(tuple.get("exercise_id")),
+                ConvertToInteger.convertToInteger(tuple.get("exercise_id")),
                 tuple.get("body_part", String.class),
                 tuple.get("equipment", String.class),
                 tuple.get("exercise_description", String.class),
@@ -74,34 +75,16 @@ public class CourseServiceImpl implements ICourseService {
 
     public CourseDetailsOfCommentDto tupleToCourseDetailsOfCommentDto(Tuple tuple) {
         return new CourseDetailsOfCommentDto(
-                convertToInteger(tuple.get("course_id")),
+                ConvertToInteger.convertToInteger(tuple.get("course_id")),
                 tuple.get("course_name", String.class),
-                tuple.get("description", String.class),
-                tuple.get("duration", String.class),
-                tuple.get("image", String.class),
-                convertToInteger(tuple.get("day_id")),
+                ConvertToInteger.convertToInteger(tuple.get("day_id")),
                 tuple.get("day_name", String.class),
-                convertToInteger(tuple.get("comment_id")),
+                ConvertToInteger.convertToInteger(tuple.get("comment_id")),
                 tuple.get("comment_text", String.class),
-                convertToInteger(tuple.get("rating")),
-                convertToInteger(tuple.get("customer_id")),
+                ConvertToInteger.convertToInteger(tuple.get("rating")),
+                ConvertToInteger.convertToInteger(tuple.get("customer_id")),
                 tuple.get("customer_name", String.class),
                 tuple.get("customer_img", String.class)
         );
-    }
-
-    private Integer convertToInteger(Object value) {
-        if (value instanceof Integer) {
-            return (Integer) value;
-        } else if (value instanceof String) {
-            try {
-                return Integer.parseInt((String) value);
-            } catch (NumberFormatException e) {
-                // Handle the case where the conversion fails
-                return null; // or throw an exception, depending on your requirements
-            }
-        } else {
-            return null; // or handle other data types as needed
-        }
     }
 }
