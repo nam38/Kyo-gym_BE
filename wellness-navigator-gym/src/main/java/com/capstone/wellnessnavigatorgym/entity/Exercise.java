@@ -32,4 +32,8 @@ public class Exercise {
             joinColumns = @JoinColumn(name = "exercise_id"),
             inverseJoinColumns = @JoinColumn(name = "day_id"))
     private Set<Day> days = new LinkedHashSet<>();
+
+    public Exercise(Integer exerciseId) {
+        this.exerciseId = exerciseId;
+    }
 }

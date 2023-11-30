@@ -33,7 +33,12 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public Comment saveComment(Comment comment) {
-        return commentRepository.save(comment);
+    public void saveComment(Comment comment) {
+        commentRepository.insertComment(
+                comment.getCommentText(),
+                comment.getRating(),
+                String.valueOf(comment.getCustomer().getCustomerId()),
+                String.valueOf(comment.getExercise().getExerciseId()));
     }
+
 }

@@ -3,6 +3,7 @@ package com.capstone.wellnessnavigatorgym.config;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtEntryPoint;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtFilter;
 import com.capstone.wellnessnavigatorgym.security.userprinciple.UserDetailService;
+import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,10 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(12);
     }
 
-/*    @Bean
+    @Bean
     public BuildDecisionTree buildDecisionTree() {
         return new BuildDecisionTree();
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -63,8 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/day/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/comment/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/track-data-ai/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/decision-tree/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/track-data-ai/**").hasAnyRole("ADMIN")
+                .antMatchers("/api/v1/decision-tree/**").hasAnyRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

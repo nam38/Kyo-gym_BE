@@ -1,4 +1,3 @@
-/*
 package com.capstone.wellnessnavigatorgym.controller;
 
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
@@ -42,4 +41,3 @@ public class DecisionTreeController {
 //        return new ResponseEntity<>(baos.toString(), HttpStatus.OK);
 //    }
 }
-*/
