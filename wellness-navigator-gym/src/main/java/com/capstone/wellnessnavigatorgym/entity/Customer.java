@@ -36,6 +36,10 @@ public class Customer {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    public Customer(Integer customerId) {
+        this.customerId = customerId;
+    }
+
     public Customer(String customerName, String customerEmail, String customerPhone, Boolean customerGender, Date dateOfBirth, String idCard, String customerAddress, Boolean isEnable, Account account) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;

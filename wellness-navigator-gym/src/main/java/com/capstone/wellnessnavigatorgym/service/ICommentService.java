@@ -9,5 +9,5 @@ public interface ICommentService {
 
     Comment findCommentById(Integer id);
 
-    Comment saveComment(Comment comment);
+    void saveComment(Comment comment);
 }

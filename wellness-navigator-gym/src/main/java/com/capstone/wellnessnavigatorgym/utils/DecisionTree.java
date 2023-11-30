@@ -5,6 +5,7 @@ import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 import java.util.*;
 
 public class DecisionTree {
+
     private ArrayList<TrackDataAi> trackDataAiData;
 
     public DecisionTree(List<TrackDataAi> trackDataAis) {
@@ -36,22 +37,21 @@ public class DecisionTree {
         return subsets;
     }
 
-    // Tính toán entropy cho một subset cụ thể của dữ liệu
+    // Đếm số lượng mục tiêu tích cực hoặc tiêu cực trong một danh sách cụ thể của Exercise I(S)
     private double calculateEntropyForWholeDataSet() {
         int positiveCount = countEffective(trackDataAiData, true);
         int negativeCount = trackDataAiData.size() - positiveCount;
         return calculateEntropy(positiveCount, negativeCount);
     }
 
+
     // Tính toán entropy cho một subset cụ thể của dữ liệu
     private double calculateEntropyForSubset(List<TrackDataAi> subset) {
         int positiveCount = countEffective(subset, true);
-        int negativeCount = subset.size() - positiveCount;
+        int negativeCount = subset.size() -positiveCount;
         return calculateEntropy(positiveCount, negativeCount);
     }
 
-
-    // Đếm số lượng mục tiêu tích cực hoặc tiêu cực trong một danh sách cụ thể của TrackDataAi
     private int countEffective(List<TrackDataAi> dataList, boolean effective) {
         int count = 0;
         for (TrackDataAi data : dataList) {
@@ -64,12 +64,16 @@ public class DecisionTree {
 
     // tính toán entropy dựa trên số lượng ví dụ dương và âm
     private double calculateEntropy(int positiveCount, int negativeCount) {
+        if (positiveCount < 0 || negativeCount < 0) {
+            throw new IllegalArgumentException("Count values cannot be negative.");
+        }
         if (positiveCount == 0 || negativeCount == 0) {
             return 0.0; // Không có entropy nếu không có sự đa dạng
         }
         int totalCount = positiveCount + negativeCount;
         return -calculateEntropyPart(positiveCount, totalCount) - calculateEntropyPart(negativeCount, totalCount);
     }
+
 
     private double calculateEntropyPart(int count, int totalCount) {
         double probability = (double) count / totalCount;
@@ -81,15 +85,16 @@ public class DecisionTree {
     public Set<Object> getDistinctAttributeValues(String attributeName) {
         Set<Object> distinctValues = new HashSet<>();
         for (TrackDataAi trackDataAi : trackDataAiData) {
-            Object value = trackDataAi.getAttributeValue(attributeName); // You need to implement getAttributeValue() in TrackDataAi
+            Object value = trackDataAi.getAttributeValue(attributeName); // You need to implement getAttributeValue() in Exercise
             distinctValues.add(value);
         }
         return distinctValues;
     }
+
     public List<TrackDataAi> filterByAttributeValue(List<TrackDataAi> data, String attributeName, Object value) {
         List<TrackDataAi> subset = new ArrayList<>();
         for (TrackDataAi trackDataAi : data) {
-            Object attributeValue = trackDataAi.getAttributeValue(attributeName); // You need to implement getAttributeValue() in TrackDataAi
+            Object attributeValue = trackDataAi.getAttributeValue(attributeName); // You need to implement getAttributeValue() in Exercise
             if (attributeValue != null && attributeValue.equals(value)) {
                 subset.add(trackDataAi);
             }
@@ -124,4 +129,5 @@ public class DecisionTree {
 
         return informationGain / splitInfo;
     }
+
 }
