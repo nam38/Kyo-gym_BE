@@ -28,13 +28,15 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
             "where c.course_id = :courseId and d.day_id = :dayId", nativeQuery = true)
     List<Tuple> getCourseDetailsByDayAndCourseOfExercise(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
 
-    @Query(value = "SELECT c.course_id, c.course_name, d.day_id, d.day_name, cm.comment_id, " +
-            "cm.comment_text, cm.rating, cu.customer_id, cu.customer_name, cu.customer_img " +
+    @Query(value = "SELECT c.course_id, c.course_name, d.day_id, d.day_name, e.exercise_id, e.exercise_name, " +
+            "cm.comment_id, cm.comment_text, cm.rating, cu.customer_id, cu.customer_name, cu.customer_img " +
             "FROM course c " +
-            "INNER JOIN course_days cd ON c.course_id = cd.course_id " +
-            "INNER JOIN days d ON cd.day_id = d.day_id " +
-            "LEFT JOIN comments cm ON cm.exercise_id = c.course_id " +
-            "LEFT JOIN customer cu ON cu.customer_id = cm.customer_id " +
-            "where c.course_id = :courseId and d.day_id = :dayId", nativeQuery = true)
+            "JOIN course_days cd ON c.course_id = cd.course_id " +
+            "JOIN days d ON cd.day_id = d.day_id " +
+            "JOIN exercise_days ed ON d.day_id = ed.day_id " +
+            "JOIN exercise e ON ed.exercise_id = e.exercise_id " +
+            "JOIN comments cm ON e.exercise_id = cm.exercise_id " +
+            "JOIN customer cu ON cm.customer_id = cu.customer_id " +
+            "WHERE c.course_id = :courseId AND d.day_id = :dayId", nativeQuery = true)
     List<Tuple> getCourseDetailsByDayAndCourseOfComment(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
 }

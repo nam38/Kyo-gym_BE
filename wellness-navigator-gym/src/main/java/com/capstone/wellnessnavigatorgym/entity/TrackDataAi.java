@@ -14,12 +14,12 @@ public class TrackDataAi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trackDataAiId;
-    private String trainingGoals;
     private String activityLevel;
-    private String trainingHistory;
     private Integer age;
     private String gender;
     private Double bmi;
+    private String trainingGoals;
+    private String trainingHistory;
     private Boolean effective;
 
     @ManyToOne(cascade = CascadeType.ALL)

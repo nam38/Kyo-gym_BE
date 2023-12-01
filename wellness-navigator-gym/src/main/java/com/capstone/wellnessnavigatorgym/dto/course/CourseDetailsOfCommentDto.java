@@ -14,6 +14,8 @@ public class CourseDetailsOfCommentDto {
     private String courseName;
     private Integer dayId;
     private String dayName;
+    private Integer exerciseId;
+    private String exerciseName;
     private Integer commentId;
     private String commentText;
     private Integer rating;
