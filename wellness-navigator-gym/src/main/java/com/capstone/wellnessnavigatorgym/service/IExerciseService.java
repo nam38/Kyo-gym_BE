@@ -8,4 +8,6 @@ public interface IExerciseService {
     List<Exercise> findAll();
 
     Exercise findExerciseById(Integer id);
+
+    boolean existsById(Integer id);
 }

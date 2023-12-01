@@ -25,10 +25,4 @@ public class CourseDetailsOfExerciseDto {
     private String instructions;
     private String target;
     private String videoUrl;
-    private Integer commentId;
-    private String commentText;
-    private Integer rating;
-    private Integer customerId;
-    private String customerName;
-    private String customerImg;
 }
