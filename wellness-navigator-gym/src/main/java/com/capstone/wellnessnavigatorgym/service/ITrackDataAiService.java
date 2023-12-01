@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface ITrackDataAiService {
     List<TrackDataAi> getAllTrackDataAi();
+
+    void saveTrackDataAi(TrackDataAi trackDataAi);
+
+    TrackDataAi findTrackDataAiById(Integer id);
 }
