@@ -89,7 +89,7 @@ public class BuildDecisionTree {
                 .collect(Collectors.toList());
     }
 
-    private  boolean determineMajorityClassification(List<TrackDataAi> data) {
+    private boolean determineMajorityClassification(List<TrackDataAi> data) {
         if (data.isEmpty()) {
             return false; // Or handle this case as per your requirement
         }

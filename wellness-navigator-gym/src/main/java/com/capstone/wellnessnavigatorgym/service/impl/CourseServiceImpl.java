@@ -79,6 +79,8 @@ public class CourseServiceImpl implements ICourseService {
                 tuple.get("course_name", String.class),
                 ConvertToInteger.convertToInteger(tuple.get("day_id")),
                 tuple.get("day_name", String.class),
+                ConvertToInteger.convertToInteger(tuple.get("exercise_id")),
+                tuple.get("exercise_name", String.class),
                 ConvertToInteger.convertToInteger(tuple.get("comment_id")),
                 tuple.get("comment_text", String.class),
                 ConvertToInteger.convertToInteger(tuple.get("rating")),
