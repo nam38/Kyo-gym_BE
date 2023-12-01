@@ -14,4 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class RecommendationDTO {
     private List<Course> recommendedCourses;
+    private String message;
 }

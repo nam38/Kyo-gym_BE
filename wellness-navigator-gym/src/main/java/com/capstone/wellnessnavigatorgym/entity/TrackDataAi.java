@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.entity;
 
+import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,15 @@ public class TrackDataAi {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    public TrackDataAi(UserDataDTO userDataDTO) {
+        this.activityLevel = userDataDTO.getActivityLevel();
+        this.age = userDataDTO.getAge();
+        this.gender = userDataDTO.getGender();
+        this.bmi = userDataDTO.getBmi();
+        this.trainingGoals = userDataDTO.getTrainingGoals();
+        this.trainingHistory = userDataDTO.getTrainingHistory();
+    }
 
     public Object getAttributeValue(String attributeName) {
         switch (attributeName) {

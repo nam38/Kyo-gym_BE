@@ -3,7 +3,6 @@ package com.capstone.wellnessnavigatorgym.config;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtEntryPoint;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtFilter;
 import com.capstone.wellnessnavigatorgym.security.userprinciple.UserDetailService;
-import com.capstone.wellnessnavigatorgym.service.impl.DecisionTreeServiceImpl;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
