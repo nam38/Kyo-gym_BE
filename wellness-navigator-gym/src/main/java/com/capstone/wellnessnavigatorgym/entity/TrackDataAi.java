@@ -36,6 +36,19 @@ public class TrackDataAi {
         this.trainingHistory = userDataDTO.getTrainingHistory();
     }
 
+    @Override
+    public String toString() {
+        return "TrackDataAi{" +
+                "trackDataAiId=" + trackDataAiId +
+                ", activityLevel='" + activityLevel + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", bmi=" + bmi +
+                ", trainingGoals='" + trainingGoals + '\'' +
+                ", trainingHistory='" + trainingHistory +
+                '}';
+    }
+
     public Object getAttributeValue(String attributeName) {
         switch (attributeName) {
             case "track_data_ai_id":
