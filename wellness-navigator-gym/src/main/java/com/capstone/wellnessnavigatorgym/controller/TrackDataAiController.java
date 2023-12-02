@@ -51,13 +51,11 @@ public class TrackDataAiController {
                 return ResponseEntity.notFound().build();
             }
         } else {
-//            trackDataAi = new TrackDataAi(userDataDTO);
-//            // xử lý bất dồng bộ
-//            ExecutorService executorService = Executors.newSingleThreadExecutor();
-//            executorService.execute(() -> trackDataAiService.saveTrackDataAi(trackDataAi));
-//            executorService.shutdown();
-            trackDataAi = buildTrackDataAiFromUserData(userDataDTO);
-            trackDataAiService.saveTrackDataAi(trackDataAi);
+            trackDataAi = new TrackDataAi(userDataDTO);
+            // xử lý bất dồng bộ
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> trackDataAiService.saveTrackDataAi(trackDataAi));
+            executorService.shutdown();
         }
 
         // Build decision tree
@@ -68,10 +66,6 @@ public class TrackDataAiController {
         List<Course> recommendations = getRecommendationsFromLeafNode(decisionTree, trackDataAi);
 
         return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully."));
-    }
-
-    private TrackDataAi buildTrackDataAiFromUserData(UserDataDTO userDataDTO) {
-        return new TrackDataAi(userDataDTO);
     }
 
     private List<String> getAttributeNames() {
