@@ -84,6 +84,10 @@ public class TrackDataAiController {
     }
 
     private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
+        if (node == null) {
+            return Collections.emptyList(); // Trả về danh sách rỗng nếu node là null
+        }
+
         if (node.getIsLeaf()) {
             return node.getRecommendation();
         } else {
@@ -97,6 +101,7 @@ public class TrackDataAiController {
             return Collections.emptyList();
         }
     }
+
 
 
     private List<String> getAttributeNames() {
