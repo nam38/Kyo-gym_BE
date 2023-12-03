@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -18,5 +15,4 @@ import java.util.Map;
 public class RecommendationDTO {
     private List<Course> recommendedCourses;
     private String message;
-
 }

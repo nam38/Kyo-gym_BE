@@ -48,7 +48,6 @@ public class TrackDataAiController {
 
     @PostMapping("/recommend-course")
     public ResponseEntity<RecommendationDTO> recommendCourse(@RequestBody UserDataDTO userDataDTO) {
-        TrackDataAi trackDataAi;
 
         // Lấy danh sách thuộc tính và kiểm tra chúng
         List<String> attributeNames = getAttributeNames();
@@ -74,20 +73,16 @@ public class TrackDataAiController {
 
     private Map<String, Object> extractUserDataFromTrackDataAi(UserDataDTO userDataDTO) {
         Map<String, Object> userData = new HashMap<>();
-        userData.put("activityLevel", userDataDTO.getActivityLevel());
+        userData.put("activity_level", userDataDTO.getActivity_level());
         userData.put("age", userDataDTO.getAge());
         userData.put("gender", userDataDTO.getGender());
         userData.put("bmi", userDataDTO.getBmi());
-        userData.put("trainingGoals", userDataDTO.getTrainingGoals());
-        userData.put("trainingHistory", userDataDTO.getTrainingHistory());
+        userData.put("training_goals", userDataDTO.getTraining_goals());
+        userData.put("training_history", userDataDTO.getTraining_history());
         return userData;
     }
 
     private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
-        if (node == null) {
-            return Collections.emptyList(); // Trả về danh sách rỗng nếu node là null
-        }
-
         if (node.getIsLeaf()) {
             return node.getRecommendation();
         } else {
@@ -103,18 +98,9 @@ public class TrackDataAiController {
     }
 
 
-
     private List<String> getAttributeNames() {
-        return Arrays.asList("activityLevel", "age", "gender", "bmi", "trainingGoals", "trainingHistory");
+        return Arrays.asList("activity_level", "age", "gender", "bmi", "training_goals", "training_history");
     }
 
-    private List<Course> getRecommendationsFromLeafNode(TreeNode node, TrackDataAi trackDataAi) {
-        if (node.getIsLeaf()) {
-            return node.getRecommendation();
-        }
 
-        String attributeName = node.getAttributeName();
-        Object attributeValue = trackDataAi.getAttributeValue(attributeName);
-        return getRecommendationsFromLeafNode(node.getChildren().get(attributeValue), trackDataAi);
-    }
 }

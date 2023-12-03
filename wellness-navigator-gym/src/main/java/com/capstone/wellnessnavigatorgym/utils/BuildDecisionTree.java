@@ -25,13 +25,15 @@ public class BuildDecisionTree {
         }
 
         Map<String, Double> gainRatios = new HashMap<>();
+
         if (this.decisionTree == null) {
             this.decisionTree = new DecisionTree(data); // hoặc khởi tạo theo cách phù hợp
-        } else {
-            for (String attributeName : attributeNames) {
-                gainRatios.put(attributeName, decisionTree.calculateGainRatio(attributeName));
-            }
         }
+
+        for (String attributeName : attributeNames) {
+            gainRatios.put(attributeName, decisionTree.calculateGainRatio(attributeName));
+        }
+
         List<Map.Entry<String, Double>> sortedAttributes = new ArrayList<>(gainRatios.entrySet());
         sortedAttributes.sort(Map.Entry.comparingByValue(Collections.reverseOrder()));
 
@@ -79,9 +81,9 @@ public class BuildDecisionTree {
     private List<Course> createRecommendation(List<TrackDataAi> data) {
         Map<Integer, Course> uniqueCoursesMap = new HashMap<>();
 
-        for (TrackDataAi trackDataAi : data) {
-            if (trackDataAi.getEffective()) {
-                Course course = trackDataAi.getCourse();
+        for (TrackDataAi exercise : data) {
+            if (exercise.getEffective()) {
+                Course course = exercise.getCourse();
                 uniqueCoursesMap.putIfAbsent(course.getCourseId(), course);
             }
         }
@@ -92,18 +94,17 @@ public class BuildDecisionTree {
                 .collect(Collectors.toList());
     }
 
-    private boolean determineMajorityClassification(List<TrackDataAi> data) {
+    private  boolean determineMajorityClassification(List<TrackDataAi> data) {
         if (data.isEmpty()) {
             return false; // Or handle this case as per your requirement
         }
 
         int countTrue = 0;
-        for (TrackDataAi trackDataAi : data) {
-            if (trackDataAi.getEffective()) {
+        for (TrackDataAi exercise : data) {
+            if (exercise.getEffective()) {
                 countTrue++;
             }
         }
         return countTrue >= data.size() / 2;
     }
-
 }

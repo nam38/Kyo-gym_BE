@@ -26,6 +26,7 @@ public class Exercise {
     private String exerciseDescription;
     @Column(name = "instructions", length = 2000)
     private String instructions;
+    private Boolean isEnable;
 
     @ManyToMany
     @JoinTable(name = "exercise_days",
