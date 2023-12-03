@@ -25,6 +25,10 @@ public class BuildDecisionTree {
         }
 
         Map<String, Double> gainRatios = new HashMap<>();
+        if (this.decisionTree == null) {
+            this.decisionTree = new DecisionTree(data); // hoặc khởi tạo theo cách phù hợp
+        }
+
         for (String attributeName : attributeNames) {
             gainRatios.put(attributeName, decisionTree.calculateGainRatio(attributeName));
         }
@@ -102,51 +106,4 @@ public class BuildDecisionTree {
         }
         return countTrue >= data.size() / 2;
     }
-
-    private boolean areAllExamplesEffective(List<TrackDataAi> data) {
-        if (data.isEmpty()) return false;
-
-        boolean firstClassification = data.get(0).getEffective();
-        for (TrackDataAi trackDataAi : data) {
-            if (trackDataAi.getEffective() != firstClassification) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private String selectBestAttribute(List<TrackDataAi> data, List<String> attributeNames) {
-        double maxGainRatio = Double.MIN_VALUE;
-        String bestAttribute = null;
-
-        for (String attributeName : attributeNames) {
-            double gainRatio = decisionTree.calculateGainRatio(attributeName);
-
-            if (gainRatio > maxGainRatio) {
-                maxGainRatio = gainRatio;
-                bestAttribute = attributeName;
-            }
-        }
-        return bestAttribute;
-    }
-
-    public void printTree(TreeNode node, String indent) {
-        if (node == null) {
-            return;
-        }
-        // In thông tin của nút hiện tại
-        System.out.println(indent + "Node: " + (node.getAttributeName() == null ? "Leaf" : node.getAttributeName()));
-        if (node.getIsLeaf()) {
-            System.out.println(indent + "  Recommendation: " + node.getRecommendation());
-        }
-
-        // Duyệt qua các nút con
-        if (node.getChildren() != null) {
-            for (Map.Entry<Object, TreeNode> entry : node.getChildren().entrySet()) {
-                System.out.println(indent + "  Value: " + entry.getKey());
-                printTree(entry.getValue(), indent + "    ");
-            }
-        }
-    }
-
 }

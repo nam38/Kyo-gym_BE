@@ -123,8 +123,8 @@ public class DecisionTree {
         double splitInfo = calculateSplitInfo(attributeName);
 
         // Avoid division by zero
-        if (splitInfo == 0) {
-            return 0;
+        if (splitInfo == 0 ) {
+            return 0.0;
         }
 
         return informationGain / splitInfo;

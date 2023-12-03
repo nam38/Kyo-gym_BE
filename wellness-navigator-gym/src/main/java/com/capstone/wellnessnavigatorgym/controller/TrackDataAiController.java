@@ -11,11 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Collections;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/track-data-ai")
@@ -44,41 +45,70 @@ public class TrackDataAiController {
 
     @PostMapping("/recommend-course")
     public ResponseEntity<RecommendationDTO> recommendCourse(@RequestBody UserDataDTO userDataDTO) {
-        TrackDataAi trackDataAi;
-        if (userDataDTO.getTrackDataAiId() != null) {
-            trackDataAi = trackDataAiService.findTrackDataAiById(userDataDTO.getTrackDataAiId());
-            if (trackDataAi == null) {
-                return ResponseEntity.notFound().build();
-            }
-        } else {
-            trackDataAi = new TrackDataAi(userDataDTO);
-            // xử lý bất dồng bộ
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> trackDataAiService.saveTrackDataAi(trackDataAi));
-            executorService.shutdown();
+        // Get attribute names
+        List<String> attributeNames = getAttributeNames();
+        if (attributeNames == null || attributeNames.isEmpty())     {
+            return ResponseEntity.badRequest().body(new RecommendationDTO(null, "Attribute names are missing or invalid"));
         }
 
-        // Build decision tree
+        // Get track data and build the decision tree
         List<TrackDataAi> trackDataAis = trackDataAiService.getAllTrackDataAi();
-        TreeNode decisionTree = buildDecisionTree.buildDecisionTree(trackDataAis, getAttributeNames());
+        if (trackDataAis.isEmpty()) {
+            return ResponseEntity.badRequest().body(new RecommendationDTO(null, "No track data available to build the decision tree"));
+        }
 
-        // Make a prediction
-        List<Course> recommendations = getRecommendationsFromLeafNode(decisionTree, trackDataAi);
+        TreeNode decisionTree= buildDecisionTree.buildDecisionTree(trackDataAis, attributeNames);
 
-        return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully."));
+        // Extract user data from UserDataDTO
+        Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);
+
+        // Traverse the decision tree and get recommendations
+        List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
+
+        return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully"));
     }
+
+    private Map<String, Object> extractUserDataFromTrackDataAi(UserDataDTO userDataDTO) {
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("activityLevel", userDataDTO.getActivityLevel());
+        userData.put("age", userDataDTO.getAge());
+        userData.put("gender", userDataDTO.getGender());
+        userData.put("bmi", userDataDTO.getBmi());
+        userData.put("trainingGoals", userDataDTO.getTrainingGoals());
+        userData.put("trainingHistory", userDataDTO.getTrainingHistory());
+        return userData;
+    }
+
+/*    private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
+        if (node.getIsLeaf()) {
+            return node.getRecommendation();
+        } else {
+            Object attributeValue = userData.get(node.getAttributeName());
+            if (attributeValue != null) {
+                TreeNode childNode = node.getChildren().get(attributeValue);
+                if (childNode != null) {
+                    return traverseDecisionTree(childNode, userData);
+                }
+            }
+            return Collections.emptyList();
+        }
+    }*/
+
+    private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
+        if (!node.getIsLeaf()) {
+            Object attributeValue = userData.get(node.getAttributeName());
+            if (attributeValue != null) {
+                TreeNode childNode = node.getChildren().get(attributeValue);
+                if (childNode != null) {
+                    return traverseDecisionTree(childNode, userData);
+                }
+            }
+        }
+        return node.getRecommendation();
+    }
+
 
     private List<String> getAttributeNames() {
         return Arrays.asList("activityLevel", "age", "gender", "bmi", "trainingGoals", "trainingHistory");
-    }
-
-    private List<Course> getRecommendationsFromLeafNode(TreeNode node, TrackDataAi trackDataAi) {
-        if (node.getIsLeaf()) {
-            return node.getRecommendation();
-        }
-
-        String attributeName = node.getAttributeName();
-        Object attributeValue = trackDataAi.getAttributeValue(attributeName);
-        return getRecommendationsFromLeafNode(node.getChildren().get(attributeValue), trackDataAi);
     }
 }

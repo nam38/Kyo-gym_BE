@@ -27,13 +27,17 @@ public class TrackDataAi {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    public TrackDataAi(UserDataDTO userDataDTO) {
-        this.activityLevel = userDataDTO.getActivityLevel();
-        this.age = userDataDTO.getAge();
-        this.gender = userDataDTO.getGender();
-        this.bmi = userDataDTO.getBmi();
-        this.trainingGoals = userDataDTO.getTrainingGoals();
-        this.trainingHistory = userDataDTO.getTrainingHistory();
+    @Override
+    public String toString() {
+        return "TrackDataAi{" +
+                "trackDataAiId=" + trackDataAiId +
+                ", activityLevel='" + activityLevel + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", bmi=" + bmi +
+                ", trainingGoals='" + trainingGoals + '\'' +
+                ", trainingHistory='" + trainingHistory +
+                '}';
     }
 
     public Object getAttributeValue(String attributeName) {

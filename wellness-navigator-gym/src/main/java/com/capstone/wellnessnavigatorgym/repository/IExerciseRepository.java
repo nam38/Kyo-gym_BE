@@ -14,4 +14,18 @@ import java.util.Optional;
 public interface IExerciseRepository extends JpaRepository<Exercise, Integer> {
     @Query(value = "SELECT * FROM exercise WHERE exercise_id = :id", nativeQuery = true)
     Optional<Exercise> findExerciseById(@Param("id") Integer id);
+
+
+    @Query(value = "INSERT INTO exercise (body_part, equipment, exercise_description, exercise_name, instructions, " +
+            "is_enable, target, video_url) " +
+            "VALUES (:body_part, :equipment, :exercise_description, :exercise_name, :instructions, :is_enable, " +
+            ":target, :video_url)", nativeQuery = true)
+    void insertExercise(@Param("exercise_name") String exercise_name,
+                        @Param("body_part") String body_part,
+                        @Param("equipment") String equipment,
+                        @Param("video_url") String video_url,
+                        @Param("target") String target,
+                        @Param("exercise_description") String exercise_description,
+                        @Param("instructions") String instructions,
+                        @Param("is_enable") Boolean is_enable);
 }
