@@ -26,6 +26,4 @@ public interface ICustomerService {
     void deleteById(Integer id);
 
     CustomerUserDetailDto findUserDetailByUsername(String username);
-
-    boolean existsById(Integer id);
 }

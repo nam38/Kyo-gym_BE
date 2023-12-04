@@ -87,8 +87,4 @@ public class CustomerServiceImpl implements ICustomerService {
         return null;
     }
 
-    @Override
-    public boolean existsById(Integer id) {
-        return customerRepository.existsById(id);
-    }
 }

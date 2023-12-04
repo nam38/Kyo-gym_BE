@@ -10,11 +10,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDataDTO {
-    private Integer trackDataAiId;
-    private String activityLevel;
+    private String activity_level;
     private Integer age;
     private String gender;
     private Double bmi;
-    private String trainingGoals;
-    private String trainingHistory;
+    private String training_goals;
+    private String training_history;
+
+    @Override
+    public String toString() {
+        return "UserDataDTO{" +
+                "activity_level='" + activity_level + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", bmi=" + bmi +
+                ", training_goals='" + training_goals + '\'' +
+                ", training_history='" + training_history + '\'' +
+                '}';
+    }
 }
+

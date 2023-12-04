@@ -24,12 +24,12 @@ public class TrackDataAiServiceImpl implements ITrackDataAiService {
     @Override
     public void saveTrackDataAi(TrackDataAi trackDataAi) {
         trackDataAiRepository.insertTrackDataAi(
-                trackDataAi.getActivityLevel(),
+                trackDataAi.getActivity_level(),
                 trackDataAi.getAge(),
                 trackDataAi.getGender(),
                 trackDataAi.getBmi(),
-                trackDataAi.getTrainingGoals(),
-                trackDataAi.getTrainingHistory(),
+                trackDataAi.getTraining_goals(),
+                trackDataAi.getTraining_history(),
                 String.valueOf(trackDataAi.getCourse().getCourseId()),
                 trackDataAi.getEffective());
     }

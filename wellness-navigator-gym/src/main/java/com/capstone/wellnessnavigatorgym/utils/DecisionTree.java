@@ -30,12 +30,14 @@ public class DecisionTree {
 
     private Map<Object, List<TrackDataAi>> getSubsetsByAttributeValue(String attributeName) {
         Map<Object, List<TrackDataAi>> subsets = new HashMap<>();
-        for (TrackDataAi trackDataAi : trackDataAiData) {
-            Object value = trackDataAi.getAttributeValue(attributeName);
-            subsets.computeIfAbsent(value, k -> new ArrayList<>()).add(trackDataAi);
+        for (TrackDataAi exercise : trackDataAiData) {
+            Object value = exercise.getAttributeValue(attributeName);
+            subsets.computeIfAbsent(value, k -> new ArrayList<>()).add(exercise);
         }
         return subsets;
     }
+
+
 
     // Đếm số lượng mục tiêu tích cực hoặc tiêu cực trong một danh sách cụ thể của Exercise I(S)
     private double calculateEntropyForWholeDataSet() {
@@ -84,8 +86,8 @@ public class DecisionTree {
     // Trả về tập hợp các giá trị duy nhất cho một thuộc tính cụ thể
     public Set<Object> getDistinctAttributeValues(String attributeName) {
         Set<Object> distinctValues = new HashSet<>();
-        for (TrackDataAi trackDataAi : trackDataAiData) {
-            Object value = trackDataAi.getAttributeValue(attributeName); // You need to implement getAttributeValue() in Exercise
+        for (TrackDataAi exercise : trackDataAiData) {
+            Object value = exercise.getAttributeValue(attributeName);
             distinctValues.add(value);
         }
         return distinctValues;
@@ -93,10 +95,10 @@ public class DecisionTree {
 
     public List<TrackDataAi> filterByAttributeValue(List<TrackDataAi> data, String attributeName, Object value) {
         List<TrackDataAi> subset = new ArrayList<>();
-        for (TrackDataAi trackDataAi : data) {
-            Object attributeValue = trackDataAi.getAttributeValue(attributeName); // You need to implement getAttributeValue() in Exercise
+        for (TrackDataAi exercise : data) {
+            Object attributeValue = exercise.getAttributeValue(attributeName); // You need to implement getAttributeValue() in Exercise
             if (attributeValue != null && attributeValue.equals(value)) {
-                subset.add(trackDataAi);
+                subset.add(exercise);
             }
         }
         return subset;
