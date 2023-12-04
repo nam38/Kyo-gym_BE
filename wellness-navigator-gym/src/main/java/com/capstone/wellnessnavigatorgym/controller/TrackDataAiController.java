@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/api/v1/track-data-ai")
@@ -97,10 +95,7 @@ public class TrackDataAiController {
         }
     }
 
-
     private List<String> getAttributeNames() {
         return Arrays.asList("activity_level", "age", "gender", "bmi", "training_goals", "training_history");
     }
-
-
 }
