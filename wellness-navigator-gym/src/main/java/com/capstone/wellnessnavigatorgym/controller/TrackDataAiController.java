@@ -7,6 +7,7 @@ import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
+import com.capstone.wellnessnavigatorgym.utils.DecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/api/v1/track-data-ai")
@@ -45,24 +48,24 @@ public class TrackDataAiController {
 
     @PostMapping("/recommend-course")
     public ResponseEntity<RecommendationDTO> recommendCourse(@RequestBody UserDataDTO userDataDTO) {
-        // Get attribute names
+
+        // Lấy danh sách thuộc tính và kiểm tra chúng
         List<String> attributeNames = getAttributeNames();
-        if (attributeNames == null || attributeNames.isEmpty())     {
+        if (attributeNames == null || attributeNames.isEmpty()) {
             return ResponseEntity.badRequest().body(new RecommendationDTO(null, "Attribute names are missing or invalid"));
         }
-
-        // Get track data and build the decision tree
+        // Lấy dữ liệu và xây dựng cây quyết định
         List<TrackDataAi> trackDataAis = trackDataAiService.getAllTrackDataAi();
         if (trackDataAis.isEmpty()) {
             return ResponseEntity.badRequest().body(new RecommendationDTO(null, "No track data available to build the decision tree"));
         }
 
-        TreeNode decisionTree= buildDecisionTree.buildDecisionTree(trackDataAis, attributeNames);
+        TreeNode decisionTree = buildDecisionTree.buildDecisionTree(trackDataAis, attributeNames);
 
-        // Extract user data from UserDataDTO
+        // Tạo map dữ liệu người dùng từ TrackDataAi
         Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);
 
-        // Traverse the decision tree and get recommendations
+        // Duyệt qua cây quyết định và tìm đề xuất
         List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
 
         return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully"));
@@ -70,16 +73,16 @@ public class TrackDataAiController {
 
     private Map<String, Object> extractUserDataFromTrackDataAi(UserDataDTO userDataDTO) {
         Map<String, Object> userData = new HashMap<>();
-        userData.put("activityLevel", userDataDTO.getActivityLevel());
+        userData.put("activity_level", userDataDTO.getActivity_level());
         userData.put("age", userDataDTO.getAge());
         userData.put("gender", userDataDTO.getGender());
         userData.put("bmi", userDataDTO.getBmi());
-        userData.put("trainingGoals", userDataDTO.getTrainingGoals());
-        userData.put("trainingHistory", userDataDTO.getTrainingHistory());
+        userData.put("training_goals", userDataDTO.getTraining_goals());
+        userData.put("training_history", userDataDTO.getTraining_history());
         return userData;
     }
 
-/*    private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
+    private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
         if (node.getIsLeaf()) {
             return node.getRecommendation();
         } else {
@@ -92,23 +95,12 @@ public class TrackDataAiController {
             }
             return Collections.emptyList();
         }
-    }*/
-
-    private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
-        if (!node.getIsLeaf()) {
-            Object attributeValue = userData.get(node.getAttributeName());
-            if (attributeValue != null) {
-                TreeNode childNode = node.getChildren().get(attributeValue);
-                if (childNode != null) {
-                    return traverseDecisionTree(childNode, userData);
-                }
-            }
-        }
-        return node.getRecommendation();
     }
 
 
     private List<String> getAttributeNames() {
-        return Arrays.asList("activityLevel", "age", "gender", "bmi", "trainingGoals", "trainingHistory");
+        return Arrays.asList("activity_level", "age", "gender", "bmi", "training_goals", "training_history");
     }
+
+
 }

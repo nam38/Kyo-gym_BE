@@ -14,12 +14,12 @@ public class TrackDataAi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trackDataAiId;
-    private String activityLevel;
+    private String activity_level;
     private Integer age;
     private String gender;
     private Double bmi;
-    private String trainingGoals;
-    private String trainingHistory;
+    private String training_goals;
+    private String training_history;
     private Boolean effective;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -30,12 +30,12 @@ public class TrackDataAi {
     public String toString() {
         return "TrackDataAi{" +
                 "trackDataAiId=" + trackDataAiId +
-                ", activityLevel='" + activityLevel + '\'' +
+                ", activityLevel='" + activity_level + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", bmi=" + bmi +
-                ", trainingGoals='" + trainingGoals + '\'' +
-                ", trainingHistory='" + trainingHistory +
+                ", trainingGoals='" + training_goals + '\'' +
+                ", trainingHistory='" + training_history +
                 '}';
     }
 
@@ -44,7 +44,7 @@ public class TrackDataAi {
             case "track_data_ai_id":
                 return getTrackDataAiId();
             case "activity_level":
-                return getActivityLevel();
+                return getActivity_level();
             case "age":
                 return getAge();
             case "gender":
@@ -52,9 +52,9 @@ public class TrackDataAi {
             case "bmi":
                 return getBmi();
             case "training_goals":
-                return getTrainingGoals();
+                return getTraining_goals();
             case "training_history":
-                return getTrainingHistory();
+                return getTraining_history();
             case "course_id":
                 return getCourse();
             case "effective":
