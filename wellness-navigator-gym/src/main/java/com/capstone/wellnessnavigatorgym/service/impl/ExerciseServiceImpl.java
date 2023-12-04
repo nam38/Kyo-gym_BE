@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.service.impl;
 
+import com.capstone.wellnessnavigatorgym.dto.exercise.ExerciseInfo;
 import com.capstone.wellnessnavigatorgym.entity.Exercise;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.IExerciseRepository;
@@ -33,7 +34,9 @@ public class ExerciseServiceImpl implements IExerciseService {
     }
 
     @Override
-    public boolean existsById(Integer id) {
-        return exerciseRepository.existsById(id);
+    public void saveExercise(ExerciseInfo exerciseInfo) {
+        exerciseRepository.insertExercise(exerciseInfo.getExerciseName(), exerciseInfo.getBodyPart(),
+                exerciseInfo.getEquipment(), exerciseInfo.getVideoUrl(), exerciseInfo.getTarget(),
+                exerciseInfo.getExerciseDescription(), exerciseInfo.getInstructions(), true);
     }
 }

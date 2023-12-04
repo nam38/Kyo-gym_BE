@@ -37,4 +37,8 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "day_id"))
     @OrderBy("dayId")
     private Set<Day> days = new LinkedHashSet<>();
+
+    public Course(Integer courseId) {
+        this.courseId = courseId;
+    }
 }

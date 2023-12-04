@@ -3,7 +3,6 @@ package com.capstone.wellnessnavigatorgym.config;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtEntryPoint;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtFilter;
 import com.capstone.wellnessnavigatorgym.security.userprinciple.UserDetailService;
-import com.capstone.wellnessnavigatorgym.service.impl.DecisionTreeServiceImpl;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -65,8 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/day/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/v1/comment/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/track-data-ai/**").hasAnyRole("ADMIN")
-                .antMatchers("/api/v1/decision-tree/**").hasAnyRole("ADMIN")
+                .antMatchers("/api/v1/track-data-ai/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

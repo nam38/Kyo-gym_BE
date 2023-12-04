@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.service;
 
+import com.capstone.wellnessnavigatorgym.dto.exercise.ExerciseInfo;
 import com.capstone.wellnessnavigatorgym.entity.Exercise;
 
 import java.util.List;
@@ -9,5 +10,5 @@ public interface IExerciseService {
 
     Exercise findExerciseById(Integer id);
 
-    boolean existsById(Integer id);
+    void saveExercise(ExerciseInfo exerciseInfo);
 }
