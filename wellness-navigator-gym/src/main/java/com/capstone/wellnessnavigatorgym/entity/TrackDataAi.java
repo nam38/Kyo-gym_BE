@@ -1,6 +1,5 @@
 package com.capstone.wellnessnavigatorgym.entity;
 
-import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
