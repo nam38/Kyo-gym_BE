@@ -114,6 +114,7 @@ public class CustomerController {
         if (customerUserDetailDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         return new ResponseEntity<>(customerUserDetailDto, HttpStatus.OK);
     }
 }

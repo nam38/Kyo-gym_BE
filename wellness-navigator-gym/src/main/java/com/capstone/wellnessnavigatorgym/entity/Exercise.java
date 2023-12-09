@@ -28,12 +28,6 @@ public class Exercise {
     private String instructions;
     private Boolean isEnable;
 
-    @ManyToMany
-    @JoinTable(name = "exercise_days",
-            joinColumns = @JoinColumn(name = "exercise_id"),
-            inverseJoinColumns = @JoinColumn(name = "day_id"))
-    private Set<Day> days = new LinkedHashSet<>();
-
     public Exercise(Integer exerciseId) {
         this.exerciseId = exerciseId;
     }

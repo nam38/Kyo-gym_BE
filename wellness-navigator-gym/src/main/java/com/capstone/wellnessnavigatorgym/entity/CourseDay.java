@@ -10,10 +10,17 @@ import javax.persistence.*;
 @Setter
 @Getter
 @RequiredArgsConstructor
-@Table(name = "days")
-public class Day {
+public class CourseDay {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer dayId;
-    private String dayName;
+    private Integer courseDayId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "day_id")
+    private Day day;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_id")
+    private Course course;
 }

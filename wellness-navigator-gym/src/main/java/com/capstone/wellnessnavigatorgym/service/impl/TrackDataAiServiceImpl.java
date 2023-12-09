@@ -21,19 +21,6 @@ public class TrackDataAiServiceImpl implements ITrackDataAiService {
         return trackDataAiRepository.findAll();
     }
 
-    @Override
-    public void saveTrackDataAi(TrackDataAi trackDataAi) {
-        trackDataAiRepository.insertTrackDataAi(
-                trackDataAi.getActivity_level(),
-                trackDataAi.getAge(),
-                trackDataAi.getGender(),
-                trackDataAi.getBmi(),
-                trackDataAi.getTraining_goals(),
-                trackDataAi.getTraining_history(),
-                String.valueOf(trackDataAi.getCourse().getCourseId()),
-                trackDataAi.getEffective());
-    }
-
     @SneakyThrows
     @Override
     public TrackDataAi findTrackDataAiById(Integer id) {

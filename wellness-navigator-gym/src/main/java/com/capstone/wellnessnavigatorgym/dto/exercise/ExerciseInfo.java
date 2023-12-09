@@ -47,4 +47,6 @@ public class ExerciseInfo {
     private String instructions;
 
     private Boolean isEnable;
+
+    private Integer days;
 }

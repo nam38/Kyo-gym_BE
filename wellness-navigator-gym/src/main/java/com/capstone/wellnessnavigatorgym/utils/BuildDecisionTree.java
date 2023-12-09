@@ -88,7 +88,7 @@ public class BuildDecisionTree {
             }
         }
 
-        // Trả về danh sách các khóa học duy nhất, giới hạn tối đa 3 khóa học
+        // Trả về danh sách các khóa học duy nhất, giới hạn tối đa 4 khóa học
         return new ArrayList<>(uniqueCoursesMap.values()).stream()
                 .limit(4) // Giới hạn số lượng khóa học
                 .collect(Collectors.toList());
