@@ -58,6 +58,7 @@ public class ExerciseController {
                 exerciseDayService.addExerciseToDay(exerciseInfo.getDays(), exerciseInfo.getExerciseId());
             }
         }
+
         return new ResponseEntity<>(new MessageResponse("New exercise successfully created!"), HttpStatus.CREATED);
     }
 
