@@ -2,9 +2,7 @@ package com.capstone.wellnessnavigatorgym.controller;
 
 import com.capstone.wellnessnavigatorgym.dto.exercise.ExerciseInfo;
 import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
-import com.capstone.wellnessnavigatorgym.entity.Day;
 import com.capstone.wellnessnavigatorgym.entity.Exercise;
-import com.capstone.wellnessnavigatorgym.service.IDayService;
 import com.capstone.wellnessnavigatorgym.service.IExerciseDayService;
 import com.capstone.wellnessnavigatorgym.service.IExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,15 +50,49 @@ public class ExerciseController {
                 errors.put(fieldName, errorMessage);
             });
             return ResponseEntity.badRequest().body(errors);
-        } else {
-            exerciseService.saveExercise(exerciseInfo);
-            if (exerciseInfo.getDays() != null) {
-                exerciseDayService.addExerciseToDay(exerciseInfo.getDays(), exerciseInfo.getExerciseId());
-            }
+        }
+
+        Exercise exercise = new Exercise();
+        exercise.setExerciseName(exerciseInfo.getExerciseName());
+        exercise.setBodyPart(exerciseInfo.getBodyPart());
+        exercise.setEquipment(exerciseInfo.getEquipment());
+        exercise.setVideoUrl(exerciseInfo.getVideoUrl());
+        exercise.setTarget(exerciseInfo.getTarget());
+        exercise.setExerciseDescription(exerciseInfo.getExerciseDescription());
+        exercise.setInstructions(exerciseInfo.getInstructions());
+        exercise.setIsEnable(true);
+
+        exerciseService.save(exercise);
+
+        if (exerciseInfo.getDays() != null) {
+            exerciseDayService.addExerciseToDay(exerciseInfo.getDays(), exercise.getExerciseId());
         }
 
         return new ResponseEntity<>(new MessageResponse("New exercise successfully created!"), HttpStatus.CREATED);
     }
 
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> updateExercise(@Valid @PathVariable Integer id,
+                                            @RequestBody ExerciseInfo exerciseInfo,
+                                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(
+                    error -> {
+                        String fieldName = error.getField();
+                        String errorMessage = error.getDefaultMessage();
+                        errors.put(fieldName, errorMessage);
+                    });
+            return ResponseEntity.badRequest().body(errors);
+        } else {
+            exerciseService.update(exerciseInfo, id);
+        }
+        return new ResponseEntity<>(new MessageResponse("The exercise has successfully edited!!"), HttpStatus.OK);
+    }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteExercise(@PathVariable Integer id) {
+        exerciseService.deleteById(id);
+        return new ResponseEntity<>(new MessageResponse("Exercise has successfully deleted!"), HttpStatus.OK);
+    }
 }
