@@ -27,10 +27,4 @@ public class Nutritional {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nutritional_type_id")
     private NutritionalType nutritionalType;
-
-    @ManyToMany
-    @JoinTable(name = "nutritional_days",
-            joinColumns = @JoinColumn(name = "nutritional_id"),
-            inverseJoinColumns = @JoinColumn(name = "day_id"))
-    private Set<Day> days = new LinkedHashSet<>();
 }

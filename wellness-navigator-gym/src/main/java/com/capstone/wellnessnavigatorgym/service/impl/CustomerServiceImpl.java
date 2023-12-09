@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -78,13 +79,8 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public CustomerUserDetailDto findUserDetailByUsername(String username) {
-        Tuple tuple = customerRepository.findUserDetailByUsername(username).orElse(null);
-
-        if (tuple != null) {
-            return CustomerUserDetailDto.TupleToCustomerDto(tuple);
-        }
-
-        return null;
+        List<Tuple> tuples = customerRepository.findUserDetailByUsername(username);
+        return CustomerUserDetailDto.TupleToCustomerDto(tuples);
     }
 
 }
