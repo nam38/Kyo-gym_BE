@@ -34,9 +34,19 @@ public class ExerciseServiceImpl implements IExerciseService {
     }
 
     @Override
-    public void saveExercise(ExerciseInfo exerciseInfo) {
-        exerciseRepository.insertExercise(exerciseInfo.getExerciseName(), exerciseInfo.getBodyPart(),
+    public Exercise save(Exercise exercise) {
+        return exerciseRepository.save(exercise);
+    }
+
+    @Override
+    public void update(ExerciseInfo exerciseInfo, Integer id) {
+        exerciseRepository.updateExercise(id, exerciseInfo.getExerciseName(), exerciseInfo.getBodyPart(),
                 exerciseInfo.getEquipment(), exerciseInfo.getVideoUrl(), exerciseInfo.getTarget(),
                 exerciseInfo.getExerciseDescription(), exerciseInfo.getInstructions(), true);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        exerciseRepository.deleteExerciseId(id);
     }
 }

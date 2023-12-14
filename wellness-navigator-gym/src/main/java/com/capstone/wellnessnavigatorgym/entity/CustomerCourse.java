@@ -10,15 +10,14 @@ import javax.persistence.*;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class CourseDay {
-
+public class CustomerCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer courseDayId;
+    private Integer customerCourseId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "day_id")
-    private Day day;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")

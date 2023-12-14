@@ -53,6 +53,11 @@ public class CourseServiceImpl implements ICourseService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void save(Course course) {
+        courseRepository.save(course);
+    }
+
     public CourseDetailsOfExerciseDto tupleToCourseDetailsOfExerciseDto(Tuple tuple) {
         return new CourseDetailsOfExerciseDto(
                 ConvertToInteger.convertToInteger(tuple.get("course_id")),

@@ -30,7 +30,7 @@ public class CustomerUserDetailDto {
     String customerTypeName;
     String username;
     String accountEmail;
-    List<CourseDetail> courses;
+    List<CourseDetail> recommendedCourses;
 
     public static CustomerUserDetailDto TupleToCustomerDto(List<Tuple> tuples) {
         if (tuples != null && !tuples.isEmpty()) {
@@ -52,7 +52,8 @@ public class CustomerUserDetailDto {
                     new ArrayList<>()
             );
 
-            List<CourseDetail> courses = tuples.stream()
+            List<CourseDetail> recommendedCourses = tuples.stream()
+                    .filter(tuple -> tuple.get("recommend", Boolean.class))
                     .map(tuple -> new CourseDetail(
                             ConvertToInteger.convertToInteger(tuple.get("course_id")),
                             tuple.get("course_name", String.class),
@@ -63,7 +64,7 @@ public class CustomerUserDetailDto {
                     ))
                     .collect(Collectors.toList());
 
-            customerUserDetailDto.setCourses(courses);
+            customerUserDetailDto.setRecommendedCourses(recommendedCourses);
 
             return customerUserDetailDto;
         }

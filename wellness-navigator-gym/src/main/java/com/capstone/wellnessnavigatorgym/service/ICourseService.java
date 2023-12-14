@@ -14,4 +14,6 @@ public interface ICourseService {
     List<CourseDetailsOfExerciseDto> getCourseDetailsByDayAndCourseOfExercise(Integer courseId, Integer dayId);
 
     List<CourseDetailsOfCommentDto> getCourseDetailsByDayAndCourseOfComment(Integer courseId, Integer dayId);
+
+    void save(Course course);
 }

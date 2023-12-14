@@ -1,16 +1,22 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
+import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
+import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
 import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
+import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
+import com.capstone.wellnessnavigatorgym.service.ICourseService;
+import com.capstone.wellnessnavigatorgym.service.ICustomerService;
 import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
-import com.capstone.wellnessnavigatorgym.utils.DecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 
@@ -26,6 +32,12 @@ public class TrackDataAiController {
 
     @Autowired
     private ITrackDataAiService trackDataAiService;
+
+    @Autowired
+    private ICourseService courseService;
+
+    @Autowired
+    private ICustomerService customerService;
 
     @Autowired
     private BuildDecisionTree buildDecisionTree;
@@ -65,6 +77,30 @@ public class TrackDataAiController {
 
         // Duyệt qua cây quyết định và tìm đề xuất
         List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
+
+        if (!recommendations.isEmpty()) {
+            Course recommendedCourse = recommendations.get(0);
+            recommendedCourse.setRecommend(true);
+            courseService.save(recommendedCourse);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+
+            CustomerUserDetailDto customerUserDetailDto = customerService.findUserDetailByUsername(username);
+
+            if (customerUserDetailDto != null) {
+                List<CourseDetail> recommendedCourses = customerUserDetailDto.getRecommendedCourses();
+                recommendedCourses.add(new CourseDetail(
+                        recommendedCourse.getCourseId(),
+                        recommendedCourse.getCourseName(),
+                        recommendedCourse.getDescription(),
+                        recommendedCourse.getDuration(),
+                        recommendedCourse.getImage(),
+                        recommendedCourse.getCourseType().getCourseTypeName()
+                ));
+                customerUserDetailDto.setRecommendedCourses(recommendedCourses);
+            }
+        }
 
         return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully"));
     }
