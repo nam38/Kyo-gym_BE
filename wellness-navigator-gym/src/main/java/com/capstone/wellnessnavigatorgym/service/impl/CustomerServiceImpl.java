@@ -83,4 +83,9 @@ public class CustomerServiceImpl implements ICustomerService {
         return CustomerUserDetailDto.TupleToCustomerDto(tuples);
     }
 
+    @Override
+    public Customer findByUsername(String username) {
+        return customerRepository.findByUsername(username).orElse(null);
+    }
+
 }

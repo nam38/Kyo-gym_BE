@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -35,6 +37,12 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @ManyToMany
+    @JoinTable(name = "customer_courses",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Course> courses = new LinkedHashSet<>();
 
     public Customer(Integer customerId) {
         this.customerId = customerId;

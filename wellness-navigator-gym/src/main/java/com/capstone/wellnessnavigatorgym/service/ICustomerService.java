@@ -26,4 +26,6 @@ public interface ICustomerService {
     void deleteById(Integer id);
 
     CustomerUserDetailDto findUserDetailByUsername(String username);
+
+    Customer findByUsername(String username);
 }

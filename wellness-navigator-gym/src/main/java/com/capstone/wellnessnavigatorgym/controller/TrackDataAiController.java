@@ -6,6 +6,7 @@ import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.Course;
+import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
 import com.capstone.wellnessnavigatorgym.service.ICourseService;
@@ -86,19 +87,11 @@ public class TrackDataAiController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
 
-            CustomerUserDetailDto customerUserDetailDto = customerService.findUserDetailByUsername(username);
+            Customer customer = customerService.findByUsername(username);
 
-            if (customerUserDetailDto != null) {
-                List<CourseDetail> recommendedCourses = customerUserDetailDto.getRecommendedCourses();
-                recommendedCourses.add(new CourseDetail(
-                        recommendedCourse.getCourseId(),
-                        recommendedCourse.getCourseName(),
-                        recommendedCourse.getDescription(),
-                        recommendedCourse.getDuration(),
-                        recommendedCourse.getImage(),
-                        recommendedCourse.getCourseType().getCourseTypeName()
-                ));
-                customerUserDetailDto.setRecommendedCourses(recommendedCourses);
+            if (customer != null) {
+                customer.getCourses().add(recommendedCourse);
+                customerService.save(customer);
             }
         }
 
