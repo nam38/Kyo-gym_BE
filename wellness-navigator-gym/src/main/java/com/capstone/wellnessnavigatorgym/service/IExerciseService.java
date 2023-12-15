@@ -10,5 +10,9 @@ public interface IExerciseService {
 
     Exercise findExerciseById(Integer id);
 
-    void saveExercise(ExerciseInfo exerciseInfo);
+    Exercise save(Exercise exercise);
+
+    void update(ExerciseInfo exerciseInfo, Integer id);
+
+    void deleteById(Integer id);
 }

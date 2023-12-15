@@ -17,11 +17,12 @@ public interface IExerciseRepository extends JpaRepository<Exercise, Integer> {
     Optional<Exercise> findExerciseById(@Param("id") Integer id);
 
     @Modifying
-    @Query(value = "INSERT INTO exercise (body_part, equipment, exercise_description, exercise_name, instructions, " +
-            "is_enable, target, video_url) " +
-            "VALUES (:body_part, :equipment, :exercise_description, :exercise_name, :instructions, :is_enable, " +
-            ":target, :video_url)", nativeQuery = true)
-    void insertExercise(@Param("exercise_name") String exercise_name,
+    @Query(value = "UPDATE exercise SET `body_part`=:body_part, `equipment`=:equipment, " +
+            "`exercise_description`=:exercise_description, `exercise_name`=:exercise_name, `instructions`=:instructions, " +
+            "`is_enable`=:is_enable, `target`=:target, `video_url`=:video_url " +
+            "WHERE `exercise_id`=:exercise_id", nativeQuery = true)
+    void updateExercise(@Param("exercise_id") Integer id,
+                        @Param("exercise_name") String exercise_name,
                         @Param("body_part") String body_part,
                         @Param("equipment") String equipment,
                         @Param("video_url") String video_url,
@@ -32,4 +33,8 @@ public interface IExerciseRepository extends JpaRepository<Exercise, Integer> {
 
     @Query(value = "SELECT * FROM exercise WHERE exercise_id = ?1", nativeQuery = true)
     Exercise getExerciseById(Integer id);
+
+    @Modifying
+    @Query(value = "UPDATE `exercise` SET `is_enable` = false WHERE `exercise_id`=:id", nativeQuery = true)
+    void deleteExerciseId(@Param("id") Integer id);
 }
