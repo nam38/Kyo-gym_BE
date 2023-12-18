@@ -1,7 +1,5 @@
 package com.capstone.wellnessnavigatorgym.entity;
 
-import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,7 +12,7 @@ import java.util.Set;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class Course extends CourseDetail {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
@@ -24,7 +22,6 @@ public class Course extends CourseDetail {
     private String duration;
     @Column(name = "image", length = 2000)
     private String image;
-    private Boolean recommend;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_type_id")
@@ -37,11 +34,9 @@ public class Course extends CourseDetail {
     @OrderBy("dayId")
     private Set<Day> days = new LinkedHashSet<>();
 
-    @JsonBackReference
-    @ManyToMany(mappedBy = "courses")
-    private Set<Customer> customers = new LinkedHashSet<>();
-
     public Course(Integer courseId) {
         this.courseId = courseId;
     }
 }
+
+

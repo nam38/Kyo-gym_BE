@@ -6,8 +6,6 @@ import com.capstone.wellnessnavigatorgym.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
-
 public interface ICustomerService {
     void save(Customer customer);
 
@@ -26,6 +24,4 @@ public interface ICustomerService {
     void deleteById(Integer id);
 
     CustomerUserDetailDto findUserDetailByUsername(String username);
-
-    Customer findByUsername(String username);
 }

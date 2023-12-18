@@ -2,6 +2,7 @@ package com.capstone.wellnessnavigatorgym.service;
 
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfCommentDto;
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfExerciseDto;
+import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.Course;
 
 import java.util.List;

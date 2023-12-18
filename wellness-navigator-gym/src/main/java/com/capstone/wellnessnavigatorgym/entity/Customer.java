@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -38,17 +38,13 @@ public class Customer {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @ManyToMany
-    @JoinTable(name = "customer_courses",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Course> courses = new LinkedHashSet<>();
-
     public Customer(Integer customerId) {
         this.customerId = customerId;
     }
 
-    public Customer(String customerName, String customerEmail, String customerPhone, Boolean customerGender, Date dateOfBirth, String idCard, String customerAddress, Boolean isEnable, Account account) {
+
+    public Customer(String customerCode, String customerName, String customerEmail, String customerPhone, Boolean customerGender, Date dateOfBirth, String idCard, String customerAddress, Boolean isEnable, Account account) {
+        this.customerCode = customerCode;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPhone = customerPhone;

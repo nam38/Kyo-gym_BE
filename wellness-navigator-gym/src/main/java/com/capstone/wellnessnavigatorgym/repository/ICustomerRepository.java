@@ -108,16 +108,10 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
             "FROM customer c " +
             "INNER JOIN customer_type ct ON c.customer_type_id = ct.customer_type_id " +
             "INNER JOIN account a ON c.account_id = a.account_id " +
-            "INNER JOIN customer_courses cc ON c.customer_id = cc.customer_id " +
+            "INNER JOIN customer_course cc ON c.customer_id = cc.customer_id " +
             "INNER JOIN course co ON cc.course_id = co.course_id " +
             "INNER JOIN course_type cty ON co.course_type_id = cty.course_type_id " +
             "WHERE (c.is_enable = true) AND (a.is_enable = true) AND (a.user_name = :username)", nativeQuery = true)
     List<Tuple> findUserDetailByUsername(@Param("username") String username);
 
-    @Query(value = "SELECT c.customer_id, c.customer_code, c.customer_name, c.customer_phone, c.customer_gender, " +
-            "c.date_of_birth, c.id_card, c.customer_address, c.customer_img, a.user_name, a.email " +
-            "FROM customer c " +
-            "JOIN account a ON c.account_id = a.account_id " +
-            "WHERE a.user_name = :username", nativeQuery = true)
-    Optional<Customer> findByUsername(@Param("username") String username);
 }

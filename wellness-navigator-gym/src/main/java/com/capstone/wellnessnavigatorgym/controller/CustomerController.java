@@ -1,10 +1,8 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
-import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerInfo;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
 import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
-import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.service.ICustomerService;
 import com.capstone.wellnessnavigatorgym.utils.ConverterMaxCode;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -111,21 +108,6 @@ public class CustomerController {
         String username = authentication.getName();
 
         CustomerUserDetailDto customerUserDetailDto = customerService.findUserDetailByUsername(username);
-
-        if (customerUserDetailDto != null) {
-            Set<Course> recommendedCourses = customerService.findByUsername(username).getCourses();
-            List<CourseDetail> recommendedCourseDetails = recommendedCourses.stream()
-                    .map(recommendedCourse -> new CourseDetail(
-                            recommendedCourse.getCourseId(),
-                            recommendedCourse.getCourseName(),
-                            recommendedCourse.getDescription(),
-                            recommendedCourse.getDuration(),
-                            recommendedCourse.getImage(),
-                            recommendedCourse.getCourseType().getCourseTypeName()
-                    ))
-                    .collect(Collectors.toList());
-            customerUserDetailDto.setRecommendedCourses(recommendedCourseDetails);
-        }
 
         if (customerUserDetailDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
