@@ -16,6 +16,7 @@ public class UserDataDTO {
     private Double bmi;
     private String training_goals;
     private String training_history;
+    private Integer customerId;
 
     @Override
     public String toString() {

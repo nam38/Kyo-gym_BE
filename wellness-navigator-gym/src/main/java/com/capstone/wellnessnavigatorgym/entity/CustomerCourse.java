@@ -15,6 +15,8 @@ public class CustomerCourse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer customerCourseId;
 
+    private Boolean recommendedStatus;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;

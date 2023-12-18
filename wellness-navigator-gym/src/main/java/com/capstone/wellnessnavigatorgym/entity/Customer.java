@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -40,7 +42,9 @@ public class Customer {
         this.customerId = customerId;
     }
 
-    public Customer(String customerName, String customerEmail, String customerPhone, Boolean customerGender, Date dateOfBirth, String idCard, String customerAddress, Boolean isEnable, Account account) {
+
+    public Customer(String customerCode, String customerName, String customerEmail, String customerPhone, Boolean customerGender, Date dateOfBirth, String idCard, String customerAddress, Boolean isEnable, Account account) {
+        this.customerCode = customerCode;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPhone = customerPhone;

@@ -2,10 +2,14 @@ package com.capstone.wellnessnavigatorgym.service.impl;
 
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfCommentDto;
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfExerciseDto;
+import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.Course;
+import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
+import com.capstone.wellnessnavigatorgym.repository.ITrackDataAiRepository;
 import com.capstone.wellnessnavigatorgym.service.ICourseService;
+import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
 import com.capstone.wellnessnavigatorgym.utils.ConvertToInteger;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;

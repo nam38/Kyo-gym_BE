@@ -53,7 +53,6 @@ public class CustomerUserDetailDto {
             );
 
             List<CourseDetail> recommendedCourses = tuples.stream()
-                    .filter(tuple -> tuple.get("recommend", Boolean.class))
                     .map(tuple -> new CourseDetail(
                             ConvertToInteger.convertToInteger(tuple.get("course_id")),
                             tuple.get("course_name", String.class),

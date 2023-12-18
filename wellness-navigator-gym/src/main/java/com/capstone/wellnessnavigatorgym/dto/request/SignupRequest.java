@@ -12,6 +12,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignupRequest {
+    private String customerCode;
     private String name;
     private String username;
     private Boolean gender;
