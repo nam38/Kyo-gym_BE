@@ -82,24 +82,6 @@ public class TrackDataAiController {
             Course recommendedCourse = recommendations.get(0);
             recommendedCourse.setRecommend(true);
             courseService.save(recommendedCourse);
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-
-            CustomerUserDetailDto customerUserDetailDto = customerService.findUserDetailByUsername(username);
-
-            if (customerUserDetailDto != null) {
-                List<CourseDetail> recommendedCourses = customerUserDetailDto.getRecommendedCourses();
-                recommendedCourses.add(new CourseDetail(
-                        recommendedCourse.getCourseId(),
-                        recommendedCourse.getCourseName(),
-                        recommendedCourse.getDescription(),
-                        recommendedCourse.getDuration(),
-                        recommendedCourse.getImage(),
-                        recommendedCourse.getCourseType().getCourseTypeName()
-                ));
-                customerUserDetailDto.setRecommendedCourses(recommendedCourses);
-            }
         }
 
         return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully"));
