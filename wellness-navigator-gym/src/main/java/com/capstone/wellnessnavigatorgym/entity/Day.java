@@ -22,13 +22,5 @@ public class Day {
 
     @JsonBackReference
     @ManyToMany(mappedBy = "days")
-    private Set<Exercise> exercises = new LinkedHashSet<>();
-
-    @JsonBackReference
-    @ManyToMany(mappedBy = "days")
-    private Set<Nutritional> nutritionals = new LinkedHashSet<>();
-
-    @JsonBackReference
-    @ManyToMany(mappedBy = "days")
     private Set<Course> courses = new LinkedHashSet<>();
 }

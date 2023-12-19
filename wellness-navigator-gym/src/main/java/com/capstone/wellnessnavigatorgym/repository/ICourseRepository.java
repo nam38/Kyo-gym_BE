@@ -2,6 +2,7 @@ package com.capstone.wellnessnavigatorgym.repository;
 
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
             "from course c " +
             "join course_days cd on c.course_id = cd.course_id " +
             "join days d on cd.day_id = d.day_id " +
-            "join exercise_days ed on d.day_id = ed.day_id " +
+            "join exercise_day ed on d.day_id = ed.day_id " +
             "join exercise e on ed.exercise_id = e.exercise_id " +
             "where c.course_id = :courseId and d.day_id = :dayId", nativeQuery = true)
     List<Tuple> getCourseDetailsByDayAndCourseOfExercise(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
@@ -33,10 +34,14 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
             "FROM course c " +
             "JOIN course_days cd ON c.course_id = cd.course_id " +
             "JOIN days d ON cd.day_id = d.day_id " +
-            "JOIN exercise_days ed ON d.day_id = ed.day_id " +
+            "JOIN exercise_day ed ON d.day_id = ed.day_id " +
             "JOIN exercise e ON ed.exercise_id = e.exercise_id " +
             "JOIN comments cm ON e.exercise_id = cm.exercise_id " +
             "JOIN customer cu ON cm.customer_id = cu.customer_id " +
             "WHERE c.course_id = :courseId AND d.day_id = :dayId", nativeQuery = true)
     List<Tuple> getCourseDetailsByDayAndCourseOfComment(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
+
+    @Modifying
+    @Query(value = "UPDATE course SET status = true WHERE course_id = :courseId", nativeQuery = true)
+    void updateStatus(@Param("courseId") Integer courseId);
 }

@@ -2,6 +2,7 @@ package com.capstone.wellnessnavigatorgym.controller;
 
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfCommentDto;
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetailsOfExerciseDto;
+import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,15 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courseDetailsOfCommentDtoList, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{courseId}/status")
+    public ResponseEntity<?> updateCourseStatus(@PathVariable Integer courseId) {
+        try {
+            courseService.updateCourseStatus(courseId);
+            return new ResponseEntity<>(new MessageResponse("Edit status successful!"), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating course status: " + e.getMessage());
+        }
     }
 }

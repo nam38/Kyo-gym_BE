@@ -22,14 +22,11 @@ public class Course {
     private String duration;
     @Column(name = "image", length = 2000)
     private String image;
+    private Boolean status = false;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_type_id")
     private CourseType courseType;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
 
     @ManyToMany
     @JoinTable(name = "course_days",
@@ -42,3 +39,5 @@ public class Course {
         this.courseId = courseId;
     }
 }
+
+

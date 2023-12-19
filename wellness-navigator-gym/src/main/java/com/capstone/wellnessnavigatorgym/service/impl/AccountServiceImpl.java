@@ -33,4 +33,10 @@ public class AccountServiceImpl implements IAccountService {
     public Account save(Account account) {
         return accountRepository.save(account);
     }
+
+    @Override
+    public Optional<Account> findByEmail(String email) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        return account;
+    }
 }

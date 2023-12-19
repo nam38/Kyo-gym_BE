@@ -4,22 +4,18 @@ import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.Course;
+import com.capstone.wellnessnavigatorgym.entity.Customer;
+import com.capstone.wellnessnavigatorgym.entity.CustomerCourse;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
+import com.capstone.wellnessnavigatorgym.service.ICustomerCourseService;
 import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
-import com.capstone.wellnessnavigatorgym.utils.DecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Collections;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/track-data-ai")
@@ -31,6 +27,9 @@ public class TrackDataAiController {
 
     @Autowired
     private BuildDecisionTree buildDecisionTree;
+
+    @Autowired
+    private ICustomerCourseService customerCourseService;
 
     @GetMapping("")
     public ResponseEntity<List<TrackDataAi>> getAllTrackDataAi() {
@@ -68,6 +67,8 @@ public class TrackDataAiController {
         // Duyệt qua cây quyết định và tìm đề xuất
         List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
 
+        customerCourseService.saveRecommendedCourses(recommendations, userDataDTO.getCustomerId());
+
         return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully"));
     }
 
@@ -97,10 +98,7 @@ public class TrackDataAiController {
         }
     }
 
-
     private List<String> getAttributeNames() {
         return Arrays.asList("activity_level", "age", "gender", "bmi", "training_goals", "training_history");
     }
-
-
 }
