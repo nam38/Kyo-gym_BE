@@ -85,7 +85,7 @@ public class DecisionTree {
 
     // Trả về tập hợp các giá trị duy nhất cho một thuộc tính cụ thể
     public Set<Object> getDistinctAttributeValues(String attributeName) {
-        Set<Object> distinctValues = new HashSet<>();
+         Set<Object> distinctValues = new HashSet<>();
         for (TrackDataAi exercise : trackDataAiData) {
             Object value = exercise.getAttributeValue(attributeName);
             distinctValues.add(value);
