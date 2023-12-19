@@ -37,6 +37,4 @@ public class CustomerCourseServiceImpl implements ICustomerCourseService {
         }
         customerCourseRepository.saveAll(customerCourses);
     }
-
-
 }

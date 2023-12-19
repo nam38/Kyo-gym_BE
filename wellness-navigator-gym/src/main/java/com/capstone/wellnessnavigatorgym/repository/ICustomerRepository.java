@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Tuple;
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Transactional
@@ -102,9 +101,9 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
     void deleteCustomerId(@Param("id") Integer id);
 
     @Query(value = "SELECT c.customer_id, c.customer_code, c.customer_name, c.customer_phone, c.customer_gender, " +
-            "c.date_of_birth, c.id_card, c.customer_address, c.customer_img, ct.customer_type_name, " +
-            "a.user_name, a.email, co.course_id, co.course_name, co.description, co.duration, co.image, " +
-            "cty.course_type_name " +
+            "c.date_of_birth, c.id_card, c.customer_address, c.customer_img, ct.customer_type_name, a.user_name, " +
+            "a.email, cc.recommended_status, co.course_id, co.course_name, co.description, co.duration, co.image, " +
+            "co.status, cty.course_type_name "+
             "FROM customer c " +
             "INNER JOIN customer_type ct ON c.customer_type_id = ct.customer_type_id " +
             "INNER JOIN account a ON c.account_id = a.account_id " +

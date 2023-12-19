@@ -22,6 +22,7 @@ public class Course {
     private String duration;
     @Column(name = "image", length = 2000)
     private String image;
+    private Boolean status = false;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_type_id")

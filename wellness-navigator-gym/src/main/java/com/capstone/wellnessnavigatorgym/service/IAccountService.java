@@ -12,4 +12,6 @@ public interface IAccountService {
     Boolean existsByEmail(String email);
 
     Account save(Account account);
+
+    Optional<Account> findByEmail(String email);
 }

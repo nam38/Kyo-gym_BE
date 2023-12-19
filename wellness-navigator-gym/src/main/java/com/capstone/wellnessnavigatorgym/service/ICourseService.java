@@ -17,4 +17,6 @@ public interface ICourseService {
     List<CourseDetailsOfCommentDto> getCourseDetailsByDayAndCourseOfComment(Integer courseId, Integer dayId);
 
     void save(Course course);
+
+    void updateCourseStatus(Integer courseId);
 }

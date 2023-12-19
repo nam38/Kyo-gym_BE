@@ -62,6 +62,11 @@ public class CourseServiceImpl implements ICourseService {
         courseRepository.save(course);
     }
 
+    @Override
+    public void updateCourseStatus(Integer courseId) {
+        courseRepository.updateStatus(courseId);
+    }
+
     public CourseDetailsOfExerciseDto tupleToCourseDetailsOfExerciseDto(Tuple tuple) {
         return new CourseDetailsOfExerciseDto(
                 ConvertToInteger.convertToInteger(tuple.get("course_id")),
