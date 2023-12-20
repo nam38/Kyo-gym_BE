@@ -35,8 +35,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public Optional<Account> findByEmail(String email) {
-        Optional<Account> account = accountRepository.findByEmail(email);
-        return account;
+    public Account findByEmail(String email) {
+        return accountRepository.findByEmail(email);
     }
 }

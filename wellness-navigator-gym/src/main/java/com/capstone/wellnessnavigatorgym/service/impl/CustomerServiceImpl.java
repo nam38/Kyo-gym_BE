@@ -2,11 +2,7 @@ package com.capstone.wellnessnavigatorgym.service.impl;
 
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerInfo;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
-import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
-import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
-import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
-import com.capstone.wellnessnavigatorgym.entity.CustomerCourse;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ICustomerRepository;
 import com.capstone.wellnessnavigatorgym.service.ICourseService;
@@ -25,15 +21,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements ICustomerService {
 
     private final ICustomerRepository customerRepository;
-    private Object UserDataDTO;
 
     @Autowired
     public CustomerServiceImpl(ICustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
-    @Autowired
-    private ICourseService courseService;
 
     @Override
     public void save(Customer customer) {

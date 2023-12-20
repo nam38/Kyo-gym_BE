@@ -79,18 +79,35 @@ public class BuildDecisionTree {
     }
 
     private List<Course> createRecommendation(List<TrackDataAi> data) {
+        Map<Integer, Integer> courseEffectiveness = new HashMap<>();
+        Map<Integer, Integer> courseCount = new HashMap<>();
         Map<Integer, Course> uniqueCoursesMap = new HashMap<>();
 
         for (TrackDataAi exercise : data) {
+            Course course = exercise.getCourse();
+            uniqueCoursesMap.put(course.getCourseId(), course);
+            courseCount.put(course.getCourseId(), courseCount.getOrDefault(course.getCourseId(), 0) + 1);
             if (exercise.getEffective()) {
-                Course course = exercise.getCourse();
-                uniqueCoursesMap.putIfAbsent(course.getCourseId(), course);
+                courseEffectiveness.put(course.getCourseId(), courseEffectiveness.getOrDefault(course.getCourseId(), 0) + 1);
             }
         }
 
-        // Trả về danh sách các khóa học duy nhất, giới hạn tối đa 4 khóa học
-        return new ArrayList<>(uniqueCoursesMap.values()).stream()
-                .limit(4) // Giới hạn số lượng khóa học
+        final double effectivenessThreshold = 0.5; // 50% effectiveness
+        return uniqueCoursesMap.values().stream()
+                .filter(c -> {
+                    int courseId = c.getCourseId();
+                    double effectivenessRatio = courseEffectiveness.getOrDefault(courseId, 0) / (double) courseCount.get(courseId);
+                    return effectivenessRatio >= effectivenessThreshold;
+                })
+                .sorted((c1, c2) -> {
+                    int courseId1 = c1.getCourseId();
+                    int courseId2 = c2.getCourseId();
+                    return Double.compare(
+                            courseEffectiveness.getOrDefault(courseId2, 0) / (double) courseCount.get(courseId2),
+                            courseEffectiveness.getOrDefault(courseId1, 0) / (double) courseCount.get(courseId1)
+                    );
+                })
+                .limit(4)
                 .collect(Collectors.toList());
     }
 
