@@ -55,16 +55,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/public/**")
+                .antMatchers("/api/v1/public/**",
+                        "/api/v1/course/**",
+                        "/api/v1/course-type/**",
+                        "/api/v1/comment/**",
+                        "/api/v1/day/**",
+                        "/api/v1/track-data-ai/**")
                 .permitAll()
-                .antMatchers("/api/v1/customer/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/customer-type/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/course/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/course-type/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/day/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/comment/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/track-data-ai/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/customer/**",
+                        "/api/v1/customer-type/**",
+                        "/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

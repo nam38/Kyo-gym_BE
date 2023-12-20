@@ -13,5 +13,5 @@ public interface IAccountService {
 
     Account save(Account account);
 
-    Optional<Account> findByEmail(String email);
+    Account findByEmail(String email);
 }

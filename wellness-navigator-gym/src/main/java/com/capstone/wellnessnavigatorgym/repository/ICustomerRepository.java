@@ -107,9 +107,9 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
             "FROM customer c " +
             "INNER JOIN customer_type ct ON c.customer_type_id = ct.customer_type_id " +
             "INNER JOIN account a ON c.account_id = a.account_id " +
-            "INNER JOIN customer_course cc ON c.customer_id = cc.customer_id " +
-            "INNER JOIN course co ON cc.course_id = co.course_id " +
-            "INNER JOIN course_type cty ON co.course_type_id = cty.course_type_id " +
+            "LEFT JOIN customer_course cc ON c.customer_id = cc.customer_id " +
+            "LEFT JOIN course co ON cc.course_id = co.course_id " +
+            "LEFT JOIN course_type cty ON co.course_type_id = cty.course_type_id " +
             "WHERE (c.is_enable = true) AND (a.is_enable = true) AND (a.user_name = :username)", nativeQuery = true)
     List<Tuple> findUserDetailByUsername(@Param("username") String username);
 }
