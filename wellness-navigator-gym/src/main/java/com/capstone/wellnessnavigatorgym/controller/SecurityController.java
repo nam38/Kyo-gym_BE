@@ -1,19 +1,15 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
-import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
 import com.capstone.wellnessnavigatorgym.dto.request.LoginRequest;
 import com.capstone.wellnessnavigatorgym.dto.request.SignupRequest;
 import com.capstone.wellnessnavigatorgym.dto.response.JwtResponse;
 import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
 import com.capstone.wellnessnavigatorgym.dto.response.SocialResponse;
-import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
-import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
-import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.*;
+import com.capstone.wellnessnavigatorgym.security.jwt.JwtTokenProvider;
 import com.capstone.wellnessnavigatorgym.security.jwt.JwtUtility;
 import com.capstone.wellnessnavigatorgym.security.userprinciple.UserPrinciple;
 import com.capstone.wellnessnavigatorgym.service.*;
-import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import com.capstone.wellnessnavigatorgym.utils.ConverterMaxCode;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -40,14 +36,17 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SecurityController {
 
-/*    @Value("${google.clientId}")
-    String googleClientId;*/
+    @Value("${google.clientId}")
+    String googleClientId;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtUtility jwtUtility;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private IAccountService accountService;
@@ -82,7 +81,7 @@ public class SecurityController {
         );
     }
 
-/*    @PostMapping("/oauth/google")
+    @PostMapping("/oauth/google")
     public ResponseEntity<?> loginGoogle(@RequestBody SocialResponse jwtResponseSocial) {
         final NetHttpTransport netHttpTransport = new NetHttpTransport();
         final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
@@ -90,22 +89,37 @@ public class SecurityController {
                 new GoogleIdTokenVerifier.Builder(netHttpTransport, jacksonFactory)
                         .setAudience(Collections.singletonList(googleClientId));
 
-        GoogleIdToken googleIdToken;
         try {
-            googleIdToken = builder.build().verify(jwtResponseSocial.getToken());
+            final GoogleIdToken googleIdToken = GoogleIdToken.parse(builder.getJsonFactory(), jwtResponseSocial.getToken());
+            final GoogleIdToken.Payload payload = googleIdToken.getPayload();
+
+            Account existingAccount = accountService.findByEmail(payload.getEmail());
+
+            if (existingAccount == null) {
+                Account newAccount = new Account();
+                newAccount.setEmail(payload.getEmail());
+                newAccount.setUserName(payload.getEmail());
+                newAccount.setIsEnable(true);
+                newAccount.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
+
+                newAccount = accountService.save(newAccount);
+
+                Customer customerLimit = customerService.customerLimit();
+                Customer newCustomer = new Customer();
+                newCustomer.setCustomerCode(ConverterMaxCode.generateNextId(customerLimit.getCustomerCode()));
+                newCustomer.setCustomerName(payload.get("name").toString());
+                newCustomer.setCustomerEmail(payload.getEmail());
+                newCustomer.setIsEnable(true);
+                newCustomer.setAccount(newAccount);
+                customerService.save(newCustomer);
+            }
+            String jwt = jwtTokenProvider.generateToken(payload.getEmail());
+            return ResponseEntity.ok(new JwtResponse(jwt, payload.getEmail()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid ID token.");
+            e.printStackTrace();
         }
-
-        if (googleIdToken != null) {
-            GoogleIdToken.Payload payload = googleIdToken.getPayload();
-
-            String email = payload.getEmail();
-            String name = (String) payload.get("name");
-
-            Account existingAccount = accountService.
-        }
-    }*/
+        return ResponseEntity.badRequest().build();
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
