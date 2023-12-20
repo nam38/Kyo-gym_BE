@@ -2,10 +2,7 @@ package com.capstone.wellnessnavigatorgym.dto.customer;
 
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
 import com.capstone.wellnessnavigatorgym.utils.ConvertToInteger;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -13,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerUserDetailDto {
     Integer customerId;
     String customerCode;
@@ -55,10 +51,12 @@ public class CustomerUserDetailDto {
             List<CourseDetail> recommendedCourses = tuples.stream()
                     .map(tuple -> new CourseDetail(
                             ConvertToInteger.convertToInteger(tuple.get("course_id")),
+                            tuple.get("recommended_status", Boolean.class),
                             tuple.get("course_name", String.class),
                             tuple.get("description", String.class),
                             tuple.get("duration", String.class),
                             tuple.get("image", String.class),
+                            tuple.get("status", Boolean.class),
                             tuple.get("course_type_name", String.class)
                     ))
                     .collect(Collectors.toList());

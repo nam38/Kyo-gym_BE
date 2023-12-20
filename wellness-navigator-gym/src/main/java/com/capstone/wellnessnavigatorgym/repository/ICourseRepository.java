@@ -2,6 +2,7 @@ package com.capstone.wellnessnavigatorgym.repository;
 
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -39,4 +40,8 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
             "JOIN customer cu ON cm.customer_id = cu.customer_id " +
             "WHERE c.course_id = :courseId AND d.day_id = :dayId", nativeQuery = true)
     List<Tuple> getCourseDetailsByDayAndCourseOfComment(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
+
+    @Modifying
+    @Query(value = "UPDATE course SET status = true WHERE course_id = :courseId", nativeQuery = true)
+    void updateStatus(@Param("courseId") Integer courseId);
 }

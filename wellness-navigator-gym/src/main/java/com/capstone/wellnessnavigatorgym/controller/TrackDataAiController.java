@@ -6,10 +6,10 @@ import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.Course;
+import com.capstone.wellnessnavigatorgym.entity.Customer;
+import com.capstone.wellnessnavigatorgym.entity.CustomerCourse;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
-import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
-import com.capstone.wellnessnavigatorgym.service.ICourseService;
-import com.capstone.wellnessnavigatorgym.service.ICustomerService;
+import com.capstone.wellnessnavigatorgym.service.ICustomerCourseService;
 import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/track-data-ai")
@@ -34,13 +31,10 @@ public class TrackDataAiController {
     private ITrackDataAiService trackDataAiService;
 
     @Autowired
-    private ICourseService courseService;
-
-    @Autowired
-    private ICustomerService customerService;
-
-    @Autowired
     private BuildDecisionTree buildDecisionTree;
+
+    @Autowired
+    private ICustomerCourseService customerCourseService;
 
     @GetMapping("")
     public ResponseEntity<List<TrackDataAi>> getAllTrackDataAi() {
@@ -78,11 +72,7 @@ public class TrackDataAiController {
         // Duyệt qua cây quyết định và tìm đề xuất
         List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
 
-        if (!recommendations.isEmpty()) {
-            Course recommendedCourse = recommendations.get(0);
-            recommendedCourse.setRecommend(true);
-            courseService.save(recommendedCourse);
-        }
+        customerCourseService.saveRecommendedCourses(recommendations, userDataDTO.getCustomerId());
 
         return ResponseEntity.ok(new RecommendationDTO(recommendations, "Course recommendations generated successfully"));
     }

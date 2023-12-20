@@ -1,19 +1,17 @@
 package com.capstone.wellnessnavigatorgym.dto.course;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class CourseDetail {
     Integer courseId;
+    Boolean recommendedStatus;
     String courseName;
     String description;
     String duration;
     String image;
+    Boolean status;
     String courseTypeName;
 }
