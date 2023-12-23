@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Setter
@@ -25,6 +26,11 @@ public class Exercise {
     @Column(name = "instructions", length = 2000)
     private String instructions;
     private Boolean isEnable;
+    private Double duration;
+    private Boolean isVideoFinished;
+    private Date uploadDate;
+    private Integer views;
+    private Boolean isWatched;
 
     public Exercise(Integer exerciseId) {
         this.exerciseId = exerciseId;

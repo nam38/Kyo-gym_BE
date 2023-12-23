@@ -14,9 +14,6 @@ import java.util.Optional;
 @Transactional
 public interface IDayRepository extends JpaRepository<Day, Integer> {
 
-    @Query(value = "SELECT * FROM days WHERE day_id = :id", nativeQuery = true)
-    Optional<Day> findDayById(@Param("id") Integer id);
-
     @Query(value = "SELECT * FROM days WHERE day_id = ?1", nativeQuery = true)
     Day getDayById(Integer id);
 }

@@ -19,6 +19,8 @@ public class Day {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer dayId;
     private String dayName;
+    private Boolean isCompleted;
+    private Boolean status;
 
     @JsonBackReference
     @ManyToMany(mappedBy = "days")

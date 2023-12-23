@@ -1,6 +1,7 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
 import com.capstone.wellnessnavigatorgym.dto.exercise.ExerciseInfo;
+import com.capstone.wellnessnavigatorgym.dto.exercise.WatchStatusDto;
 import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
 import com.capstone.wellnessnavigatorgym.entity.Exercise;
 import com.capstone.wellnessnavigatorgym.service.IExerciseDayService;
@@ -61,6 +62,11 @@ public class ExerciseController {
         exercise.setExerciseDescription(exerciseInfo.getExerciseDescription());
         exercise.setInstructions(exerciseInfo.getInstructions());
         exercise.setIsEnable(true);
+        exercise.setDuration(exerciseInfo.getDuration());
+        exercise.setUploadDate(new Date());
+        exercise.setViews(0);
+        exercise.setIsVideoFinished(false);
+        exercise.setIsWatched(false);
 
         exerciseService.save(exercise);
 
@@ -94,5 +100,15 @@ public class ExerciseController {
     public ResponseEntity<?> deleteExercise(@PathVariable Integer id) {
         exerciseService.deleteById(id);
         return new ResponseEntity<>(new MessageResponse("Exercise has successfully deleted!"), HttpStatus.OK);
+    }
+
+    @PutMapping("/watchStatus/{id}")
+    public ResponseEntity<?> updateWatchStatus(@PathVariable Integer id,
+                                               @RequestBody WatchStatusDto watchStatusDto) {
+        exerciseService.updateVideoWatchStatus(id, watchStatusDto.getIsWatched(), watchStatusDto.getIsVideoFinished());
+        if (watchStatusDto.getIsWatched()) {
+            exerciseService.incrementViews(id);
+        }
+        return ResponseEntity.ok(new MessageResponse("Watch status updated successfully"));
     }
 }

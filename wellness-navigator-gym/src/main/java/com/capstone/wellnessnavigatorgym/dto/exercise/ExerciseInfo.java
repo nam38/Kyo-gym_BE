@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -48,6 +46,18 @@ public class ExerciseInfo {
     private String instructions;
 
     private Boolean isEnable;
+
+    @NotNull(message = "Duration cannot be null")
+    @Min(value = 1, message = "Duration must be greater than 0")
+    private Double duration;
+
+    private Boolean isVideoFinished;
+
+    private Date uploadDate;
+
+    private Integer views;
+
+    private Boolean isWatched;
 
     @NotNull(message = "Days cannot be null")
     private Integer days;
