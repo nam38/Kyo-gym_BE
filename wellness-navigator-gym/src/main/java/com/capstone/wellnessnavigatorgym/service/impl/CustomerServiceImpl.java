@@ -5,6 +5,7 @@ import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ICustomerRepository;
+import com.capstone.wellnessnavigatorgym.service.ICourseService;
 import com.capstone.wellnessnavigatorgym.service.ICustomerService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +83,4 @@ public class CustomerServiceImpl implements ICustomerService {
         List<Tuple> tuples = customerRepository.findUserDetailByUsername(username);
         return CustomerUserDetailDto.TupleToCustomerDto(tuples);
     }
-
 }

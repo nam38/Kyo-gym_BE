@@ -22,4 +22,5 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
 
     Boolean existsByEmail(String email);
 
+    Account findByEmail(String email);
 }
