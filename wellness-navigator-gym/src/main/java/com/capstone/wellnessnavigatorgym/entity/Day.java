@@ -22,7 +22,7 @@ public class Day {
     private Boolean isCompleted;
     private Boolean status;
 
-    @JsonBackReference
+/*    @JsonBackReference
     @ManyToMany(mappedBy = "days")
-    private Set<Course> courses = new LinkedHashSet<>();
+    private Set<Course> courses = new LinkedHashSet<>();*/
 }

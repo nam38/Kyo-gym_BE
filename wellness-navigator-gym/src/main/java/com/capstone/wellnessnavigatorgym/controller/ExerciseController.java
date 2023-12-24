@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -63,10 +64,9 @@ public class ExerciseController {
         exercise.setInstructions(exerciseInfo.getInstructions());
         exercise.setIsEnable(true);
         exercise.setDuration(exerciseInfo.getDuration());
-        exercise.setUploadDate(new Date());
+        exercise.setUploadDate(LocalDateTime.now());
         exercise.setViews(0);
         exercise.setIsVideoFinished(false);
-        exercise.setIsWatched(false);
 
         exerciseService.save(exercise);
 
@@ -105,10 +105,7 @@ public class ExerciseController {
     @PutMapping("/watchStatus/{id}")
     public ResponseEntity<?> updateWatchStatus(@PathVariable Integer id,
                                                @RequestBody WatchStatusDto watchStatusDto) {
-        exerciseService.updateVideoWatchStatus(id, watchStatusDto.getIsWatched(), watchStatusDto.getIsVideoFinished());
-        if (watchStatusDto.getIsWatched()) {
-            exerciseService.incrementViews(id);
-        }
+        exerciseService.updateVideoWatchStatus(id, watchStatusDto.getIsVideoFinished());
         return ResponseEntity.ok(new MessageResponse("Watch status updated successfully"));
     }
 }

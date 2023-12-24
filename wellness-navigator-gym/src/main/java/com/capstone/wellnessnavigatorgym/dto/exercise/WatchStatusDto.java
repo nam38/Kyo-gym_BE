@@ -10,7 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WatchStatusDto {
-    private Boolean isWatched;
-    private Boolean isVideoFinished;
-    private Integer views;
+    Boolean isVideoFinished;
 }

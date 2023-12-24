@@ -52,19 +52,13 @@ public class ExerciseServiceImpl implements IExerciseService {
     }
 
     @Override
-    public void updateVideoWatchStatus(Integer exerciseId, Boolean isWatched, Boolean isVideoFinished) {
+    public void updateVideoWatchStatus(Integer exerciseId, Boolean isVideoFinished) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
-        exercise.setIsWatched(isWatched);
         exercise.setIsVideoFinished(isVideoFinished);
-        exerciseRepository.save(exercise);
-    }
-
-    @Override
-    public void incrementViews(Integer exerciseId) {
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
-        exercise.setViews(exercise.getViews() + 1);
+        if (isVideoFinished) {
+            exercise.setViews(exercise.getViews() + 1);
+        }
         exerciseRepository.save(exercise);
     }
 }

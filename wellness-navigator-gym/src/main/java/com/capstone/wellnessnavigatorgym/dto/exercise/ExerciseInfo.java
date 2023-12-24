@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -53,7 +53,7 @@ public class ExerciseInfo {
 
     private Boolean isVideoFinished;
 
-    private Date uploadDate;
+    private LocalDateTime uploadDate;
 
     private Integer views;
 

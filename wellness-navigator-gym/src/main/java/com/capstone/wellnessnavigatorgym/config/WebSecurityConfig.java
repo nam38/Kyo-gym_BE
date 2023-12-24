@@ -16,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -50,6 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BuildDecisionTree();
     }
 
+    @Bean
+    public ScheduledExecutorService scheduledExecutorService() {
+        return Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -60,7 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/course-type/**",
                         "/api/v1/comment/**",
                         "/api/v1/day/**",
-                        "/api/v1/track-data-ai/**")
+                        "/api/v1/track-data-ai/**",
+                        "/api/v1/payment/**",
+                        "/api/v1/course-day/**")
                 .permitAll()
                 .antMatchers("/api/v1/customer/**",
                         "/api/v1/customer-type/**",
