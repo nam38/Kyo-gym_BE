@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
+import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
 import com.capstone.wellnessnavigatorgym.entity.CourseDay;
 import com.capstone.wellnessnavigatorgym.service.ICourseDay;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class CourseDayController {
     @Autowired
     private ICourseDay courseDay;
 
-    @GetMapping("")
-    public ResponseEntity<List<CourseDay>> getAllCourseType() {
-        List<CourseDay> courseTypeList = this.courseDay.findAll();
-        if (courseTypeList.isEmpty()) {
+    @GetMapping("/")
+    public ResponseEntity<List<CourseDetail>> getAllCourseDetails() {
+        List<CourseDetail> courseDetails = courseDay.findAllCourseDetails();
+        if (courseDetails.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(courseTypeList, HttpStatus.OK);
+        return new ResponseEntity<>(courseDetails, HttpStatus.OK);
     }
 }
