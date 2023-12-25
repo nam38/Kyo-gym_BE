@@ -27,31 +27,33 @@ public class CourseDay implements ICourseDay {
         Map<Integer, List<DayDTO>> daysByCourse = new HashMap<>();
         Map<Integer, com.capstone.wellnessnavigatorgym.entity.Course> courses = new HashMap<>();
 
+        // Populate maps with course details and days.
         for (com.capstone.wellnessnavigatorgym.entity.CourseDay cd : courseDays) {
             Integer courseId = cd.getCourse().getCourseId();
-            if (!daysByCourse.containsKey(courseId)) {
-                daysByCourse.put(courseId, new ArrayList<>());
-            }
-            daysByCourse.get(courseId).add(new DayDTO(cd.getDay().getDayId(), cd.getDay().getDayName()));
+            courses.putIfAbsent(courseId, cd.getCourse());
+            daysByCourse.computeIfAbsent(courseId, k -> new ArrayList<>()).add(new DayDTO(cd.getDay().getDayId(), cd.getDay().getDayName()));
         }
-        return daysByCourse.entrySet().stream()
-                .map(entry -> new CourseDetail(entry.getKey(), entry.getValue()))
+
+        // Stream through courses and create CourseDetail objects with full details.
+        return courses.entrySet().stream()
+                .map(entry -> {
+                    com.capstone.wellnessnavigatorgym.entity.Course course = entry.getValue();
+                    List<DayDTO> dayList = daysByCourse.getOrDefault(entry.getKey(), new ArrayList<>());
+
+                    // Create a new CourseDetail with all fields.
+                    return new CourseDetail(
+                            course.getCourseId(),
+                            course.getCourseName(),
+                            course.getDescription(),
+                            course.getDuration(),
+                            course.getImage(),
+                            course.getStatus(),
+                            dayList,
+                            false, // Assuming default recommendedStatus is false
+                            "Default" // Assuming default courseTypeName is "Default"
+                    );
+                })
                 .collect(Collectors.toList());
-//        return courses.entrySet().stream()
-//                .map(entry -> {
-//                    com.capstone.wellnessnavigatorgym.entity.Course course = entry.getValue();
-//                    List<DayDTO> dayList = daysByCourse.get(entry.getKey());
-//                    return new CourseDetail(
-//                            course.getCourseId(),
-//                            course.getCourseName(),
-//                            course.getDescription(),
-//                            course.getDuration(),
-//                            course.getImage(),
-//                            course.getStatus(),
-//                            dayList
-//                    );
-//                })
-//                .collect(Collectors.toList());
     }
 
 
