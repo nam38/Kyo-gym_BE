@@ -51,7 +51,7 @@ public class ExerciseServiceImpl implements IExerciseService {
         exerciseRepository.deleteExerciseId(id);
     }
 
-    @Override
+/*    @Override
     public void updateVideoWatchStatus(Integer exerciseId, Boolean isVideoFinished) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
@@ -60,5 +60,5 @@ public class ExerciseServiceImpl implements IExerciseService {
             exercise.setViews(exercise.getViews() + 1);
         }
         exerciseRepository.save(exercise);
-    }
+    }*/
 }

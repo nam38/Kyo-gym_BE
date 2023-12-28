@@ -9,5 +9,5 @@ public interface IDayService {
 
     Day findDayById(Integer id);
 
-    void markDayAsCompleted(Integer dayId);
+//    void markDayAsCompleted(Integer dayId);
 }

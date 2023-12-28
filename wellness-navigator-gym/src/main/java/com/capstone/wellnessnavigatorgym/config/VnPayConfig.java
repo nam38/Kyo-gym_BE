@@ -20,25 +20,27 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author CTT VNPAY
  */
-public class PaymentConfig {
+public class VnPayConfig {
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "http://localhost:8080/vnpay_jsp/vnpay_return.jsp";
-    public static String vnp_TmnCode = "6C2Z46QF";
+    public static String vnp_ReturnUrl = "http://localhost:4200/carts/payment";
+    public static String vnp_TmnCode = "41UFM0W8";
+    public static String vnp_HashSecret = "MKQNZUGMTQSBZDFOGQNCPGBKEABRGHQF";
+    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";
-    public static String orderType = "other";
-    public static String secretKey = "LDOBBYZNVWHKNZMDPAUNSNFLFNIHDKLR";
-    public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            getDigest(message, md);
-        } catch (UnsupportedEncodingException ex) {
-            digest = "";
-        } catch (NoSuchAlgorithmException ex) {
+            byte[] hash = md.digest(message.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
             digest = "";
         }
         return digest;
@@ -48,23 +50,15 @@ public class PaymentConfig {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            digest = getDigest(message, md);
-        } catch (UnsupportedEncodingException ex) {
-            digest = "";
-        } catch (NoSuchAlgorithmException ex) {
+            byte[] hash = md.digest(message.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
             digest = "";
         }
-        return digest;
-    }
-
-    private static String getDigest(String message, MessageDigest md) throws UnsupportedEncodingException {
-        String digest;
-        byte[] hash = md.digest(message.getBytes("UTF-8"));
-        StringBuilder sb = new StringBuilder(2 * hash.length);
-        for (byte b : hash) {
-            sb.append(String.format("%02x", b & 0xff));
-        }
-        digest = sb.toString();
         return digest;
     }
 
@@ -86,7 +80,7 @@ public class PaymentConfig {
                 sb.append("&");
             }
         }
-        return hmacSHA512(secretKey,sb.toString());
+        return hmacSHA512(vnp_HashSecret,sb.toString());
     }
 
     public static String hmacSHA512(final String key, final String data) {
@@ -117,7 +111,7 @@ public class PaymentConfig {
         try {
             ipAdress = request.getHeader("X-FORWARDED-FOR");
             if (ipAdress == null) {
-                ipAdress = request.getRemoteAddr();
+                ipAdress = request.getLocalAddr();
             }
         } catch (Exception e) {
             ipAdress = "Invalid IP:" + e.getMessage();

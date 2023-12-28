@@ -26,10 +26,4 @@ public class DayController {
         }
         return new ResponseEntity<>(dayList, HttpStatus.OK);
     }
-
-    @PutMapping("/complete/{id}")
-    public ResponseEntity<?> markDayAsCompleted(@PathVariable Integer id) {
-        dayService.markDayAsCompleted(id);
-        return ResponseEntity.ok(new MessageResponse("Day marked as completed successfully"));
-    }
 }

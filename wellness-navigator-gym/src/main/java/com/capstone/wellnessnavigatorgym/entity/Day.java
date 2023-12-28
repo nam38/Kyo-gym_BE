@@ -19,10 +19,8 @@ public class Day {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer dayId;
     private String dayName;
-    private Boolean isCompleted;
-    private Boolean status;
 
-/*    @JsonBackReference
+    @JsonBackReference
     @ManyToMany(mappedBy = "days")
-    private Set<Course> courses = new LinkedHashSet<>();*/
+    private Set<Course> courses = new LinkedHashSet<>();
 }

@@ -25,9 +25,6 @@ public class DayServiceImpl implements IDayService {
     @Autowired
     private IExerciseDayRepository exerciseDayRepository;
 
-    @Autowired
-    private ScheduledExecutorService scheduledExecutorService;
-
     @Override
     public List<Day> findAll() {
         return dayRepository.findAll();
@@ -43,29 +40,8 @@ public class DayServiceImpl implements IDayService {
         throw new NotFoundById("Could not find any days with code: " + id);
     }
 
-/*    @Override
-    public void markDayAsCompleted(Integer dayId) {
-        Day day = dayRepository.findById(dayId)
-                .orElseThrow(() -> new ResourceNotFoundException("Day not found"));
-        day.setIsCompleted(true);
-        dayRepository.save(day);
-        unlockNextDay(dayId);
-    }
 
-    public void unlockNextDay(Integer currentDayId) {
-        Integer nextDayId = currentDayId + 1;
-        Day nextDay = dayRepository.findById(nextDayId).orElse(null);
-
-        if (nextDay != null) {
-            Boolean status = nextDay.getStatus();
-            if (status == null || !status) {
-                nextDay.setStatus(true);
-                dayRepository.save(nextDay);
-            }
-        }
-    }*/
-
-
+/*
     @Override
     public void markDayAsCompleted(Integer dayId) {
         Integer unwatchedVideos = exerciseDayRepository.countUnwatchedVideosForDay(dayId);
@@ -74,23 +50,25 @@ public class DayServiceImpl implements IDayService {
                     .orElseThrow(() -> new ResourceNotFoundException("Day not found"));
             day.setIsCompleted(true);
             dayRepository.save(day);
-            scheduleUnlockNextDay(day.getDayId());
+//            scheduleUnlockNextDay(day.getDayId());
+
         } else {
             throw new SomeCustomException("Not all videos in the day have been watched.");
         }
     }
+*/
 
-    private void scheduleUnlockNextDay(Integer currentDayId) {
+/*    private void scheduleUnlockNextDay(Integer currentDayId) {
         scheduledExecutorService.schedule(() -> {
             unlockNextDay(currentDayId + 1);
         }, 24, TimeUnit.HOURS);
-    }
+    }*/
 
-    private void unlockNextDay(Integer dayId) {
+/*    private void unlockNextDay(Integer dayId) {
         Day nextDay = dayRepository.findById(dayId).orElse(null);
         if (nextDay != null && (nextDay.getStatus() == null || !nextDay.getStatus())) {
             nextDay.setStatus(true);
             dayRepository.save(nextDay);
         }
-    }
+    }*/
 }

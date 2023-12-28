@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public interface IExerciseDayRepository extends JpaRepository<ExerciseDay, Integer> {
@@ -17,9 +19,7 @@ public interface IExerciseDayRepository extends JpaRepository<ExerciseDay, Integ
     void addExerciseToDay(@Param("dayId") Integer dayId,
                           @Param("exerciseId") Integer exerciseId);
 
-    @Query(value = "SELECT COUNT(e.exercise_id) " +
-            "FROM exercise_day ed " +
-            "JOIN exercise e ON ed.exercise_id = e.exercise_id " +
-            "WHERE ed.day_id = :dayId AND (e.is_video_finished = false OR e.is_video_finished IS NULL)", nativeQuery = true)
-    Integer countUnwatchedVideosForDay(@Param("dayId") Integer dayId);
+
+    @Query(value = "SELECT * FROM exercise_day WHERE day_id = :dayId", nativeQuery = true)
+    List<ExerciseDay> findByDayId(@Param("dayId") Integer dayId);
 }

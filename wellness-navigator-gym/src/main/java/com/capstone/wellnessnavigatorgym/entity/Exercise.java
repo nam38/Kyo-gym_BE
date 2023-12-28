@@ -27,7 +27,6 @@ public class Exercise {
     private String instructions;
     private Boolean isEnable;
     private Double duration;
-    private Boolean isVideoFinished;
     private LocalDateTime uploadDate;
     private Integer views;
 

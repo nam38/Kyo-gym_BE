@@ -53,11 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BuildDecisionTree();
     }
 
-    @Bean
-    public ScheduledExecutorService scheduledExecutorService() {
-        return Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -69,12 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/comment/**",
                         "/api/v1/day/**",
                         "/api/v1/track-data-ai/**",
-                        "/api/v1/payment/**",
-                        "/api/v1/course-day/**")
+                        "/api/v1/payment/**")
                 .permitAll()
                 .antMatchers("/api/v1/customer/**",
                         "/api/v1/customer-type/**",
-                        "/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
+                        "/api/v1/exercise/**",
+                        "/api/v1/exercise-day/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
+import com.capstone.wellnessnavigatorgym.dto.request.ChangePasswordDto;
 import com.capstone.wellnessnavigatorgym.dto.request.LoginRequest;
 import com.capstone.wellnessnavigatorgym.dto.request.SignupRequest;
 import com.capstone.wellnessnavigatorgym.dto.response.JwtResponse;
@@ -24,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -160,6 +162,20 @@ public class SecurityController {
         ));
 
         return new ResponseEntity<>(new MessageResponse("Account registration successful!"), HttpStatus.OK);
+    }
+
+    @PatchMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(changePasswordDto.getUsername(), changePasswordDto.getPresentPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String newPass = encoder.encode(changePasswordDto.getConfirmPassword());
+        accountService.changePassword(username, newPass);
+        return new ResponseEntity<>(new ChangePasswordDto(
+                changePasswordDto.getUsername(),
+                "", ""), HttpStatus.OK);
     }
 }
 
