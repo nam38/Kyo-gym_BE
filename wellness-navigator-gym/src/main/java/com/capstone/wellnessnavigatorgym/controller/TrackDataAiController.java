@@ -31,15 +31,6 @@ public class TrackDataAiController {
     @Autowired
     private ICustomerCourseService customerCourseService;
 
-    @GetMapping("")
-    public ResponseEntity<List<TrackDataAi>> getAllTrackDataAi() {
-        List<TrackDataAi> trackDataAis = this.trackDataAiService.getAllTrackDataAi();
-        if (trackDataAis.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(trackDataAis, HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<TrackDataAi> getTrackDataAiById(@PathVariable Integer id) {
         return new ResponseEntity<>(trackDataAiService.findTrackDataAiById(id), HttpStatus.OK);
@@ -54,12 +45,12 @@ public class TrackDataAiController {
             return ResponseEntity.badRequest().body(new RecommendationDTO(null, "Attribute names are missing or invalid"));
         }
         // Lấy dữ liệu và xây dựng cây quyết định
-        List<TrackDataAi> trackDataAis = trackDataAiService.getAllTrackDataAi();
-        if (trackDataAis.isEmpty()) {
-            return ResponseEntity.badRequest().body(new RecommendationDTO(null, "No track data available to build the decision tree"));
+        List<TrackDataAi> filteredTrackDataAis = trackDataAiService.getFilteredTrackDataAi(userDataDTO);
+        if (filteredTrackDataAis.isEmpty()) {
+            return ResponseEntity.badRequest().body(new RecommendationDTO(null, "No matching track data found with the given filters"));
         }
 
-        TreeNode decisionTree = buildDecisionTree.buildDecisionTree(trackDataAis, attributeNames);
+        TreeNode decisionTree = buildDecisionTree.buildDecisionTree(filteredTrackDataAis, attributeNames);
 
         // Tạo map dữ liệu người dùng từ TrackDataAi
         Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);

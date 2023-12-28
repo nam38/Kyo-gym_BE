@@ -1,6 +1,7 @@
 package com.capstone.wellnessnavigatorgym.repository;
 
 import com.capstone.wellnessnavigatorgym.entity.Account;
+import com.capstone.wellnessnavigatorgym.entity.Cart;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.entity.CustomerType;
 import org.springframework.data.domain.Page;
@@ -38,10 +39,11 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query(value = "select c.customer_id, c.customer_address, c.customer_code, c.customer_email, c.customer_gender, " +
             "c.customer_img, c.customer_name, c.customer_phone, c.date_of_birth, c.id_card, c.is_enable, " +
-            "ct.customer_type_id, ct.customer_type_name, a.account_id " +
+            "ct.customer_type_id, ct.customer_type_name, ct.price, a.account_id, r.cart_id " +
             "from customer c " +
             "inner join customer_type ct on c.customer_type_id = ct.customer_type_id " +
             "left join account a on c.account_id = a.account_id " +
+            "left join cart r on c.cart_id = r.cart_id " +
             "where (ct.customer_type_name like concat('%', :type, '%') and c.customer_name like concat('%', :name, '%') " +
             "and c.customer_address like concat('%', :address, '%')  and c.customer_phone like concat('%', :phone, '%')) " +
             "and (c.is_enable = true) order by c.customer_code ",
@@ -49,6 +51,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
                     "from customer c " +
                     "inner join customer_type ct on c.customer_type_id = ct.customer_type_id " +
                     "left join account a on c.account_id = a.account_id " +
+                    "left join cart r on c.cart_id = r.cart_id " +
                     "where (ct.customer_type_name like concat('%', :type, '%') and c.customer_name like concat('%', :name, '%') " +
                     "and c.customer_address like concat('%', :address, '%')  and c.customer_phone like concat('%', :phone, '%')) " +
                     "and (c.is_enable = true) order by c.customer_code",
@@ -61,9 +64,10 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Modifying
     @Query(value = "INSERT INTO customer (`customer_code`, `customer_name`, `customer_email`, `customer_phone`, " +
-            "`customer_gender`, `date_of_birth`, `id_card`, `customer_address`, `customer_img`, `is_enable`, `customer_type_id`) " +
+            "`customer_gender`, `date_of_birth`, `id_card`, `customer_address`, `customer_img`, `is_enable`, " +
+            "`customer_type_id`, `cart_id`) " +
             "VALUES (:customer_code, :customer_name, :customer_email, :customer_phone, :customer_gender, " +
-            ":date_of_birth, :id_card, :customer_address, :customer_img, :is_enable, :customer_type_id)", nativeQuery = true)
+            ":date_of_birth, :id_card, :customer_address, :customer_img, :is_enable, :customer_type_id, :cart_id)", nativeQuery = true)
     void insertCustomer(@Param("customer_code") String customer_code,
                         @Param("customer_name") String customer_name,
                         @Param("customer_email") String customer_email,
@@ -74,14 +78,15 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
                         @Param("customer_address") String customer_address,
                         @Param("customer_img") String customer_img,
                         @Param("is_enable") Boolean is_enable,
-                        @Param("customer_type_id") CustomerType customer_type_id);
+                        @Param("customer_type_id") CustomerType customer_type_id,
+                        @Param("cart_id") Integer cart_id);
 
     @Modifying
     @Query(value = "UPDATE customer SET `customer_code`=:customer_code, `customer_name`=:customer_name, " +
             "`customer_email`=:customer_email, `customer_phone`=:customer_phone, `customer_gender`=:customer_gender, " +
             "`date_of_birth`=:date_of_birth, `id_card`=:id_card, `customer_address`=:customer_address, " +
             "`customer_img`=:customer_img, `is_enable`=:is_enable, `customer_type_id`=:customer_type_id, " +
-            "`account_id`=:account_id WHERE `customer_id`=:customer_id", nativeQuery = true)
+            "`account_id`=:account_id, `cart_id`=:cart_id WHERE `customer_id`=:customer_id", nativeQuery = true)
     void updateCustomer(@Param("customer_id") Integer customer_id,
                         @Param("customer_code") String customer_code,
                         @Param("customer_name") String customer_name,
@@ -94,7 +99,8 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
                         @Param("customer_img") String customer_img,
                         @Param("is_enable") Boolean is_enable,
                         @Param("customer_type_id") CustomerType customer_type_id,
-                        @Param("account_id") Account account_id);
+                        @Param("account_id") Account account_id,
+                        @Param("cart_id") Cart cart);
 
     @Modifying
     @Query(value = "update customer set is_enable = false where customer_id = :id", nativeQuery = true)
