@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -25,6 +26,9 @@ public class Exercise {
     @Column(name = "instructions", length = 2000)
     private String instructions;
     private Boolean isEnable;
+    private Double duration;
+    private LocalDateTime uploadDate;
+    private Integer views;
 
     public Exercise(Integer exerciseId) {
         this.exerciseId = exerciseId;

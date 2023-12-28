@@ -2,6 +2,7 @@ package com.capstone.wellnessnavigatorgym.repository;
 
 import com.capstone.wellnessnavigatorgym.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,9 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
     Boolean existsByEmail(String email);
 
     Account findByEmail(String email);
+
+    @Modifying
+    @Query(value = "UPDATE account SET encrypt_password = :pass " +
+            "WHERE (is_enable = true) AND (user_name = :username)", nativeQuery = true)
+    void changePassword(@Param("username") String username, @Param("pass") String pass);
 }

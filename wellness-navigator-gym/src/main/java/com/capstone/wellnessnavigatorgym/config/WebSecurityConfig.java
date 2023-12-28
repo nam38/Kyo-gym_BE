@@ -16,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -60,11 +63,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/course-type/**",
                         "/api/v1/comment/**",
                         "/api/v1/day/**",
-                        "/api/v1/track-data-ai/**")
+                        "/api/v1/track-data-ai/**",
+                        "/api/v1/payment/**")
                 .permitAll()
                 .antMatchers("/api/v1/customer/**",
                         "/api/v1/customer-type/**",
-                        "/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
+                        "/api/v1/exercise/**",
+                        "/api/v1/exercise-day/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

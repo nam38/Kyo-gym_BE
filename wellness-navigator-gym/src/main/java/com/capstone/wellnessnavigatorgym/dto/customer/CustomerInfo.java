@@ -52,7 +52,7 @@ public class CustomerInfo {
     private String idCard;
 
     @NotBlank(message = "Please enter your address")
-    @Length(min = 5,max = 100,message = "The address must be at least 5 and maximum 100 characters")
+    @Length(min = 5,max = 100, message = "The address must be at least 5 and maximum 100 characters")
     private String customerAddress;
 
     @NotNull(message = "Please choose a representative photo")

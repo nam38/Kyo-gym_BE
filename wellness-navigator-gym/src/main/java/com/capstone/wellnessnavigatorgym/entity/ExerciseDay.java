@@ -14,6 +14,8 @@ public class ExerciseDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer exerciseDayId;
+    private Boolean isCompleted;
+    private Boolean status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "day_id")

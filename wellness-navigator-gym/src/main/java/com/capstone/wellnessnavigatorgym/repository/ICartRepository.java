@@ -1,11 +1,11 @@
 package com.capstone.wellnessnavigatorgym.repository;
 
-import com.capstone.wellnessnavigatorgym.entity.CustomerFinishDetail;
+import com.capstone.wellnessnavigatorgym.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface ICustomerTrackingDetailRepository extends JpaRepository<CustomerFinishDetail, Integer> {
+public interface ICartRepository extends JpaRepository<Cart, Integer> {
 }

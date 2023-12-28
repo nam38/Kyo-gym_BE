@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -61,6 +62,9 @@ public class ExerciseController {
         exercise.setExerciseDescription(exerciseInfo.getExerciseDescription());
         exercise.setInstructions(exerciseInfo.getInstructions());
         exercise.setIsEnable(true);
+        exercise.setDuration(exerciseInfo.getDuration());
+        exercise.setUploadDate(LocalDateTime.now());
+        exercise.setViews(0);
 
         exerciseService.save(exercise);
 
@@ -95,4 +99,11 @@ public class ExerciseController {
         exerciseService.deleteById(id);
         return new ResponseEntity<>(new MessageResponse("Exercise has successfully deleted!"), HttpStatus.OK);
     }
+
+/*    @PutMapping("/watchStatus/{id}")
+    public ResponseEntity<?> updateWatchStatus(@PathVariable Integer id,
+                                               @RequestBody WatchStatusDto watchStatusDto) {
+        exerciseService.updateVideoWatchStatus(id, watchStatusDto.getIsVideoFinished());
+        return ResponseEntity.ok(new MessageResponse("Watch status updated successfully"));
+    }*/
 }

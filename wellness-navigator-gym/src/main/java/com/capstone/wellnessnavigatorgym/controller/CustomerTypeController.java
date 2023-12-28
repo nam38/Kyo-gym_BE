@@ -1,7 +1,6 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
 import com.capstone.wellnessnavigatorgym.entity.CustomerType;
-import com.capstone.wellnessnavigatorgym.service.ICustomerService;
 import com.capstone.wellnessnavigatorgym.service.ICustomerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

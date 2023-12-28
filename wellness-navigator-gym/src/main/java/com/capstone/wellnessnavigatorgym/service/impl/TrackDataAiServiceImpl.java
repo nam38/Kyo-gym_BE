@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.service.impl;
 
+import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
 import com.capstone.wellnessnavigatorgym.repository.ITrackDataAiRepository;
@@ -29,6 +30,11 @@ public class TrackDataAiServiceImpl implements ITrackDataAiService {
             return trackDataAi.get();
         }
         throw new NotFoundById("Could not find any AI tracking data with code: " + id);
+    }
+
+    @Override
+    public List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO) {
+        return trackDataAiRepository.findCustomByUserData(userDataDTO);
     }
 
 }
