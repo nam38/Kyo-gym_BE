@@ -10,9 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -21,13 +24,12 @@ import java.util.*;
 @RequestMapping("/api/v1/payment")
 public class PaymentController {
 
-    @GetMapping("/create_payment")
+    @PutMapping("/create_payment")
     public ResponseEntity<PaymentResponseDto> createPayment(@RequestBody CartWithDetail cartWithDetail) throws UnsupportedEncodingException {
         Cart cart = cartWithDetail.getCart();
         List<CartDetail> cartDetailList = cartWithDetail.getCartDetailList();
         int totalAmount = 0;
         Set<CartDetail> cartDetails = new HashSet<>();
-
 
 
         String vnp_TxnRef = VnPayConfig.getRandomNumber(8);
@@ -42,7 +44,7 @@ public class PaymentController {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", "NCB");
         vnp_Params.put("vpn_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vpn_OrderInfo","Thanh Toan Don Hang:" + vnp_TxnRef);
+        vnp_Params.put("vpn_OrderInfo", "Thanh Toan Don Hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnUrl);
 
@@ -89,14 +91,15 @@ public class PaymentController {
         paymentResponseDto.setUrl(paymentUrl);
         return ResponseEntity.status(HttpStatus.OK).body(paymentResponseDto);
     }
+
     @GetMapping("/payment_info")
     public ResponseEntity<?> transaction(
             @RequestParam(value = "vpn_Amount") String amount,
             @RequestParam(value = "vpn_BankCode") String bankCode,
             @RequestParam(value = "vpn_OrderInfo") String order,
-            @RequestParam(value = "vpn_ResponseCode") String responseCode){
+            @RequestParam(value = "vpn_ResponseCode") String responseCode) {
         TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-        if (responseCode.equals("00")){
+        if (responseCode.equals("00")) {
             transactionStatusDTO.setStatus("OK");
             transactionStatusDTO.setMessage("Successfully");
             transactionStatusDTO.setData("");
@@ -106,5 +109,6 @@ public class PaymentController {
             transactionStatusDTO.setData("");
         }
         return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+
     }
 }
