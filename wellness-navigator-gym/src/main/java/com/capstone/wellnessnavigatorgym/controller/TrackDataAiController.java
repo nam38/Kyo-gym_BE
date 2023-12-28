@@ -36,15 +36,6 @@ public class TrackDataAiController {
     @Autowired
     private ICustomerCourseService customerCourseService;
 
-    @GetMapping("")
-    public ResponseEntity<List<TrackDataAi>> getAllTrackDataAi() {
-        List<TrackDataAi> trackDataAis = this.trackDataAiService.getAllTrackDataAi();
-        if (trackDataAis.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(trackDataAis, HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<TrackDataAi> getTrackDataAiById(@PathVariable Integer id) {
         return new ResponseEntity<>(trackDataAiService.findTrackDataAiById(id), HttpStatus.OK);

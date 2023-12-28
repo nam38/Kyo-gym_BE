@@ -21,5 +21,4 @@ public interface ITrackDataAiRepository extends JpaRepository<TrackDataAi, Integ
             "t.training_history = :#{#userDataDTO.training_history} AND "+
             "t.bmi BETWEEN :#{#userDataDTO.bmi - 1} AND :#{#userDataDTO.bmi + 1}", nativeQuery = true)
     List<TrackDataAi> findCustomByUserData(UserDataDTO userDataDTO);
-
 }

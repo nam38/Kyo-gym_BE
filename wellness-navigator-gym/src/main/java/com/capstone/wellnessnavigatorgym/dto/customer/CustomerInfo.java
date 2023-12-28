@@ -1,6 +1,7 @@
 package com.capstone.wellnessnavigatorgym.dto.customer;
 
 import com.capstone.wellnessnavigatorgym.entity.Account;
+import com.capstone.wellnessnavigatorgym.entity.Cart;
 import com.capstone.wellnessnavigatorgym.entity.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,6 +65,7 @@ public class CustomerInfo {
     private CustomerType customerType;
 
     private Account account;
+    private Cart cart;
 
     public void validate(Object target, Errors errors) {
         CustomerInfo customerInfo = (CustomerInfo) target;

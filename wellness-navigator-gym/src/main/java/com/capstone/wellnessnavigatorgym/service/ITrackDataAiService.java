@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ITrackDataAiService {
     List<TrackDataAi> getAllTrackDataAi();
-
+    List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO);
     TrackDataAi findTrackDataAiById(Integer id);
 
     List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO);
