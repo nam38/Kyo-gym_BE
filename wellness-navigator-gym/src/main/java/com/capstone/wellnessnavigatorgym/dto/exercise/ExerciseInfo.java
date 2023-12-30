@@ -51,13 +51,9 @@ public class ExerciseInfo {
     @Min(value = 1, message = "Duration must be greater than 0")
     private Double duration;
 
-    private Boolean isVideoFinished;
-
     private LocalDateTime uploadDate;
 
     private Integer views;
-
-    private Boolean isWatched;
 
     @NotNull(message = "Days cannot be null")
     private Integer days;

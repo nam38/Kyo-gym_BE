@@ -1,6 +1,7 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
 import com.capstone.wellnessnavigatorgym.entity.ExerciseDay;
+import com.capstone.wellnessnavigatorgym.service.IDayService;
 import com.capstone.wellnessnavigatorgym.service.IExerciseDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ public class ExerciseDayController {
 
     @Autowired
     private IExerciseDayService exerciseDayService;
+
+    @Autowired
+    private IDayService dayService;
 
     @GetMapping("/day/{dayId}")
     public ResponseEntity<List<ExerciseDay>> getExercisesByDay(@PathVariable Integer dayId) {

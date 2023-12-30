@@ -42,8 +42,8 @@ public class PaymentController {
         Set<CartDetail> cartDetails = new HashSet<>();
         cartService.update(cart);
         for (CartDetail cartDetail: cartDetailList) {
-            if (cartDetail.getStatus()) {
-                totalAmount += cartDetail.getCustomerType().getPrice();
+            if (!cartDetail.isStatus()) {
+                totalAmount += cartDetail.getQuantity() * cartDetail.getCustomerType().getPrice();
                 cartDetails.add(cartDetail);
             }
         }

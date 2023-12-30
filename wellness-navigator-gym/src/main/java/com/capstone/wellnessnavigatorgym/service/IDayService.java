@@ -8,6 +8,4 @@ public interface IDayService {
     List<Day> findAll();
 
     Day findDayById(Integer id);
-
-//    void markDayAsCompleted(Integer dayId);
 }
