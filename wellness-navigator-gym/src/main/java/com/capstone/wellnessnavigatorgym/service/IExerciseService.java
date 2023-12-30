@@ -15,4 +15,6 @@ public interface IExerciseService {
     void update(ExerciseInfo exerciseInfo, Integer id);
 
     void deleteById(Integer id);
+
+//    void updateVideoWatchStatus(Integer exerciseId, Boolean isVideoFinished);
 }

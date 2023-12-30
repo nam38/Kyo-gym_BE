@@ -14,4 +14,6 @@ public interface IAccountService {
     Account save(Account account);
 
     Account findByEmail(String email);
+
+    void changePassword(String username, String newPass);
 }

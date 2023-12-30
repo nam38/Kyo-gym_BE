@@ -38,4 +38,9 @@ public class AccountServiceImpl implements IAccountService {
     public Account findByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
+
+    @Override
+    public void changePassword(String username, String newPass) {
+        accountRepository.changePassword(username, newPass);
+    }
 }

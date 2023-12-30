@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -60,11 +62,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/course-type/**",
                         "/api/v1/comment/**",
                         "/api/v1/day/**",
-                        "/api/v1/track-data-ai/**")
+                        "/api/v1/track-data-ai/**",
+                        "/api/v1/payment/**",
+                        "/api/v1/cart/**")
                 .permitAll()
                 .antMatchers("/api/v1/customer/**",
                         "/api/v1/customer-type/**",
-                        "/api/v1/exercise/**").hasAnyRole("USER", "ADMIN")
+                        "/api/v1/exercise/**",
+                        "/api/v1/exercise-day/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

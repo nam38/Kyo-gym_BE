@@ -2,10 +2,11 @@ package com.capstone.wellnessnavigatorgym.service.impl;
 
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerInfo;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
+import com.capstone.wellnessnavigatorgym.entity.Cart;
 import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
+import com.capstone.wellnessnavigatorgym.repository.ICartRepository;
 import com.capstone.wellnessnavigatorgym.repository.ICustomerRepository;
-import com.capstone.wellnessnavigatorgym.service.ICourseService;
 import com.capstone.wellnessnavigatorgym.service.ICustomerService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,12 @@ import java.util.Optional;
 public class CustomerServiceImpl implements ICustomerService {
 
     private final ICustomerRepository customerRepository;
+    private final ICartRepository cartRepository;
 
     @Autowired
-    public CustomerServiceImpl(ICustomerRepository customerRepository) {
+    public CustomerServiceImpl(ICustomerRepository customerRepository, ICartRepository cartRepository) {
         this.customerRepository = customerRepository;
+        this.cartRepository = cartRepository;
     }
 
     @Override
@@ -49,10 +52,14 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public void saveCustomer(CustomerInfo customerInfo) {
-        customerRepository.insertCustomer(customerInfo.getCustomerCode(), customerInfo.getCustomerName(),
-                customerInfo.getCustomerEmail(), customerInfo.getCustomerPhone(), customerInfo.getCustomerGender(),
-                customerInfo.getDateOfBirth(), customerInfo.getIdCard(), customerInfo.getCustomerAddress(),
-                customerInfo.getCustomerImg(), true, customerInfo.getCustomerType());
+        cartRepository.insertCart(customerInfo.getCustomerName(), customerInfo.getCustomerAddress(), customerInfo.getCustomerPhone(), customerInfo.getCustomerEmail());
+        Cart cart = cartRepository.findLastCart().orElse(null);
+        if (cart != null) {
+            customerRepository.insertCustomer(customerInfo.getCustomerCode(), customerInfo.getCustomerName(),
+                    customerInfo.getCustomerEmail(), customerInfo.getCustomerPhone(), customerInfo.getCustomerGender(),
+                    customerInfo.getDateOfBirth(), customerInfo.getIdCard(), customerInfo.getCustomerAddress(),
+                    customerInfo.getCustomerImg(), true, customerInfo.getCustomerType(), cart.getCartId());
+        }
     }
 
     @SneakyThrows
@@ -70,7 +77,8 @@ public class CustomerServiceImpl implements ICustomerService {
         customerRepository.updateCustomer(id, customerInfo.getCustomerCode(), customerInfo.getCustomerName(),
                 customerInfo.getCustomerEmail(), customerInfo.getCustomerPhone(), customerInfo.getCustomerGender(),
                 customerInfo.getDateOfBirth(), customerInfo.getIdCard(), customerInfo.getCustomerAddress(),
-                customerInfo.getCustomerImg(), true, customerInfo.getCustomerType(), customerInfo.getAccount());
+                customerInfo.getCustomerImg(), true, customerInfo.getCustomerType(), customerInfo.getAccount(),
+                customerInfo.getCart());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.capstone.wellnessnavigatorgym.service.impl;
 import com.capstone.wellnessnavigatorgym.dto.exercise.ExerciseInfo;
 import com.capstone.wellnessnavigatorgym.entity.Exercise;
 import com.capstone.wellnessnavigatorgym.error.NotFoundById;
+import com.capstone.wellnessnavigatorgym.error.ResourceNotFoundException;
 import com.capstone.wellnessnavigatorgym.repository.IExerciseRepository;
 import com.capstone.wellnessnavigatorgym.service.IExerciseService;
 import lombok.SneakyThrows;
@@ -49,4 +50,15 @@ public class ExerciseServiceImpl implements IExerciseService {
     public void deleteById(Integer id) {
         exerciseRepository.deleteExerciseId(id);
     }
+
+/*    @Override
+    public void updateVideoWatchStatus(Integer exerciseId, Boolean isVideoFinished) {
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+        exercise.setIsVideoFinished(isVideoFinished);
+        if (isVideoFinished) {
+            exercise.setViews(exercise.getViews() + 1);
+        }
+        exerciseRepository.save(exercise);
+    }*/
 }
