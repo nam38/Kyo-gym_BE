@@ -71,13 +71,13 @@
 <h1 style="margin-top: 0px !important;"><b>THƯ XÁC NHẬN HÓA ĐƠN</b></h1>
 <div class="container">
     <b><p style="color: #00b894">Cảm ơn quý khách đã sử dụng dịch vụ</p>
-        <p><span style="color: #00b894">KyoGym </span> xin thông báo quý khách vừa có 01 đơn hàng được đặt thành công
+        <p><span style="color: #00b894">KyoGym </span> xin thông báo quý khách vừa có 01 hóa đơn được đặt thành công
         </p></b>
     <div style="margin: 0 40px">
         <p>Họ và tên: <span style="font-weight: bold" th:text="${receiverName}"></span></p>
         <p>Địa chỉ nhận hàng: <span style="font-weight: bold" th:text="${receiverAddress}"></span></p>
-        <p>Đơn hàng của quý khách đã được tiếp nhận và đang được xử lý.</p>
-        <p>Thông tin chi tiết đơn hàng như sau:</p>
+        <p>Hóa đơn của quý khách đã được tiếp nhận và đang được xử lý.</p>
+        <p>Thông tin chi tiết hóa đơn như sau:</p>
 
         <table class="table">
             <thead>
@@ -97,7 +97,7 @@
                 <td th:text="${#numbers.formatInteger(detail.getCustomerType().getPrice()*detail.getQuantity(),0,'POINT')} + ' đ'"></td>
             </tr>
             <tr>
-                <th colspan="4">Tổng giá trị đơn hàng</th>
+                <th colspan="4">Tổng giá trị hóa đơn</th>
                 <th style="text-align: right" th:text="${totalAmount}"></th>
             </tr>
         </table>

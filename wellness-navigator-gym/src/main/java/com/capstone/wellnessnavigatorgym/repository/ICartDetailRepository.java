@@ -15,7 +15,7 @@ import java.util.Optional;
 @Transactional
 public interface ICartDetailRepository extends JpaRepository<CartDetail, Integer> {
 
-    @Query(value = "SELECT * FROM cart_detail WHERE cart_id = 1 AND status = false AND quantity > 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM cart_detail WHERE cart_id = :id AND status = false AND quantity > 0", nativeQuery = true)
     List<CartDetail> findByCartId(@Param("id") Integer id);
 
     @Query(value = "SELECT * FROM cart_detail " +
@@ -35,8 +35,8 @@ public interface ICartDetailRepository extends JpaRepository<CartDetail, Integer
             "WHERE cart_detail_id = :cart_detail_id",
             nativeQuery = true)
     void updateCartDetail(@Param("customer_type_id") Integer customer_type_id,
-                          @Param("quantity") Integer quantity,
-                          @Param("status") Boolean status,
+                          @Param("quantity") int quantity,
+                          @Param("status") boolean status,
                           @Param("cart_id") Integer cart_id,
                           @Param("cart_detail_id") Integer cart_detail_id);
 }
