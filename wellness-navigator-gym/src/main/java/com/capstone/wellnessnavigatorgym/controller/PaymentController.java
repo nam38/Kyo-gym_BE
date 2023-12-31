@@ -7,7 +7,9 @@ import com.capstone.wellnessnavigatorgym.dto.payment.TransactionStatusDTO;
 import com.capstone.wellnessnavigatorgym.entity.Cart;
 import com.capstone.wellnessnavigatorgym.entity.CartDetail;
 import com.capstone.wellnessnavigatorgym.entity.Payment;
+import com.capstone.wellnessnavigatorgym.service.ICartDetailService;
 import com.capstone.wellnessnavigatorgym.service.ICartService;
+import com.capstone.wellnessnavigatorgym.service.IEmailService;
 import com.capstone.wellnessnavigatorgym.service.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,13 @@ public class PaymentController {
     @Autowired
     private IPaymentService paymentService;
 
-    @PutMapping("/create_payment")
+    @Autowired
+    private ICartDetailService cartDetailService;
+
+    @Autowired
+    private IEmailService emailService;
+
+    @PutMapping("/create-payment")
     public ResponseEntity<PaymentResponseDto> createPayment(@RequestBody CartWithDetail cartWithDetail) throws UnsupportedEncodingException {
         Cart cart = cartWithDetail.getCart();
         List<CartDetail> cartDetailList = cartWithDetail.getCartDetailList();
@@ -42,8 +50,8 @@ public class PaymentController {
         Set<CartDetail> cartDetails = new HashSet<>();
         cartService.update(cart);
         for (CartDetail cartDetail: cartDetailList) {
-            if (cartDetail.getStatus()) {
-                totalAmount += cartDetail.getCustomerType().getPrice();
+            if (!cartDetail.isStatus()) {
+                totalAmount += cartDetail.getQuantity() * cartDetail.getCustomerType().getPrice();
                 cartDetails.add(cartDetail);
             }
         }
@@ -118,23 +126,27 @@ public class PaymentController {
         }
     }
 
-    @GetMapping("/payment_info")
-    public ResponseEntity<?> transaction(
-            @RequestParam(value = "vpn_Amount") String amount,
-            @RequestParam(value = "vpn_BankCode") String bankCode,
-            @RequestParam(value = "vpn_OrderInfo") String order,
-            @RequestParam(value = "vpn_ResponseCode") String responseCode) {
-        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-        if (responseCode.equals("00")) {
-            transactionStatusDTO.setStatus("OK");
-            transactionStatusDTO.setMessage("Successfully");
-            transactionStatusDTO.setData("");
-        } else {
-            transactionStatusDTO.setStatus("No");
-            transactionStatusDTO.setMessage("Failed");
-            transactionStatusDTO.setData("");
+    @GetMapping("/transaction/{tnxRef}")
+    public ResponseEntity<?> transactionChecking(@PathVariable("tnxRef") String tnxRef) {
+        Payment payment = paymentService.findPaymentByTnxRef(tnxRef);
+        if (!payment.isPaid()) {
+            payment.setPaid(true);
+            paymentService.update(payment);
+            int totalAmount = payment.getTotalAmount();
+            Cart cart = cartService.findById(payment.getCartId());
+            List<CartDetail> cartDetails = new ArrayList<>(payment.getCartDetails());
+            for (CartDetail cartDetail : cartDetails) {
+                cartDetail.setStatus(true);
+                cartDetailService.update(cartDetail);
+            }
+            emailService.emailProcess(cart, totalAmount, cartDetails);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @GetMapping("/fail/{tnxRef}")
+    public ResponseEntity<?> transactionFail(@PathVariable("tnxRef") String tnxRef) {
+        paymentService.deleteByTnxRef(tnxRef);
+        return new ResponseEntity<>(HttpStatus.GONE);
     }
 }

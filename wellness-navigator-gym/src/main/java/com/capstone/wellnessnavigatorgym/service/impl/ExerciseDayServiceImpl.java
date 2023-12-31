@@ -82,6 +82,11 @@ public class ExerciseDayServiceImpl implements IExerciseDayService {
                         firstExerciseNextDay.setStatus(true);
                         firstExerciseNextDay.setIsCompleted(false); // Since this is the new exercise being started
                         exerciseDayRepository.save(firstExerciseNextDay);
+
+                        Day nextDay = dayRepository.findById(nextDayId)
+                                .orElseThrow(() -> new EntityNotFoundException("Day not found for dayId: " + nextDayId));
+                        nextDay.setStatus(true);
+                        dayRepository.save(nextDay);
                     }
                 }
             }

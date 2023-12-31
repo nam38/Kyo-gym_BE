@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -16,7 +17,11 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartDetailId;
     @NotNull
-    private Boolean status;
+    @Min(1)
+    private int quantity;
+    @NotNull
+    private boolean status;
+
     @NotNull
     private Integer cartId;
 
