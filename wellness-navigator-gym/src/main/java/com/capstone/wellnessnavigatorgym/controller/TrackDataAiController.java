@@ -3,12 +3,11 @@ package com.capstone.wellnessnavigatorgym.controller;
 import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
-import com.capstone.wellnessnavigatorgym.entity.Course;
-import com.capstone.wellnessnavigatorgym.entity.Customer;
-import com.capstone.wellnessnavigatorgym.entity.CustomerCourse;
-import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
+import com.capstone.wellnessnavigatorgym.entity.*;
 import com.capstone.wellnessnavigatorgym.service.ICustomerCourseService;
+import com.capstone.wellnessnavigatorgym.service.ICustomerService;
 import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
+import com.capstone.wellnessnavigatorgym.service.IUserDataAiService;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,12 @@ public class TrackDataAiController {
 
     @Autowired
     private ICustomerCourseService customerCourseService;
+
+    @Autowired
+    private ICustomerService customerService;
+
+    @Autowired
+    private IUserDataAiService userDataAiService;
 
     @GetMapping("/{id}")
     public ResponseEntity<TrackDataAi> getTrackDataAiById(@PathVariable Integer id) {
@@ -57,6 +62,20 @@ public class TrackDataAiController {
 
         // Duyệt qua cây quyết định và tìm đề xuất
         List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
+
+        Customer customer = customerService.findById(userDataDTO.getCustomerId());
+
+        UserDataAi userDataAi = new UserDataAi();
+        userDataAi.setActivityLevel(userDataDTO.getActivity_level());
+        userDataAi.setAge(userDataDTO.getAge());
+        userDataAi.setGender(userDataDTO.getGender());
+        userDataAi.setBmi(userDataDTO.getBmi());
+        userDataAi.setTrainingGoals(userDataDTO.getTraining_goals());
+        userDataAi.setTrainingHistory(userDataDTO.getTraining_history());
+        userDataAi.setEffective(true);
+        userDataAi.setCustomer(customer);
+
+        userDataAiService.saveUserDataAi(userDataAi);
 
         customerCourseService.saveRecommendedCourses(recommendations, userDataDTO.getCustomerId());
 

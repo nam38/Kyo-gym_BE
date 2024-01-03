@@ -50,8 +50,15 @@ public class CustomerUserDetailDto {
 
             List<CourseDetail> recommendedCourses = tuples.stream()
                     .map(tuple -> new CourseDetail(
-                            ConvertToInteger.convertToInteger(tuple.get("course_id")),
+                            ConvertToInteger.convertToInteger(tuple.get("user_data_id")),
+                            tuple.get("activity_level", String.class),
+                            ConvertToInteger.convertToInteger(tuple.get("age")),
+                            tuple.get("bmi", Double.class),
+                            tuple.get("gender", String.class),
+                            tuple.get("training_goals", String.class),
+                            tuple.get("training_history", String.class),
                             tuple.get("recommended_status", Boolean.class),
+                            ConvertToInteger.convertToInteger(tuple.get("course_id")),
                             tuple.get("course_name", String.class),
                             tuple.get("description", String.class),
                             tuple.get("duration", String.class),
