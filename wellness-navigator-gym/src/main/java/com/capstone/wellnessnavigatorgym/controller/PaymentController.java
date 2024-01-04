@@ -4,13 +4,8 @@ import com.capstone.wellnessnavigatorgym.config.VnPayConfig;
 import com.capstone.wellnessnavigatorgym.dto.cart.CartWithDetail;
 import com.capstone.wellnessnavigatorgym.dto.payment.PaymentResponseDto;
 import com.capstone.wellnessnavigatorgym.dto.payment.TransactionStatusDTO;
-import com.capstone.wellnessnavigatorgym.entity.Cart;
-import com.capstone.wellnessnavigatorgym.entity.CartDetail;
-import com.capstone.wellnessnavigatorgym.entity.Payment;
-import com.capstone.wellnessnavigatorgym.service.ICartDetailService;
-import com.capstone.wellnessnavigatorgym.service.ICartService;
-import com.capstone.wellnessnavigatorgym.service.IEmailService;
-import com.capstone.wellnessnavigatorgym.service.IPaymentService;
+import com.capstone.wellnessnavigatorgym.entity.*;
+import com.capstone.wellnessnavigatorgym.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +23,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/payment")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PaymentController {
 
     @Autowired
@@ -41,6 +37,12 @@ public class PaymentController {
 
     @Autowired
     private IEmailService emailService;
+
+    @Autowired
+    private ICustomerTypeService customerTypeService;
+
+    @Autowired
+    private ICustomerService customerService;
 
     @PutMapping("/create-payment")
     public ResponseEntity<PaymentResponseDto> createPayment(@RequestBody CartWithDetail cartWithDetail) throws UnsupportedEncodingException {
@@ -138,6 +140,11 @@ public class PaymentController {
             for (CartDetail cartDetail : cartDetails) {
                 cartDetail.setStatus(true);
                 cartDetailService.update(cartDetail);
+            }
+
+            Customer customer = customerService.findByCart(cart);
+            if (customer != null) {
+                customerTypeService.upgradeCustomerType(customer);
             }
             emailService.emailProcess(cart, totalAmount, cartDetails);
         }

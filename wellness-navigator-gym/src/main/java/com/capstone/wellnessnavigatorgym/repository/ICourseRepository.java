@@ -21,7 +21,7 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
     @Query(value = "select c.course_id, c.course_name, c.description, c.duration, c.image, cu.customer_id, " +
             "cu.customer_address, cu.customer_email, cu.customer_gender, cu.customer_img, cu.customer_name, " +
             "cu.customer_phone, cu.date_of_birth, cu.id_card, a.user_name, a.email, d.day_id, d.day_name, e.exercise_id, " +
-            "e.body_part, e.equipment, e.exercise_description, e.exercise_name, e.instructions, e.target, e.video_url " +
+            "e.body_part, e.equipment, e.exercise_description, e.exercise_name, e.instructions, e.target, e.video_url, cd.status " +
             "from course c " +
             "join customer_course cc on c.course_id = cc.course_id " +
             "join customer cu on cc.customer_id = cu.customer_id " +

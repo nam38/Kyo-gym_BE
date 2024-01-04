@@ -121,4 +121,5 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
             "WHERE (c.is_enable = true) AND (a.is_enable = true) AND (a.user_name = :username)", nativeQuery = true)
     List<Tuple> findUserDetailByUsername(@Param("username") String username);
 
+    Customer findByCart(Cart cart);
 }

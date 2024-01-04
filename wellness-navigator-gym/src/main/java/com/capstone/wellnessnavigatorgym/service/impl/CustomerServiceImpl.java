@@ -91,4 +91,9 @@ public class CustomerServiceImpl implements ICustomerService {
         List<Tuple> tuples = customerRepository.findUserDetailByUsername(username);
         return CustomerUserDetailDto.TupleToCustomerDto(tuples);
     }
+
+    @Override
+    public Customer findByCart(Cart cart) {
+        return customerRepository.findByCart(cart);
+    }
 }

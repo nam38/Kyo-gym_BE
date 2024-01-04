@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/public/**",
                         "/api/v1/course/**",
+                        "/api/v1/course-day/**",
                         "/api/v1/course-type/**",
                         "/api/v1/comment/**",
                         "/api/v1/day/**",
