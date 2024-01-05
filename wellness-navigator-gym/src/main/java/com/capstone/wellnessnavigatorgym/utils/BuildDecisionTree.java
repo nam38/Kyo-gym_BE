@@ -2,6 +2,7 @@ package com.capstone.wellnessnavigatorgym.utils;
 
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.entity.Course;
+import com.capstone.wellnessnavigatorgym.entity.Exercise;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 
 import javax.xml.bind.JAXBContext;
