@@ -4,12 +4,18 @@ import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.entity.TrackDataAi;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class BuildDecisionTree {
 
     private DecisionTree decisionTree;
+    private List<Course> courses; // Danh sách này có thể được nạp từ cơ sở dữ liệu
 
     public BuildDecisionTree() {
     }
@@ -18,110 +24,189 @@ public class BuildDecisionTree {
         this.decisionTree = new DecisionTree(trackDataAis);
     }
 
-    public TreeNode buildDecisionTree(List<TrackDataAi> data, List<String> attributeNames) {
-        if (attributeNames.isEmpty() || data.isEmpty()) {
-            // Xác định một đề xuất cụ thể hoặc sử dụng giá trị mặc định
-            return createLeafNode(data); // Tạo nút lá dựa trên dữ liệu còn lại
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public TreeNode buildDecisionTree() {
+        List<TrackDataAi> data = decisionTree.getTrackDataAiData();
+
+        return buildDecisionTreeRecursive(data, getAttributeNames());
+    }
+
+    private TreeNode buildDecisionTreeRecursive(List<TrackDataAi> data, List<String> attributeNames) {
+        if (data.isEmpty()) {
+            return new TreeNode(null); // Xử lý trường hợp tập dữ liệu rỗng
         }
 
-        Map<String, Double> gainRatios = new HashMap<>();
-
-        if (this.decisionTree == null) {
-            this.decisionTree = new DecisionTree(data); // hoặc khởi tạo theo cách phù hợp
+        if (attributeNames.isEmpty()) {
+            return createLeafNodeBasedOnMajority(data); // Tạo nút lá dựa trên đa số nếu hết thuộc tính
         }
 
-        for (String attributeName : attributeNames) {
-            gainRatios.put(attributeName, decisionTree.calculateGainRatio(attributeName));
+        List<String> sortedAttributes = findBestAttributeUsingGainRatio(data, attributeNames);
+        if (sortedAttributes.isEmpty()) {
+            return createLeafNodeBasedOnMajority(data); // Tạo nút lá nếu không có thuộc tính nào tốt để chọn
         }
 
-        List<Map.Entry<String, Double>> sortedAttributes = new ArrayList<>(gainRatios.entrySet());
-        sortedAttributes.sort(Map.Entry.comparingByValue(Collections.reverseOrder()));
+        String bestAttribute = sortedAttributes.get(0); // Lấy thuộc tính tốt nhất từ danh sách đã sắp xếp
+        TreeNode node = new TreeNode(bestAttribute);
 
-        TreeNode node = null;
-        for (Map.Entry<String, Double> attribute : sortedAttributes) {
-            String bestAttribute = attribute.getKey();
-            double bestGainRatio = attribute.getValue();
-
-            node = new TreeNode(bestAttribute);
-            node.setGainRatio(bestGainRatio);
-
-            Set<Object> attributeValues = decisionTree.getDistinctAttributeValues(bestAttribute);
-            for (Object value : attributeValues) {
-                List<TrackDataAi> subset = decisionTree.filterByAttributeValue(data, bestAttribute, value);
-                if (subset.isEmpty()) {
-                    // Xác định một đề xuất cụ thể dựa trên dữ liệu còn lại
-                    TreeNode leafNode = createLeafNode(data); // Sử dụng dữ liệu còn lại để tạo nút lá
-                    node.getChildren().put(value, leafNode);
-                } else {
-                    // Xử lý dữ liệu con và tạo nhánh mới
-                    List<String> remainingAttributes = new ArrayList<>(attributeNames);
-                    remainingAttributes.remove(bestAttribute);
-                    node.getChildren().put(value, buildDecisionTree(subset, remainingAttributes));
-                }
+        Map<Object, List<TrackDataAi>> subsets = decisionTree.getSubsetsByAttributeValue(bestAttribute);
+        subsets.forEach((attributeValue, subset) -> {
+            TreeNode childNode;
+            if (subset.isEmpty()) {
+                childNode = createLeafNodeBasedOnMajority(data); // Tạo nút lá nếu tập con rỗng
+            } else {
+                List<String> remainingAttributes = new ArrayList<>(sortedAttributes);
+                remainingAttributes.remove(bestAttribute); // Loại bỏ thuộc tính đã sử dụng khỏi danh sách
+                childNode = buildDecisionTreeRecursive(subset, remainingAttributes); // Gọi đệ quy với tập con và thuộc tính còn lại
             }
-        }
+            node.getChildren().put(attributeValue, childNode);
+        });
+
         return node;
     }
 
-    private TreeNode createLeafNode(List<TrackDataAi> data) {
+    //        private boolean allExercisesHaveSameCourseID(List<Exercise> data) {
+//            return data.stream().map(exercise -> exercise.getCourse().getCourse_id())
+//                    .distinct().limit(2).count() == 1;
+//        }
+    private List<String> getAttributeNames() {
+        return Arrays.asList(
+                "activity_level",
+                "age",
+                "gender",
+                "bmi",
+                "training_goals",
+                "training_history"
+        );
+    }
+
+    private TreeNode createLeafNodeBasedOnCourseId(List<TrackDataAi> data) {
+        if (data.isEmpty()) {
+            return new TreeNode(null); // Handle empty data
+        }
+        Integer majorityCourseId = data.stream()
+                .collect(Collectors.groupingBy(exercise -> exercise.getCourse().getCourseId(), Collectors.counting()))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+        Course majorityCourse = findCourseById(majorityCourseId);
+        System.out.println("Majority Course ID: " + majorityCourseId);
+        if (majorityCourse != null) {
+            // In ra để debug
+            System.out.println("Majority Course ID for leaf node: " + majorityCourse.getCourseId());
+            TreeNode leafNode = new TreeNode(null);
+            leafNode.setLeaf(true);
+            leafNode.setCourseDataId(majorityCourse);
+            return leafNode;
+        } else {
+            // In ra để debug
+            System.out.println("No majority course ID found for leaf node.");
+            return new TreeNode(null); // Có thể bạn cần xử lý khác ở đây
+        }
+    }
+
+    public Course findCourseById(Integer courseId) {
+        if (courseId == null || courses == null) {
+            System.out.println("Course ID is null or courses list is not initialized.");
+            return null;
+        }
+        for (Course course : courses) {
+            if (course.getCourseId() == courseId) {
+                return course;
+            }
+        }
+        return null; // Trả về null nếu không tìm thấy khóa học
+    }
+
+
+    private List<String> findBestAttributeUsingGainRatio(List<TrackDataAi> data, List<String> attributeNames) {
+        Map<String, Double> gainRatios = new HashMap<>();
+        for (String attribute : attributeNames) {
+            double gainRatio = decisionTree.calculateGainRatio(attribute);
+            gainRatios.put(attribute, gainRatio);
+        }
+        return gainRatios.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+
+    private TreeNode createLeafNodeBasedOnMajority(List<TrackDataAi> data) {
+        if (data.isEmpty()) {
+            return new TreeNode(null); // Xử lý tập dữ liệu rỗng
+        }
+
+        // Tìm CourseID phổ biến nhất trong dữ liệu
+        Integer majorityCourseId = data.stream()
+                .collect(Collectors.groupingBy(exercise -> exercise.getCourse().getCourseId(), Collectors.counting()))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+
+        // Tạo nút lá với CourseID phổ biến nhất
         TreeNode leafNode = new TreeNode(null);
-        leafNode.setIsLeaf(true);
-
-        // Xác định phân loại đa số
-        boolean classification = determineMajorityClassification(data);
-        leafNode.setClassification(classification);
-
-        // Tạo đề xuất dựa trên dữ liệu
-        List<Course> recommendation = createRecommendation(data);
-        leafNode.setRecommendation(recommendation);
+        leafNode.setLeaf(true);
+        if (majorityCourseId != null) {
+            Course majorityCourse = findCourseById(majorityCourseId);
+            leafNode.setCourseDataId(majorityCourse); // Thiết lập courseId cho nút lá
+        }
 
         return leafNode;
     }
 
-    private List<Course> createRecommendation(List<TrackDataAi> data) {
-        Map<Integer, Integer> courseEffectiveness = new HashMap<>();
-        Map<Integer, Integer> courseCount = new HashMap<>();
-        Map<Integer, Course> uniqueCoursesMap = new HashMap<>();
+    public void exportTreeToXml(TreeNode root, String filePath) {
+        try {
+            // Create JAXBContext for TreeNode
+            JAXBContext context = JAXBContext.newInstance(TreeNode.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-        for (TrackDataAi exercise : data) {
-            Course course = exercise.getCourse();
-            uniqueCoursesMap.put(course.getCourseId(), course);
-            courseCount.put(course.getCourseId(), courseCount.getOrDefault(course.getCourseId(), 0) + 1);
-            if (exercise.getEffective()) {
-                courseEffectiveness.put(course.getCourseId(), courseEffectiveness.getOrDefault(course.getCourseId(), 0) + 1);
-            }
+            // Serialize the entire tree
+            marshaller.marshal(root, new File(filePath));
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
-
-        final double effectivenessThreshold = 0.5; // 50% effectiveness
-        return uniqueCoursesMap.values().stream()
-                .filter(c -> {
-                    int courseId = c.getCourseId();
-                    double effectivenessRatio = courseEffectiveness.getOrDefault(courseId, 0) / (double) courseCount.get(courseId);
-                    return effectivenessRatio >= effectivenessThreshold;
-                })
-                .sorted((c1, c2) -> {
-                    int courseId1 = c1.getCourseId();
-                    int courseId2 = c2.getCourseId();
-                    return Double.compare(
-                            courseEffectiveness.getOrDefault(courseId2, 0) / (double) courseCount.get(courseId2),
-                            courseEffectiveness.getOrDefault(courseId1, 0) / (double) courseCount.get(courseId1)
-                    );
-                })
-                .limit(4)
-                .collect(Collectors.toList());
     }
 
-    private boolean determineMajorityClassification(List<TrackDataAi> data) {
-        if (data.isEmpty()) {
-            return false; // Or handle this case as per your requirement
-        }
+    public TreeNode importTreeFromXml(String filePath) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(TreeNode.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
 
-        int countTrue = 0;
-        for (TrackDataAi exercise : data) {
-            if (exercise.getEffective()) {
-                countTrue++;
+            // Đọc cây từ file XML
+            TreeNode root = (TreeNode) unmarshaller.unmarshal(new File(filePath));
+            return root;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Course traverseDecisionTree(TreeNode currentNode, Map<String, Object> userData) {
+        while (!currentNode.isLeaf()) {
+            Object attributeValue = userData.get(currentNode.getAttributeName());
+
+            // Kiểm tra nhanh và chuyển sang nút con tương ứng
+            if (attributeValue == null) {
+                // In ra lỗi chỉ khi cần thiết cho mục đích debug
+                System.out.println("Missing attribute: " + currentNode.getAttributeName());
+                return null;
+            }
+
+            currentNode = currentNode.getChildren().get(attributeValue);
+            if (currentNode == null) {
+                // In ra lỗi chỉ khi cần thiết cho mục đích debug
+                System.out.println("No path for attribute value: " + attributeValue);
+                return null;
             }
         }
-        return countTrue >= data.size() / 2;
+
+        // Trả về courseId từ nút lá
+        return currentNode.isLeaf() ? currentNode.getCourseDataId() : null;
     }
 }

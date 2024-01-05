@@ -1,6 +1,7 @@
 package com.capstone.wellnessnavigatorgym.service.impl;
 
 import com.capstone.wellnessnavigatorgym.entity.Course;
+import com.capstone.wellnessnavigatorgym.entity.Customer;
 import com.capstone.wellnessnavigatorgym.entity.CustomerCourse;
 import com.capstone.wellnessnavigatorgym.repository.ICustomerCourseRepository;
 import com.capstone.wellnessnavigatorgym.repository.ICustomerRepository;
@@ -26,15 +27,14 @@ public class CustomerCourseServiceImpl implements ICustomerCourseService {
     }
 
     @Override
-    public void saveRecommendedCourses(List<Course> courses, Integer customerId) {
-        List<CustomerCourse> customerCourses = new ArrayList<>();
-        for (Course course: courses) {
+    public void saveRecommendedCourses(Course course, Integer customerId) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer != null && course != null) {
             CustomerCourse customerCourse = new CustomerCourse();
             customerCourse.setCourse(course);
-            customerCourse.setCustomer(customerRepository.findById(customerId).orElse(null));
+            customerCourse.setCustomer(customer);
             customerCourse.setRecommendedStatus(true);
-            customerCourses.add(customerCourse);
+            customerCourseRepository.save(customerCourse);
         }
-        customerCourseRepository.saveAll(customerCourses);
     }
 }

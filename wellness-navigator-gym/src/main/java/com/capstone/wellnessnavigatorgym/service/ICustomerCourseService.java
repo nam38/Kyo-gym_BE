@@ -9,5 +9,5 @@ public interface ICustomerCourseService {
 
     void save(CustomerCourse customerCourse);
 
-    void saveRecommendedCourses(List<Course> courses, Integer customerId);
+    void saveRecommendedCourses(Course courses, Integer customerId);
 }

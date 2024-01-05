@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecommendationDTO {
-    private List<Course> recommendedCourses;
+    private Course recommendedCourses;
     private String message;
 }

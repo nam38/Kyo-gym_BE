@@ -1,13 +1,11 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
+import com.capstone.wellnessnavigatorgym.dto.EffectivenessUpdateDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
 import com.capstone.wellnessnavigatorgym.dto.tree.TreeNode;
 import com.capstone.wellnessnavigatorgym.dto.tree.UserDataDTO;
 import com.capstone.wellnessnavigatorgym.entity.*;
-import com.capstone.wellnessnavigatorgym.service.ICustomerCourseService;
-import com.capstone.wellnessnavigatorgym.service.ICustomerService;
-import com.capstone.wellnessnavigatorgym.service.ITrackDataAiService;
-import com.capstone.wellnessnavigatorgym.service.IUserDataAiService;
+import com.capstone.wellnessnavigatorgym.service.*;
 import com.capstone.wellnessnavigatorgym.utils.BuildDecisionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +34,9 @@ public class TrackDataAiController {
     @Autowired
     private IUserDataAiService userDataAiService;
 
+    @Autowired
+    private ICourseService courseService;
+
     @GetMapping("/{id}")
     public ResponseEntity<TrackDataAi> getTrackDataAiById(@PathVariable Integer id) {
         return new ResponseEntity<>(trackDataAiService.findTrackDataAiById(id), HttpStatus.OK);
@@ -50,18 +51,29 @@ public class TrackDataAiController {
             return ResponseEntity.badRequest().body(new RecommendationDTO(null, "Attribute names are missing or invalid"));
         }
         // Lấy dữ liệu và xây dựng cây quyết định
-        List<TrackDataAi> filteredTrackDataAis = trackDataAiService.getFilteredTrackDataAi(userDataDTO);
-        if (filteredTrackDataAis.isEmpty()) {
+        List<TrackDataAi> trackDataAis = trackDataAiService.getAllTrackDataAi();
+        if (trackDataAis.isEmpty()) {
             return ResponseEntity.badRequest().body(new RecommendationDTO(null, "No matching track data found with the given filters"));
         }
 
-        TreeNode decisionTree = buildDecisionTree.buildDecisionTree(filteredTrackDataAis, attributeNames);
 
-        // Tạo map dữ liệu người dùng từ TrackDataAi
-        Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);
+        // Tải cây quyết định
+        List<Course> courses = courseService.findAll();
+        buildDecisionTree = new BuildDecisionTree(trackDataAis);
+        buildDecisionTree.setCourses(courses);
+        TreeNode decisionTree = buildDecisionTree.buildDecisionTree();  // Thêm dòng này để tạo cây
 
-        // Duyệt qua cây quyết định và tìm đề xuất
-        List<Course> recommendations = traverseDecisionTree(decisionTree, userData);
+        // Xuất cây ra file XML
+
+//        buildDecisionTree.exportTreeToXml(decisionTree, "D:\\DuyTan_University\\Project_Capstone_1\\CAPSTONE1-KyoGYM\\C1SE.32-Capstone1-BE\\wellness-navigator-gym\\src\\main\\resources\\static\\DataTraining1.xml");
+//        return null;
+          buildDecisionTree.importTreeFromXml("D:\\DuyTan_University\\Project_Capstone_1\\CAPSTONE1-KyoGYM\\C1SE.32-Capstone1-BE\\wellness-navigator-gym\\src\\main\\resources\\static\\DataTraining1.xml");
+
+      //   Tạo map dữ liệu người dùng từ TrackDataAi
+          Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);
+
+       //  Duyệt qua cây quyết định và tìm đề xuất
+        Course recommendations = buildDecisionTree.traverseDecisionTree(decisionTree, userData);
 
         Customer customer = customerService.findById(userDataDTO.getCustomerId());
 
@@ -93,22 +105,16 @@ public class TrackDataAiController {
         return userData;
     }
 
-    private static List<Course> traverseDecisionTree(TreeNode node, Map<String, Object> userData) {
-        if (node.getIsLeaf()) {
-            return node.getRecommendation();
-        } else {
-            Object attributeValue = userData.get(node.getAttributeName());
-            if (attributeValue != null) {
-                TreeNode childNode = node.getChildren().get(attributeValue);
-                if (childNode != null) {
-                    return traverseDecisionTree(childNode, userData);
-                }
-            }
-            return Collections.emptyList();
-        }
-    }
 
     private List<String> getAttributeNames() {
         return Arrays.asList("activity_level", "age", "gender", "bmi", "training_goals", "training_history");
+    }
+
+    @PutMapping("/update-effectiveness/{userDataAiId}")
+    public ResponseEntity<?> updateUserDataAiEffectiveness(@PathVariable Integer userDataAiId, @RequestBody EffectivenessUpdateDTO dto) {
+        UserDataAi userDataAi = userDataAiService.findUserDataAiById(userDataAiId);
+        userDataAi.setEffective(dto.getEffective());
+        userDataAiService.saveUserDataAi(userDataAi);
+        return ResponseEntity.ok("Effectiveness updated successfully for UserDataAi ID " + userDataAiId);
     }
 }
