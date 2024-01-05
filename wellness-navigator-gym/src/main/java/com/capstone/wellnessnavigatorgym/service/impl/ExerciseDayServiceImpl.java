@@ -1,8 +1,10 @@
 package com.capstone.wellnessnavigatorgym.service.impl;
 
+import com.capstone.wellnessnavigatorgym.entity.CourseDays;
 import com.capstone.wellnessnavigatorgym.entity.Day;
 import com.capstone.wellnessnavigatorgym.entity.Exercise;
 import com.capstone.wellnessnavigatorgym.entity.ExerciseDay;
+import com.capstone.wellnessnavigatorgym.repository.ICourseDayRepository;
 import com.capstone.wellnessnavigatorgym.repository.IDayRepository;
 import com.capstone.wellnessnavigatorgym.repository.IExerciseDayRepository;
 import com.capstone.wellnessnavigatorgym.repository.IExerciseRepository;
@@ -11,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExerciseDayServiceImpl implements IExerciseDayService {
@@ -26,6 +26,9 @@ public class ExerciseDayServiceImpl implements IExerciseDayService {
 
     @Autowired
     private IExerciseDayRepository exerciseDayRepository;
+
+    @Autowired
+    private ICourseDayRepository courseDayRepository;
 
     @Override
     public void addExerciseToDay(Integer dayId, Integer exerciseId) {
@@ -83,10 +86,10 @@ public class ExerciseDayServiceImpl implements IExerciseDayService {
                         firstExerciseNextDay.setIsCompleted(false); // Since this is the new exercise being started
                         exerciseDayRepository.save(firstExerciseNextDay);
 
-                        Day nextDay = dayRepository.findById(nextDayId)
+                        CourseDays nextDay = courseDayRepository.findById(nextDayId)
                                 .orElseThrow(() -> new EntityNotFoundException("Day not found for dayId: " + nextDayId));
                         nextDay.setStatus(true);
-                        dayRepository.save(nextDay);
+                        courseDayRepository.save(nextDay);
                     }
                 }
             }

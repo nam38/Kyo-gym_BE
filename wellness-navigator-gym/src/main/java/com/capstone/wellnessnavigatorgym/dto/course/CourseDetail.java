@@ -6,8 +6,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDetail {
-    Integer courseId;
+    Integer userDataId;
+    String activityLevel;
+    Integer age;
+    Double bmi;
+    String gender;
+    String trainingGoals;
+    String trainingHistory;
     Boolean recommendedStatus;
+    Integer courseId;
     String courseName;
     String description;
     String duration;

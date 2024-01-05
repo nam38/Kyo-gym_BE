@@ -18,16 +18,22 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
     @Query(value = "SELECT * FROM course WHERE course_id = :id", nativeQuery = true)
     Optional<Course> findCourseById(@Param("id") Integer id);
 
-    @Query(value = "select c.course_id, c.course_name, c.description, c.duration, c.image, d.day_id, d.day_name, " +
-            "e.exercise_id, e.body_part, e.equipment, e.exercise_description, e.exercise_name, e.instructions, e.target, " +
-            "e.video_url " +
+    @Query(value = "select c.course_id, c.course_name, c.description, c.duration, c.image, cu.customer_id, " +
+            "cu.customer_address, cu.customer_email, cu.customer_gender, cu.customer_img, cu.customer_name, " +
+            "cu.customer_phone, cu.date_of_birth, cu.id_card, a.user_name, a.email, d.day_id, d.day_name, e.exercise_id, " +
+            "e.body_part, e.equipment, e.exercise_description, e.exercise_name, e.instructions, e.target, e.video_url, cd.status " +
             "from course c " +
+            "join customer_course cc on c.course_id = cc.course_id " +
+            "join customer cu on cc.customer_id = cu.customer_id " +
+            "join account a on cu.account_id = a.account_id " +
             "join course_days cd on c.course_id = cd.course_id " +
             "join days d on cd.day_id = d.day_id " +
             "join exercise_day ed on d.day_id = ed.day_id " +
             "join exercise e on ed.exercise_id = e.exercise_id " +
-            "where c.course_id = :courseId and d.day_id = :dayId", nativeQuery = true)
-    List<Tuple> getCourseDetailsByDayAndCourseOfExercise(@Param("courseId") Integer courseId, @Param("dayId") Integer dayId);
+            "where c.course_id = :courseId and d.day_id = :dayId and a.user_name = :username", nativeQuery = true)
+    List<Tuple> getCourseDetailsByDayAndCourseOfExercise(@Param("courseId") Integer courseId,
+                                                         @Param("dayId") Integer dayId,
+                                                         @Param("username") String username);
 
     @Query(value = "SELECT c.course_id, c.course_name, d.day_id, d.day_name, e.exercise_id, e.exercise_name, " +
             "cm.comment_id, cm.comment_text, cm.rating, cu.customer_id, cu.customer_name, cu.customer_img " +

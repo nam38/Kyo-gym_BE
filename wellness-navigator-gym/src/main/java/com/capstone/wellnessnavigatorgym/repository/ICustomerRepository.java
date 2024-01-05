@@ -108,15 +108,18 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query(value = "SELECT c.customer_id, c.customer_code, c.customer_name, c.customer_phone, c.customer_gender, " +
             "c.date_of_birth, c.id_card, c.customer_address, c.customer_img, ct.customer_type_name, a.user_name, " +
-            "a.email, cc.recommended_status, co.course_id, co.course_name, co.description, co.duration, co.image, " +
-            "co.status, cty.course_type_name "+
+            "a.email, u.user_data_id, u.activity_level, u.age, u.bmi, u.gender, u.training_goals, u.training_history, " +
+            "cc.recommended_status, co.course_id, co.course_name, co.description, co.duration, co.image, co.status, " +
+            "cty.course_type_name "+
             "FROM customer c " +
             "INNER JOIN customer_type ct ON c.customer_type_id = ct.customer_type_id " +
             "INNER JOIN account a ON c.account_id = a.account_id " +
+            "LEFT JOIN user_data_ai u ON c.customer_id = u.customer_id " +
             "LEFT JOIN customer_course cc ON c.customer_id = cc.customer_id " +
             "LEFT JOIN course co ON cc.course_id = co.course_id " +
             "LEFT JOIN course_type cty ON co.course_type_id = cty.course_type_id " +
             "WHERE (c.is_enable = true) AND (a.is_enable = true) AND (a.user_name = :username)", nativeQuery = true)
     List<Tuple> findUserDetailByUsername(@Param("username") String username);
 
+    Customer findByCart(Cart cart);
 }

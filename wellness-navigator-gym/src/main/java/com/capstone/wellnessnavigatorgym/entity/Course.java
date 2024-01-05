@@ -5,16 +5,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Setter
 @Getter
 @RequiredArgsConstructor
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private Integer courseId;
     private String courseName;
     @Column(name = "description", length = 2000)
@@ -28,15 +33,12 @@ public class Course {
     @JoinColumn(name = "course_type_id")
     private CourseType courseType;
 
-    @ManyToMany
-    @JoinTable(name = "course_days",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "day_id"))
-    @OrderBy("dayId")
-    private Set<Day> days = new LinkedHashSet<>();
-
     public Course(Integer courseId) {
         this.courseId = courseId;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
     }
 }
 

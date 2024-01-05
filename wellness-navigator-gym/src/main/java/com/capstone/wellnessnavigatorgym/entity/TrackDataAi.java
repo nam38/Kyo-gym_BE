@@ -56,7 +56,7 @@ public class TrackDataAi {
             case "training_history":
                 return getTraining_history();
             case "course_id":
-                return getCourse();
+                return this.course != null ? this.course.getCourseId() : null; // Trả về course_id nếu course không null
             case "effective":
                 return getEffective();
             default:

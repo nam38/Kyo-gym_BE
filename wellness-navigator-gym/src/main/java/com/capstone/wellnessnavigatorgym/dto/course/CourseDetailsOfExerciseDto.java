@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +17,17 @@ public class CourseDetailsOfExerciseDto {
     private String description;
     private String duration;
     private String image;
+    private Integer customerId;
+    private String customerName;
+    private String customerEmail;
+    private String customerPhone;
+    private Boolean customerGender;
+    private Date dateOfBirth;
+    private String idCard;
+    private String customerAddress;
+    private String customerImg;
+    private String username;
+    private String email;
     private Integer dayId;
     private String dayName;
     private Integer exerciseId;
