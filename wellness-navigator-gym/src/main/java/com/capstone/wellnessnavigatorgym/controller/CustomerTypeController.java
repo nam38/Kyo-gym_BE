@@ -28,4 +28,6 @@ public class CustomerTypeController {
         }
         return new ResponseEntity<>(customerTypeList, HttpStatus.OK);
     }
+
+
 }

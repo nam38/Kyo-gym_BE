@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Setter
@@ -27,13 +25,6 @@ public class Course {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_type_id")
     private CourseType courseType;
-
-    @ManyToMany
-    @JoinTable(name = "course_days",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "day_id"))
-    @OrderBy("dayId")
-    private Set<Day> days = new LinkedHashSet<>();
 
     public Course(Integer courseId) {
         this.courseId = courseId;

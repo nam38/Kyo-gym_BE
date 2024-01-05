@@ -22,10 +22,10 @@ public class TrackDataAiServiceImpl implements ITrackDataAiService {
         return trackDataAiRepository.findAll();
     }
 
-    @Override
-    public List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO) {
-        return trackDataAiRepository.findCustomByUserData(userDataDTO);
-    }
+//    @Override
+//    public List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO) {
+//        return trackDataAiRepository.findCustomByUserData(userDataDTO);
+//    }
 
     @SneakyThrows
     @Override

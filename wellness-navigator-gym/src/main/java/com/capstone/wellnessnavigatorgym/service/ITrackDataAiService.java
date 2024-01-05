@@ -10,5 +10,5 @@ public interface ITrackDataAiService {
     List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO);
     TrackDataAi findTrackDataAiById(Integer id);
 
-    List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO);
+
 }
