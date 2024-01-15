@@ -1,5 +1,6 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
+import com.capstone.wellnessnavigatorgym.dto.EffectivenessUpdateDTO;
 import com.capstone.wellnessnavigatorgym.dto.course.CourseDetail;
 import com.capstone.wellnessnavigatorgym.dto.customer.CustomerUserDetailDto;
 import com.capstone.wellnessnavigatorgym.dto.tree.RecommendationDTO;
@@ -115,5 +116,13 @@ public class TrackDataAiController {
 
     private List<String> getAttributeNames() {
         return Arrays.asList("activity_level", "age", "gender", "bmi", "training_goals", "training_history");
+    }
+
+    @PutMapping("/update-effectiveness/{userDataAiId}")
+    public ResponseEntity<?> updateUserDataAiEffectiveness(@PathVariable Integer userDataAiId, @RequestBody EffectivenessUpdateDTO dto) {
+        UserDataAi userDataAi = userDataAiService.findUserDataAiById(userDataAiId);
+        userDataAi.setEffective(dto.getEffective());
+        userDataAiService.saveUserDataAi(userDataAi);
+        return ResponseEntity.ok("Effectiveness updated successfully for UserDataAi ID " + userDataAiId);
     }
 }
