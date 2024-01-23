@@ -43,8 +43,8 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public List<CourseDetailsOfExerciseDto> getCourseDetailsByDayAndCourseOfExercise(Integer courseId, Integer dayId, String username) {
-        List<Tuple> tupleList = courseRepository.getCourseDetailsByDayAndCourseOfExercise(courseId, dayId, username);
+    public List<CourseDetailsOfExerciseDto> getCourseDetailsByDayAndCourseOfExercise(Integer courseId, Integer dayId) {
+        List<Tuple> tupleList = courseRepository.getCourseDetailsByDayAndCourseOfExercise(courseId, dayId);
         return tupleList.stream()
                 .map(this::tupleToCourseDetailsOfExerciseDto)
                 .collect(Collectors.toList());
@@ -75,17 +75,6 @@ public class CourseServiceImpl implements ICourseService {
                 tuple.get("description", String.class),
                 tuple.get("duration", String.class),
                 tuple.get("image", String.class),
-                ConvertToInteger.convertToInteger(tuple.get("customer_id")),
-                tuple.get("customer_name", String.class),
-                tuple.get("customer_email", String.class),
-                tuple.get("customer_phone", String.class),
-                tuple.get("customer_gender", Boolean.class),
-                tuple.get("date_of_birth", Date.class),
-                tuple.get("id_card", String.class),
-                tuple.get("customer_address", String.class),
-                tuple.get("customer_img", String.class),
-                tuple.get("user_name", String.class),
-                tuple.get("email", String.class),
                 ConvertToInteger.convertToInteger(tuple.get("day_id")),
                 tuple.get("day_name", String.class),
                 ConvertToInteger.convertToInteger(tuple.get("exercise_id")),

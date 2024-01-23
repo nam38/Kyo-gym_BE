@@ -22,10 +22,10 @@ public class TrackDataAiServiceImpl implements ITrackDataAiService {
         return trackDataAiRepository.findAll();
     }
 
-    @Override
-    public List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO) {
-        return trackDataAiRepository.findCustomByUserData(userDataDTO);
-    }
+//    @Override
+//    public List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO) {
+//        return trackDataAiRepository.findCustomByUserData(userDataDTO);
+//    }
 
     @SneakyThrows
     @Override
@@ -35,6 +35,11 @@ public class TrackDataAiServiceImpl implements ITrackDataAiService {
             return trackDataAi.get();
         }
         throw new NotFoundById("Could not find any AI tracking data with code: " + id);
+    }
+
+    @Override
+    public List<TrackDataAi> getFilteredTrackDataAi(UserDataDTO userDataDTO) {
+        return trackDataAiRepository.findCustomByUserData(userDataDTO);
     }
 
 }

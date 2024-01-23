@@ -7,11 +7,13 @@ import com.capstone.wellnessnavigatorgym.entity.Course;
 import com.capstone.wellnessnavigatorgym.entity.CourseDays;
 import com.capstone.wellnessnavigatorgym.entity.CourseType;
 import com.capstone.wellnessnavigatorgym.repository.ICourseDayRepository;
+import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
 import com.capstone.wellnessnavigatorgym.service.ICourseDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +21,9 @@ public class CourseDayServiceImpl implements ICourseDayService {
 
     @Autowired
     private ICourseDayRepository courseDayRepository;
+
+    @Autowired
+    private ICourseRepository courseRepository;
 
     @Override
     public List<CourseDays> findAll() {
@@ -62,5 +67,19 @@ public class CourseDayServiceImpl implements ICourseDayService {
         dayDto.setDayId(courseDay.getDay().getDayId());
         dayDto.setDayName(courseDay.getDay().getDayName());
         return dayDto;
+    }
+
+    @Override
+    public CourseDayDetailDto findCourseById(Integer courseId) {
+        Optional<Course> courseOptional = courseRepository.findById(courseId);
+
+        if (!courseOptional.isPresent()) {
+            return null;
+        }
+
+        Course course = courseOptional.get();
+        List<CourseDays> courseDays = courseDayRepository.findByCourse(course);
+
+        return convertCourseToDTO(course, courseDays);
     }
 }
