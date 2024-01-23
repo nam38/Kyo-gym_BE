@@ -47,14 +47,11 @@ public class ExerciseInfo {
 
     private Boolean isEnable;
 
-    @NotNull(message = "Duration cannot be null")
-    @Min(value = 1, message = "Duration must be greater than 0")
     private Double duration;
 
     private LocalDateTime uploadDate;
 
     private Integer views;
 
-    @NotNull(message = "Days cannot be null")
     private Integer days;
 }

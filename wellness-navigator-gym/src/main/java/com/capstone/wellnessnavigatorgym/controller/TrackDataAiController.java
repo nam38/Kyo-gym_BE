@@ -67,12 +67,12 @@ public class TrackDataAiController {
 
 //        buildDecisionTree.exportTreeToXml(decisionTree, "D:\\DuyTan_University\\Project_Capstone_1\\CAPSTONE1-KyoGYM\\C1SE.32-Capstone1-BE\\wellness-navigator-gym\\src\\main\\resources\\static\\DataTraining1.xml");
 //        return null;
-          buildDecisionTree.importTreeFromXml("D:\\DuyTan_University\\Project_Capstone_1\\CAPSTONE1-KyoGYM\\C1SE.32-Capstone1-BE\\wellness-navigator-gym\\src\\main\\resources\\static\\DataTraining1.xml");
+        buildDecisionTree.importTreeFromXml("D:\\DuyTan_University\\Project_Capstone_1\\CAPSTONE1-KyoGYM\\C1SE.32-Capstone1-BE\\wellness-navigator-gym\\src\\main\\resources\\static\\DataTraining1.xml");
 
-      //   Tạo map dữ liệu người dùng từ TrackDataAi
-          Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);
+        //   Tạo map dữ liệu người dùng từ TrackDataAi
+        Map<String, Object> userData = extractUserDataFromTrackDataAi(userDataDTO);
 
-       //  Duyệt qua cây quyết định và tìm đề xuất
+        //  Duyệt qua cây quyết định và tìm đề xuất
         Course recommendations = buildDecisionTree.traverseDecisionTree(decisionTree, userData);
 
         Customer customer = customerService.findById(userDataDTO.getCustomerId());

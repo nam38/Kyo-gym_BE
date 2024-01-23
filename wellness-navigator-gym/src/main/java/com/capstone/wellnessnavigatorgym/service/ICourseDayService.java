@@ -12,4 +12,5 @@ public interface ICourseDayService {
     List<CourseDayDetailDto> findAllCoursesWithDays();
 
     CourseDayDetailDto findCourseById(Integer courseId);
+
 }

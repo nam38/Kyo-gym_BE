@@ -173,7 +173,7 @@ public class SecurityController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String newPass = encoder.encode(changePasswordDto.getConfirmPassword());
         accountService.changePassword(username, newPass);
-        return new ResponseEntity<>(new ChangePasswordDto(
+        return new ResponseEntity<>(new ChangePasswordDto(  
                 changePasswordDto.getUsername(),
                 "", ""), HttpStatus.OK);
     }

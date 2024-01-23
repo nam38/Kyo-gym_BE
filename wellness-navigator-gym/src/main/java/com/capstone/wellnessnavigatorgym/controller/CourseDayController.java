@@ -38,7 +38,7 @@ public class CourseDayController {
         return new ResponseEntity<>(coursesWithDays, HttpStatus.OK);
     }
 
-    @GetMapping("/courses/{courseId}/days")
+    @GetMapping("/courses/{courseId}")
     public ResponseEntity<CourseDayDetailDto> getCourseWithDaysById(@PathVariable Integer courseId) {
         CourseDayDetailDto courseWithDays = courseDayService.findCourseById(courseId);
 
