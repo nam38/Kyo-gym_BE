@@ -10,8 +10,11 @@ import com.capstone.wellnessnavigatorgym.repository.ICourseDayRepository;
 import com.capstone.wellnessnavigatorgym.repository.ICourseRepository;
 import com.capstone.wellnessnavigatorgym.service.ICourseDayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,5 +84,28 @@ public class CourseDayServiceImpl implements ICourseDayService {
         List<CourseDays> courseDays = courseDayRepository.findByCourse(course);
 
         return convertCourseToDTO(course, courseDays);
+    }
+
+    @Override
+    public CourseDays getCourseDayDetails(Integer courseId, Integer dayId) {
+        return courseDayRepository.findByCourseIdAndDayId(courseId, dayId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Day not found for this course"));
+    }
+
+    @Override
+    public CourseDays advanceCourseDay(Integer courseId) {
+        List<CourseDays> courseDaysList = courseDayRepository.findByCourseCourseId(courseId);
+        return courseDaysList.stream()
+                .filter(cd -> !cd.getStatus())
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No more days to advance in this course"));
+    }
+
+    @Override
+    public CourseDays resetToFirstDay(Integer courseId) {
+        List<CourseDays> courseDaysList = courseDayRepository.findByCourseCourseId(courseId);
+        return courseDaysList.stream()
+                .min(Comparator.comparingInt(CourseDays::getCourseDayId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This course does not have any days"));
     }
 }

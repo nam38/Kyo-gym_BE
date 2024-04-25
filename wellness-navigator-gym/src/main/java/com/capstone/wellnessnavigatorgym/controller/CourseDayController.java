@@ -48,4 +48,22 @@ public class CourseDayController {
 
         return new ResponseEntity<>(courseWithDays, HttpStatus.OK);
     }
+
+    @GetMapping("/{courseId}/days/{dayId}")
+    public ResponseEntity<CourseDays> getCourseDayDetails(@PathVariable Integer courseId, @PathVariable Integer dayId) {
+        CourseDays courseDayDetails = courseDayService.getCourseDayDetails(courseId, dayId);
+        return ResponseEntity.ok(courseDayDetails);
+    }
+
+    @PostMapping("/{courseId}/advance")
+    public ResponseEntity<CourseDays> advanceCourseDay(@PathVariable Integer courseId) {
+        CourseDays nextDay = courseDayService.advanceCourseDay(courseId);
+        return ResponseEntity.ok(nextDay);
+    }
+
+    @PostMapping("/{courseId}/reset")
+    public ResponseEntity<CourseDays> resetToFirstDay(@PathVariable Integer courseId) {
+        CourseDays firstDay = courseDayService.resetToFirstDay(courseId);
+        return ResponseEntity.ok(firstDay);
+    }
 }

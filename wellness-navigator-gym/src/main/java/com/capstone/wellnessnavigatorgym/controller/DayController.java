@@ -1,6 +1,5 @@
 package com.capstone.wellnessnavigatorgym.controller;
 
-import com.capstone.wellnessnavigatorgym.dto.response.MessageResponse;
 import com.capstone.wellnessnavigatorgym.entity.Day;
 import com.capstone.wellnessnavigatorgym.service.IDayService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,4 +13,9 @@ public interface ICourseDayService {
 
     CourseDayDetailDto findCourseById(Integer courseId);
 
+    CourseDays getCourseDayDetails(Integer courseId, Integer dayId);
+
+    CourseDays advanceCourseDay(Integer courseId);
+
+    CourseDays resetToFirstDay(Integer courseId);
 }
