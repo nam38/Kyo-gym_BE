@@ -19,7 +19,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartId;
     @NotBlank
-    @Pattern(regexp = "^(?:[A-Z][a-zÀ-ỹ]*(?: [A-Z][a-zÀ-ỹ]*)+)$")
+    @Pattern(regexp = "^(?:[A-Z][a-zÀ-ỹ]*(?: [A-Z][a-zÀ-ỹ]*)+)$")//Kiểm tra định dạng, đảm bảo receiverName bắt đầu bằng chữ cái in hoa, chứa các chữ cái và có thể có khoảng trắng giữa các từ.
     private String receiverName;
     @NotBlank
     private String receiverAddress;
